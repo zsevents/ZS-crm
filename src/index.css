@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+:root {
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #F8FAFC;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-350: #CBD5E1;
+  --color-neutral-400: #94A3B8;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-850: #1E293B;
+  --color-neutral-900: #0F172A;
+  
+  --burgundy-primary: #961b45;
+  --burgundy-dark: #751437;
+  --burgundy-light: #b82357;
+  --rose-accent: #fb7185;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #F1F5F9;
+  color: var(--color-neutral-900);
+  overflow-x: hidden;
+}
+
+/* =========================================================================
+   EXACT REFERENCE GLASSMORPHISM & PENTHOUSE SYSTEM
+   ========================================================================= */
+
+/* Fixed High-End Luxury Floral Penthouse Background */
+.penthouse-bg {
+  position: fixed;
+  inset: 0;
+  background-image: url('/src/assets/images/luxury_floral_bg_1788163266849.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.penthouse-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, rgba(254, 242, 244, 0.22) 60%, rgba(243, 232, 235, 0.38) 100%);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Master Suspended Floating Glass Screen */
+.glass-screen {
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.16), 
+              0 15px 35px -5px rgba(150, 27, 69, 0.05),
+              inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+              inset 0 -1.5px 2px 0 rgba(255, 255, 255, 0.35);
+  border-radius: 36px;
+}
+
+/* Suspended Top Header Title Capsule */
+.glass-header-pill {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 15px 35px -5px rgba(150, 27, 69, 0.1),
+              inset 0 1.5px 2px 0 rgba(255, 255, 255, 1);
+  border-radius: 9999px;
+}
+
+/* Dark Frosted Glass Card (High-End Velvet Charcoal Glass as in image.png) */
+.glass-dark-card {
+  background: linear-gradient(145deg, rgba(38, 48, 66, 0.94) 0%, rgba(24, 32, 46, 0.98) 100%);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1.2px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.45),
+              inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.22);
+  border-radius: 24px;
+  color: #ffffff;
+}
+
+/* Light Frosted Sub-card */
+.glass-subcard {
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1.2px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.05),
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+}
+
+/* Main glass card surface */
+.glass-card {
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1.2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 34px -5px rgba(0, 0, 0, 0.06), 
+              0 4px 12px -2px rgba(0, 0, 0, 0.03),
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+}
+
+.glass-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.86);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 22px 45px -10px rgba(0, 0, 0, 0.12), 
+              0 8px 16px -4px rgba(0, 0, 0, 0.05),
+              inset 0 1px 2px 0 rgba(255, 255, 255, 1);
+}
+
+/* Deeper frosted panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(26px) saturate(200%);
+  -webkit-backdrop-filter: blur(26px) saturate(200%);
+  border: 1.2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 38px -4px rgba(0, 0, 0, 0.08),
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+}
+
+/* Floating Bottom Navigation Dock (Exact match from reference) */
+.glass-bottom-dock {
+  background: rgba(20, 29, 44, 0.92);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1.2px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.45),
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+}
+
+/* Floating Left Icon Dock (Exact match from reference) */
+.glass-left-dock {
+  background: rgba(20, 29, 44, 0.86);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 45px -8px rgba(0, 0, 0, 0.35),
+              inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+}
+
+/* Subtle frosted element */
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+/* Navigation frosted glass (Exact match from image.png) */
+.glass-nav {
+  background: linear-gradient(180deg, rgba(255, 245, 246, 0.78) 0%, rgba(246, 238, 239, 0.88) 100%);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 4px 0 32px 0 rgba(150, 27, 69, 0.06),
+              inset -1px 0 2px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Frosted Modal */
+.glass-modal {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.25),
+              0 10px 24px -4px rgba(0, 0, 0, 0.1),
+              inset 0 1.5px 2px 0 rgba(255, 255, 255, 1);
+  border-radius: 28px;
+}
+
+/* Glass Inputs */
+.glass-input {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.2px solid rgba(255, 255, 255, 0.92) !important;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02),
+              0 1px 2px 0 rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.2s ease;
+  border-radius: 14px;
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(150, 27, 69, 0.65) !important;
+  box-shadow: 0 0 0 3px rgba(150, 27, 69, 0.18),
+              inset 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Glass Buttons (Exact Rich Plum Velvet Gradient from image.png) */
+.glass-btn-primary {
+  background: linear-gradient(135deg, #961b45 0%, #751437 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 24px -4px rgba(150, 27, 69, 0.42),
+              inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+.glass-btn-primary:hover {
+  background: linear-gradient(135deg, #a81e4e 0%, #85163e 100%);
+  box-shadow: 0 12px 28px -4px rgba(150, 27, 69, 0.55),
+              inset 0 1px 2px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+}
+
+.glass-btn-secondary {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.04),
+              inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+  transition: all 0.2s ease;
+}
+
+.glass-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Glass Tag / Pill / Badge */
+.glass-badge {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Suspended cable visual effect */
+.suspended-cable {
+  position: relative;
+}
+.suspended-cable::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8));
+  box-shadow: 0 0 2px rgba(255,255,255,0.5);
+  z-index: 20;
+}
+.suspended-cable::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #0f172a;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  z-index: 21;
+}
+
+/* Animated Ambient Glow Light Orbs */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(20px) scale(0.96);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 14s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 18s ease-in-out infinite;
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(131, 24, 67, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(131, 24, 67, 0.4);
+}
+
