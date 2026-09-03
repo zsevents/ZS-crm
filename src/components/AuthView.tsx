@@ -130,7 +130,11 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen penthouse-bg flex flex-col justify-center items-center px-4 py-10 relative overflow-hidden font-sans text-slate-900 selection:bg-rose-200">
+    // .penthouse-bg is a fixed, pointer-events:none backdrop layer, so it must
+    // be a sibling of the content rather than its container - using it as the
+    // wrapper made the entire form unclickable.
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-10 relative font-sans text-slate-900 selection:bg-rose-200">
+      <div className="penthouse-bg" aria-hidden="true" />
       {/* Brand Header with Logo */}
       <div className="text-center mb-6 relative z-10 flex flex-col items-center">
         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-white/90 shadow-2xl shadow-[#961b45]/30 mb-4 bg-white/95 p-1 hover:scale-105 transition-transform duration-300">

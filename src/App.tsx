@@ -491,8 +491,9 @@ export default function App() {
   // Auth gate. Every hook above has already run, so these early returns are safe.
   if (authChecking) {
     return (
-      <div className="min-h-screen penthouse-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-2 border-[#831843]/30 border-t-[#831843] rounded-full animate-spin" />
+      <div className="min-h-screen relative flex items-center justify-center">
+        <div className="penthouse-bg" aria-hidden="true" />
+        <span className="relative z-10 w-8 h-8 border-2 border-[#831843]/30 border-t-[#831843] rounded-full animate-spin" />
       </div>
     );
   }
