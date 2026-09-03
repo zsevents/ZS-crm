@@ -1,7 +1,12 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+dotenv.config();
+
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { apiRouter } from './src/server/routes.js';
+import { withPersistence } from './src/server/persistence.js';
 
 async function startServer() {
   const app = express();
@@ -20,6 +25,9 @@ async function startServer() {
     }
     next();
   });
+
+  // Keep the in-memory store in sync with Postgres around every request
+  app.use('/api', withPersistence);
 
   // Mount API endpoints first
   app.use('/api', apiRouter);

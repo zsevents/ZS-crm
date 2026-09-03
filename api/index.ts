@@ -1,5 +1,6 @@
 import express from 'express';
 import { apiRouter } from '../src/server/routes.js';
+import { withPersistence } from '../src/server/persistence.js';
 
 const app = express();
 
@@ -16,6 +17,9 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// Keep the in-memory store in sync with Postgres around every request
+app.use('/api', withPersistence);
 
 // Mount API endpoints first
 app.use('/api', apiRouter);

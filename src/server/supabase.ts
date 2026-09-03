@@ -6,16 +6,29 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 // only ever be imported by server code (the Express API). Never expose these
 // values to the browser and never prefix them with VITE_, or Vite will inline
 // them into the public bundle.
+//
+// Environment variables are read lazily rather than at module load: ES module
+// imports are hoisted, so a top-level read would run before the entry point
+// has had a chance to call dotenv.config().
 
-const url = process.env.SUPABASE_URL ?? '';
-const secretKey = process.env.SUPABASE_SECRET_KEY ?? '';
+function readEnv() {
+  return {
+    url: process.env.SUPABASE_URL ?? '',
+    secretKey: process.env.SUPABASE_SECRET_KEY ?? '',
+  };
+}
 
-export const isSupabaseConfigured = Boolean(url && secretKey);
+export function isSupabaseConfigured(): boolean {
+  const { url, secretKey } = readEnv();
+  return Boolean(url && secretKey);
+}
 
 let client: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient {
-  if (!isSupabaseConfigured) {
+  const { url, secretKey } = readEnv();
+
+  if (!url || !secretKey) {
     throw new Error(
       'Supabase is not configured. Set SUPABASE_URL and SUPABASE_SECRET_KEY ' +
         '(see .env.local locally, or the Vercel project environment variables).'
