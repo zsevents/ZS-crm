@@ -767,7 +767,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   <div>
                     <h3 className="text-base font-black text-slate-900">Two-Factor Authentication (2FA)</h3>
                     <p className="text-xs text-slate-600 mt-0.5">
-                      Protect high-value quotes and client data with Google Authenticator or TOTP app.
+                      Protect high-value quotes and client data with any TOTP authenticator app.
                     </p>
                   </div>
                 </div>
@@ -811,7 +811,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       </div>
 
                       <div className="space-y-2 text-xs">
-                        <h4 className="font-black text-slate-900">Scan with Google Authenticator or 1Password</h4>
+                        <h4 className="font-black text-slate-900">Scan with your authenticator app</h4>
                         <p className="text-slate-600 text-[11px]">
                           Manual Setup Key: <code className="bg-slate-100 px-2 py-0.5 rounded font-mono text-[#961b45] font-bold">ZSEV-8842-KLR9-PLM1</code>
                         </p>

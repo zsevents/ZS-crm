@@ -1,6 +1,5 @@
 {
   "name": "ZS Events - Luxury Event Management & Production CRM",
   "description": "High-end event management, luxury wedding production, and stage styling CRM for ZS Events Bangalore, featuring lead pipelines, venue logistics, GST quotations & billing, and team run-sheets.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "requestFramePermissions": []
 }
