@@ -57,6 +57,9 @@ import { WebsiteFormSimulator } from './components/WebsiteFormSimulator';
 import { SettingsView } from './components/SettingsView';
 import { NewEntryModals } from './components/NewEntryModals';
 import { CustomerHoverDropdown } from './components/CustomerHoverDropdown';
+import { AuthView } from './components/AuthView';
+import { getSupabase, isSupabaseConfigured } from './lib/supabaseClient';
+import { sessionFromSupabase } from './lib/session';
 
 type ViewTab =
   | 'DASHBOARD'
@@ -92,6 +95,43 @@ export default function App() {
     title: 'Lead Event Manager & Producer',
     createdAt: '2026-01-01',
   });
+
+  // Authentication. When Supabase is configured the app is gated behind a real
+  // sign-in; otherwise it stays open, as it was before auth existed.
+  const [authed, setAuthed] = useState(!isSupabaseConfigured());
+  const [authChecking, setAuthChecking] = useState(isSupabaseConfigured());
+
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    const supabase = getSupabase();
+
+    const adopt = async (session: any) => {
+      if (!session) {
+        setAuthed(false);
+        return;
+      }
+      const appSession = await sessionFromSupabase(session);
+      setCurrentUser(appSession.user);
+      setAuthed(true);
+    };
+
+    supabase.auth
+      .getSession()
+      .then(({ data }) => adopt(data.session))
+      .finally(() => setAuthChecking(false));
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      adopt(session);
+    });
+
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    if (!isSupabaseConfigured()) return;
+    await getSupabase().auth.signOut();
+    setAuthed(false);
+  };
 
   // Leads CRM Filter state
   const [leadFilterTab, setLeadFilterTab] = useState<string>('ALL');
@@ -447,6 +487,19 @@ export default function App() {
         return 'bg-slate-50 text-slate-700 border-slate-200';
     }
   };
+
+  // Auth gate. Every hook above has already run, so these early returns are safe.
+  if (authChecking) {
+    return (
+      <div className="min-h-screen penthouse-bg flex items-center justify-center">
+        <span className="w-8 h-8 border-2 border-[#831843]/30 border-t-[#831843] rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!authed) {
+    return <AuthView onLoginSuccess={(session) => setCurrentUser(session.user)} />;
+  }
 
   return (
     <div className="min-h-screen relative overflow-x-hidden text-slate-900 font-sans antialiased flex flex-col selection:bg-rose-200 selection:text-[#831843]">

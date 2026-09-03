@@ -12,8 +12,9 @@ import {
   Briefcase,
   Check,
 } from 'lucide-react';
-import { api } from '../lib/api';
 import { AuthSession } from '../types';
+import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import { sessionFromSupabase } from '../lib/session';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
 
 interface AuthViewProps {
@@ -22,27 +23,49 @@ interface AuthViewProps {
 
 export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
   const [mode, setMode] = useState<'LOGIN' | 'SIGNUP'>('LOGIN');
-  const [email, setEmail] = useState('syed@zsevents.com');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('Syed');
-  const [phone, setPhone] = useState('+91 98450 99880');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
+  const [quickLoading, setQuickLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
-  // Google SSO Sign-in flow (Instant One-Click Google Admin Login)
-  const handleGoogleSSO = async () => {
-    setGoogleLoading(true);
+  // Dev-only quick login.
+  //
+  // Every reference to the demo credentials sits inside this one ternary. Vite
+  // replaces import.meta.env.DEV with the literal `false` in a production
+  // build, so the whole expression folds to `null` and the minifier drops the
+  // untaken branch - the credentials never reach the shipped bundle. Reading
+  // them into top-level consts instead would inline the strings unconditionally,
+  // which is exactly the leak this shape avoids.
+  const quickLogin =
+    import.meta.env.DEV &&
+    import.meta.env.VITE_DEMO_EMAIL &&
+    import.meta.env.VITE_DEMO_PASSWORD
+      ? {
+          email: import.meta.env.VITE_DEMO_EMAIL as string,
+          password: import.meta.env.VITE_DEMO_PASSWORD as string,
+        }
+      : null;
+
+  const handleQuickLogin = async () => {
+    if (!quickLogin) return;
+    setQuickLoading(true);
     setErrorMessage(null);
+    setNotice(null);
     try {
-      const adminEmail = email.includes('@') ? email : 'syed@zsevents.com';
-      const session = await api.login(adminEmail);
-      localStorage.setItem('zse_auth_session', JSON.stringify(session));
-      onLoginSuccess(session);
+      const { data, error } = await getSupabase().auth.signInWithPassword({
+        email: quickLogin.email,
+        password: quickLogin.password,
+      });
+      if (error) throw error;
+      onLoginSuccess(await sessionFromSupabase(data.session!));
     } catch (err: any) {
-      setErrorMessage(err.message || 'Google SSO verification failed. Please try again.');
+      setErrorMessage(err.message || 'Quick login failed');
     } finally {
-      setGoogleLoading(false);
+      setQuickLoading(false);
     }
   };
 
@@ -50,29 +73,54 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage(null);
+    setNotice(null);
 
     try {
+      if (!isSupabaseConfigured()) {
+        throw new Error('Supabase is not configured for this deployment.');
+      }
+      const supabase = getSupabase();
+
+      if (!email.trim()) throw new Error('Please provide your email address');
+      if (!password) throw new Error('Please enter your password');
+
       if (mode === 'LOGIN') {
-        const session = await api.login(email || 'syed@zsevents.com', password || undefined);
-        localStorage.setItem('zse_auth_session', JSON.stringify(session));
-        onLoginSuccess(session);
-      } else {
-        if (!name.trim()) {
-          throw new Error('Please provide admin full name');
-        }
-        if (!email.trim()) {
-          throw new Error('Please provide admin email address');
-        }
-        const session = await api.register({
-          name: name.trim(),
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
-          phone: phone.trim(),
-          role: 'ADMIN',
-          title: 'Lead Event Manager & Producer',
-          password: password || undefined,
+          password,
         });
-        localStorage.setItem('zse_auth_session', JSON.stringify(session));
-        onLoginSuccess(session);
+        if (error) throw error;
+        onLoginSuccess(await sessionFromSupabase(data.session!));
+      } else {
+        if (!name.trim()) throw new Error('Please provide your full name');
+        if (password.length < 8) {
+          throw new Error('Password must be at least 8 characters');
+        }
+
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim(),
+          password,
+          options: {
+            data: {
+              name: name.trim(),
+              phone: phone.trim(),
+              // First account bootstraps the studio, so it is the admin.
+              role: 'ADMIN',
+              title: 'Lead Event Manager & Producer',
+            },
+          },
+        });
+        if (error) throw error;
+
+        // With "Confirm email" enabled Supabase returns no session yet.
+        if (!data.session) {
+          setNotice(
+            'Account created. Check your inbox to confirm the email address, then sign in.'
+          );
+          setMode('LOGIN');
+          return;
+        }
+        onLoginSuccess(await sessionFromSupabase(data.session));
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Authentication failed');
@@ -157,45 +205,13 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
           </div>
         )}
 
-        {/* Google SSO Button */}
-        <div className="mb-5">
-          <button
-            type="button"
-            id="btn-google-sso"
-            onClick={handleGoogleSSO}
-            disabled={googleLoading}
-            className="w-full py-3 px-4 rounded-2xl border border-white/80 bg-white/70 hover:bg-white/90 text-slate-900 font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-3 transition-all cursor-pointer backdrop-blur-xs active:scale-[0.99]"
-          >
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-              />
-            </svg>
-            <span>{googleLoading ? 'Signing in with Google...' : 'Continue with Google SSO'}</span>
-          </button>
-
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/80" />
-            </div>
-            <div className="relative flex justify-center text-[11px] uppercase">
-              <span className="bg-white/80 backdrop-blur-xs px-3 py-0.5 rounded-full border border-white/80 text-slate-500 font-bold">Or with Admin Credentials</span>
-            </div>
+        {/* Success / confirmation notice */}
+        {notice && (
+          <div className="mb-5 p-3.5 bg-emerald-500/15 border border-emerald-500/30 rounded-2xl flex items-center gap-2.5 text-xs text-emerald-950 font-medium backdrop-blur-xs">
+            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+            <span>{notice}</span>
           </div>
-        </div>
+        )}
 
         {/* Auth Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
@@ -258,7 +274,10 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
 
           <div>
             <label className="block font-bold text-slate-900 mb-1">
-              Password {mode === 'LOGIN' && <span className="text-slate-500 font-normal">(demo: admin123 or any)</span>}
+              Password <span className="text-rose-500">*</span>
+              {mode === 'SIGNUP' && (
+                <span className="text-slate-500 font-normal"> (minimum 8 characters)</span>
+              )}
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
@@ -293,20 +312,36 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
           </button>
         </form>
 
-        {/* Fast 1-Click Admin Access for Testing */}
-        <div className="mt-6 pt-4 border-t border-white/60 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => {
-              setEmail('admin@zsevents.com');
-              handleSubmit({ preventDefault: () => {} } as any);
-            }}
-            className="w-full py-2.5 px-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-950 border border-emerald-500/30 text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer backdrop-blur-xs shadow-xs"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
-            <span>1-Click Test Admin Login (Zaid Sheikh)</span>
-          </button>
-        </div>
+        {/* Dev-only quick login */}
+        {quickLogin && (
+          <div className="mt-6 pt-4 border-t border-white/60">
+            <button
+              type="button"
+              id="btn-quick-login"
+              onClick={handleQuickLogin}
+              disabled={quickLoading}
+              className="w-full py-2.5 px-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-950 border border-emerald-500/30 text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer backdrop-blur-xs shadow-xs disabled:opacity-50"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+              <span>
+                {quickLoading ? 'Signing in...' : `One-Click Login (${quickLogin.email})`}
+              </span>
+            </button>
+            <p className="mt-2 text-[10px] text-slate-500 font-medium text-center">
+              Development only — this button is absent from production builds.
+            </p>
+          </div>
+        )}
+
+        {!quickLogin && (
+          <div className="mt-6 pt-4 border-t border-white/60">
+            <p className="text-[11px] text-slate-600 font-medium text-center">
+              {mode === 'LOGIN'
+                ? 'Accounts are managed in Supabase. Use Studio Setup to create the first one.'
+                : 'The first account created becomes the studio administrator.'}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Footer Info */}
