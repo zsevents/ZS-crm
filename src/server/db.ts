@@ -189,6 +189,31 @@ class FloristDatabase {
     this.seedInitialData();
   }
 
+  /**
+   * Move every ID counter past the highest ID already stored.
+   *
+   * Counters live in memory and start from fixed seed values, so a fresh
+   * serverless instance would re-issue an ID that already exists in Postgres
+   * and the upsert would silently overwrite that record. Called after every
+   * hydrate so the next ID is always max(existing) + 1.
+   */
+  public syncCountersFromData(): void {
+    const next = (items: { id: string }[], current: number) => {
+      let max = current - 1;
+      for (const item of items) {
+        const m = /(\d+)$/.exec(item.id ?? '');
+        if (m) max = Math.max(max, Number(m[1]));
+      }
+      return max + 1;
+    };
+    this.leadCounter = next(this.leads, this.leadCounter);
+    this.customerCounter = next(this.customers, this.customerCounter);
+    this.projectCounter = next(this.projects, this.projectCounter);
+    this.quotationCounter = next(this.quotations, this.quotationCounter);
+    this.invoiceCounter = next(this.invoices, this.invoiceCounter);
+    this.paymentCounter = next(this.payments, this.paymentCounter);
+  }
+
   public generate16Milestones(projectId: string, eventDate: string, responsiblePerson: string): Milestone[] {
     return FLORIST_16_MILESTONES.map((name, idx) => {
       let status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED' = 'NOT_STARTED';
@@ -1294,7 +1319,7 @@ class FloristDatabase {
 
     const tempLead: Partial<Lead> = {
       budget: Number(data.budget) || 50000,
-      eventDate: data.eventDate || new Date().toISOString().split('T')[0],
+      eventDate: data.eventDate || '',
       source: (data.source as any) || 'WEBSITE',
       status: 'NEW',
       priority: data.priority || 'MEDIUM',

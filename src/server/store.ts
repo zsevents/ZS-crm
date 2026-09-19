@@ -180,6 +180,9 @@ export async function hydrate(): Promise<void> {
     (db as any)[name] = (data ?? []).map(fromRow);
   }
 
+  // Never re-issue an ID that is already stored (would overwrite that row).
+  db.syncCountersFromData();
+
   const { data: settingsRow } = await supabase
     .from('business_settings')
     .select('settings')
