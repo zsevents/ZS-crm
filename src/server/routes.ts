@@ -195,13 +195,19 @@ apiRouter.post(['/website-inquiry', '/inquiry'], async (req: Request, res: Respo
       req.body.amount ||
       0;
     const budget = typeof rawBudget === 'string' ? parseFloat(rawBudget.replace(/[^0-9.]/g, '')) || 0 : Number(rawBudget) || 0;
-    const message =
+    const rawMessage =
       req.body.message ||
       req.body.details ||
       req.body.notes ||
       req.body.comments ||
       req.body['your-message'] ||
       '';
+    // Enquiries from the Google Business Profile "Book" button are tagged so the
+    // team can see which channel is producing leads.
+    const message =
+      req.body.channel === 'google-business-profile'
+        ? `[Booked via Google Business Profile] ${rawMessage}`.trim()
+        : rawMessage;
 
     // Honeypot: the website form has a hidden "company" field that people never
     // see. Bots fill every field; pretend success so they do not retry.
