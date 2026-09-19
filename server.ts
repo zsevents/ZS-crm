@@ -7,6 +7,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { apiRouter } from './src/server/routes.js';
 import { withPersistence } from './src/server/persistence.js';
+import { requireAuth } from './src/server/auth.js';
 
 async function startServer() {
   const app = express();
@@ -25,6 +26,9 @@ async function startServer() {
     }
     next();
   });
+
+  // Reject unauthenticated calls before touching the database
+  app.use('/api', requireAuth);
 
   // Keep the in-memory store in sync with Postgres around every request
   app.use('/api', withPersistence);

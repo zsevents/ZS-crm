@@ -15,7 +15,7 @@ export function isSupabaseConfigured(): boolean {
 let client: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient {
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured()) {
     throw new Error(
       'Supabase is not configured. Set VITE_SUPABASE_URL and ' +
         'VITE_SUPABASE_PUBLISHABLE_KEY in .env.local, then restart the dev server.'

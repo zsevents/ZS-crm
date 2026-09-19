@@ -1,8 +1,12 @@
 import express from 'express';
 import { apiRouter } from '../src/server/routes.js';
 import { withPersistence } from '../src/server/persistence.js';
+import { requireAuth } from '../src/server/auth.js';
 
 const app = express();
+
+// Behind Vercel's proxy: use X-Forwarded-For so req.ip is the visitor, not the proxy
+app.set('trust proxy', true);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -17,6 +21,9 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// Reject unauthenticated calls before touching the database
+app.use('/api', requireAuth);
 
 // Keep the in-memory store in sync with Postgres around every request
 app.use('/api', withPersistence);

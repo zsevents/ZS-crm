@@ -3,14 +3,9 @@ import {
   Sparkles,
   Lock,
   Mail,
-  User,
-  Phone,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
   AlertCircle,
-  Briefcase,
-  Check,
 } from 'lucide-react';
 import { AuthSession } from '../types';
 import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient';
@@ -22,11 +17,8 @@ interface AuthViewProps {
 }
 
 export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
-  const [mode, setMode] = useState<'LOGIN' | 'SIGNUP'>('LOGIN');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [quickLoading, setQuickLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -84,44 +76,15 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
       if (!email.trim()) throw new Error('Please provide your email address');
       if (!password) throw new Error('Please enter your password');
 
-      if (mode === 'LOGIN') {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password,
-        });
-        if (error) throw error;
-        onLoginSuccess(await sessionFromSupabase(data.session!));
-      } else {
-        if (!name.trim()) throw new Error('Please provide your full name');
-        if (password.length < 8) {
-          throw new Error('Password must be at least 8 characters');
-        }
-
-        const { data, error } = await supabase.auth.signUp({
-          email: email.trim(),
-          password,
-          options: {
-            data: {
-              name: name.trim(),
-              phone: phone.trim(),
-              // First account bootstraps the studio, so it is the admin.
-              role: 'ADMIN',
-              title: 'Lead Event Manager & Producer',
-            },
-          },
-        });
-        if (error) throw error;
-
-        // With "Confirm email" enabled Supabase returns no session yet.
-        if (!data.session) {
-          setNotice(
-            'Account created. Check your inbox to confirm the email address, then sign in.'
-          );
-          setMode('LOGIN');
-          return;
-        }
-        onLoginSuccess(await sessionFromSupabase(data.session));
-      }
+      // Sign-in only. Accounts are created by the studio admin in Supabase and
+      // approved for CRM access there (see src/server/auth.ts) - a public
+      // sign-up form would let anyone create an account.
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+      if (error) throw error;
+      onLoginSuccess(await sessionFromSupabase(data.session!));
     } catch (err: any) {
       setErrorMessage(err.message || 'Authentication failed');
     } finally {
@@ -167,40 +130,6 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
 
       {/* Main Authentication Card */}
       <div className="w-full max-w-md glass-modal border border-white/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 text-slate-900">
-        {/* Toggle Mode: Admin Login / Admin Setup */}
-        <div className="grid grid-cols-2 p-1 bg-white/60 rounded-2xl mb-6 border border-white/80 backdrop-blur-xs shadow-xs">
-          <button
-            type="button"
-            id="auth-tab-login"
-            onClick={() => {
-              setMode('LOGIN');
-              setErrorMessage(null);
-            }}
-            className={`py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer ${
-              mode === 'LOGIN'
-                ? 'bg-gradient-to-r from-[#831843] to-[#9f1239] text-white shadow-md shadow-[#831843]/20 border border-white/20'
-                : 'text-slate-700 hover:text-slate-950 hover:bg-white/40'
-            }`}
-          >
-            Admin Sign In
-          </button>
-          <button
-            type="button"
-            id="auth-tab-signup"
-            onClick={() => {
-              setMode('SIGNUP');
-              setErrorMessage(null);
-            }}
-            className={`py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer ${
-              mode === 'SIGNUP'
-                ? 'bg-gradient-to-r from-[#831843] to-[#9f1239] text-white shadow-md shadow-[#831843]/20 border border-white/20'
-                : 'text-slate-700 hover:text-slate-950 hover:bg-white/40'
-            }`}
-          >
-            Create Admin Account
-          </button>
-        </div>
-
         {/* Error Notification */}
         {errorMessage && (
           <div className="mb-5 p-3.5 bg-rose-500/15 border border-rose-500/30 rounded-2xl flex items-center gap-2.5 text-xs text-rose-950 font-medium backdrop-blur-xs">
@@ -219,45 +148,6 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
 
         {/* Auth Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-          {mode === 'SIGNUP' && (
-            <>
-              <div>
-                <label className="block font-bold text-slate-900 mb-1">
-                  Admin Full Name <span className="text-rose-500">*</span>
-                </label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
-                  <input
-                    type="text"
-                    required
-                    id="signup-name-input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Zaid Sheikh"
-                    className="w-full pl-9 pr-3 py-2.5 glass-input font-medium"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-900 mb-1">
-                  Phone / WhatsApp
-                </label>
-                <div className="relative">
-                  <Phone className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
-                  <input
-                    type="text"
-                    id="signup-phone-input"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 98860 99887"
-                    className="w-full pl-9 pr-3 py-2.5 glass-input font-medium"
-                  />
-                </div>
-              </div>
-            </>
-          )}
-
           <div>
             <label className="block font-bold text-slate-900 mb-1">
               Admin Email Address <span className="text-rose-500">*</span>
@@ -270,7 +160,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
                 id="auth-email-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@zsevents.com"
+                placeholder="you@zsevents.in"
                 className="w-full pl-9 pr-3 py-2.5 glass-input font-medium"
               />
             </div>
@@ -279,9 +169,6 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
           <div>
             <label className="block font-bold text-slate-900 mb-1">
               Password <span className="text-rose-500">*</span>
-              {mode === 'SIGNUP' && (
-                <span className="text-slate-500 font-normal"> (minimum 8 characters)</span>
-              )}
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
@@ -309,7 +196,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
               </span>
             ) : (
               <>
-                <span>{mode === 'LOGIN' ? 'Sign In as Admin' : 'Create Admin Account'}</span>
+                <span>Sign In</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
@@ -340,9 +227,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
         {!quickLogin && (
           <div className="mt-6 pt-4 border-t border-white/60">
             <p className="text-[11px] text-slate-600 font-medium text-center">
-              {mode === 'LOGIN'
-                ? 'Accounts are managed in Supabase. Use Studio Setup to create the first one.'
-                : 'The first account created becomes the studio administrator.'}
+              Access is by invitation. Ask the studio admin to create your account.
             </p>
           </div>
         )}

@@ -15,6 +15,15 @@ apiRouter.get('/dashboard/stats', (req: Request, res: Response) => {
   }
 });
 
+// Event-date clashes between active projects (computed with the dashboard stats)
+apiRouter.get('/dashboard/conflicts', (req: Request, res: Response) => {
+  try {
+    res.json({ success: true, data: db.getDashboardStats().conflictingDates });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // --- Leads ---
 apiRouter.get('/leads', (req: Request, res: Response) => {
   try {
@@ -121,6 +130,19 @@ apiRouter.get(['/website-inquiry', '/inquiry'], (req: Request, res: Response) =>
   });
 });
 
+// Basic per-IP throttle for the public inquiry endpoint (per serverless
+// instance, so it limits bursts rather than being a hard global quota).
+const inquiryHits = new Map<string, number[]>();
+function allowInquiry(ip: string): boolean {
+  const now = Date.now();
+  const recent = (inquiryHits.get(ip) ?? []).filter((t) => now - t < 10 * 60_000);
+  if (recent.length >= 5) return false;
+  recent.push(now);
+  inquiryHits.set(ip, recent);
+  if (inquiryHits.size > 5000) inquiryHits.clear();
+  return true;
+}
+
 apiRouter.post(['/website-inquiry', '/inquiry'], (req: Request, res: Response) => {
   try {
     const name =
@@ -155,12 +177,11 @@ apiRouter.post(['/website-inquiry', '/inquiry'], (req: Request, res: Response) =
       req.body.event ||
       req.body.occasion ||
       req.body.type ||
-      'Wedding';
-    const eventDate =
-      req.body.eventDate ||
-      req.body.date ||
-      req.body.dateOfEvent ||
-      new Date().toISOString().split('T')[0];
+      'Not specified';
+    // Missing values stay empty rather than being invented: a made-up event
+    // date would trigger false date clashes and a made-up budget skews the pipeline.
+    const rawDate = (req.body.eventDate || req.body.date || req.body.dateOfEvent || '').toString().trim();
+    const eventDate = /^\d{4}-\d{2}-\d{2}$/.test(rawDate) ? rawDate : '';
     const service =
       req.body.service ||
       req.body.serviceRequired ||
@@ -171,8 +192,8 @@ apiRouter.post(['/website-inquiry', '/inquiry'], (req: Request, res: Response) =
       req.body.budget ||
       req.body.estimatedBudget ||
       req.body.amount ||
-      50000;
-    const budget = typeof rawBudget === 'string' ? parseFloat(rawBudget.replace(/[^0-9.]/g, '')) || 50000 : Number(rawBudget) || 50000;
+      0;
+    const budget = typeof rawBudget === 'string' ? parseFloat(rawBudget.replace(/[^0-9.]/g, '')) || 0 : Number(rawBudget) || 0;
     const message =
       req.body.message ||
       req.body.details ||
@@ -180,6 +201,27 @@ apiRouter.post(['/website-inquiry', '/inquiry'], (req: Request, res: Response) =
       req.body.comments ||
       req.body['your-message'] ||
       '';
+
+    // Honeypot: the website form has a hidden "company" field that people never
+    // see. Bots fill every field; pretend success so they do not retry.
+    if (req.body.company) {
+      return res.status(201).json({ success: true, message: 'Thank you! Your inquiry has been received.' });
+    }
+
+    if (!allowInquiry(req.ip ?? 'unknown')) {
+      return res.status(429).json({
+        success: false,
+        error: 'Too many inquiries from this connection. Please WhatsApp us instead.',
+      });
+    }
+
+    const phoneDigits = phone.toString().replace(/\D/g, '');
+    if (phoneDigits && (phoneDigits.length < 10 || phoneDigits.length > 13)) {
+      return res.status(400).json({ success: false, error: 'Please enter a valid phone number.' });
+    }
+    if (name.toString().length > 120 || message.toString().length > 2000) {
+      return res.status(400).json({ success: false, error: 'Inquiry is too long.' });
+    }
 
     if (!name.toString().trim() || !phone.toString().trim()) {
       return res.status(400).json({
@@ -702,41 +744,8 @@ apiRouter.post('/projects/:id/notes', (req: Request, res: Response) => {
   }
 });
 
-// --- Auth Routes ---
-apiRouter.post('/auth/login', (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    if (!email) {
-      return res.status(400).json({ success: false, error: 'Email address is required' });
-    }
-    const session = db.loginUser(email, password);
-    res.json({ success: true, data: session });
-  } catch (err: any) {
-    res.status(401).json({ success: false, error: err.message || 'Login failed' });
-  }
-});
-
-apiRouter.post('/auth/register', (req: Request, res: Response) => {
-  try {
-    const { name, email, phone, role, password, title } = req.body;
-    if (!name || !email) {
-      return res.status(400).json({ success: false, error: 'Name and email are required' });
-    }
-    const session = db.registerUser({ name, email, phone, role, password, title });
-    res.status(201).json({ success: true, data: session });
-  } catch (err: any) {
-    res.status(400).json({ success: false, error: err.message || 'Registration failed' });
-  }
-});
-
-apiRouter.get('/auth/users', (req: Request, res: Response) => {
-  try {
-    const users = db.getUsers();
-    res.json({ success: true, data: users });
-  } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
+// Authentication is handled by Supabase Auth (see src/server/auth.ts); the old
+// in-memory /auth/login, /auth/register and /auth/users routes were removed.
 
 // --- Floral Templates Routes ---
 apiRouter.get('/templates', (req: Request, res: Response) => {

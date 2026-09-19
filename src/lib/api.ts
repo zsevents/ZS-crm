@@ -14,15 +14,31 @@ import {
   FloralTemplate,
   Quotation,
 } from '../types';
+import { getSupabase, isSupabaseConfigured } from './supabaseClient';
+
+// Every /api call carries the signed-in user's Supabase access token; the
+// server rejects requests without one (see src/server/auth.ts).
+async function authHeader(): Promise<Record<string, string>> {
+  if (!isSupabaseConfigured()) return {};
+  const { data } = await getSupabase().auth.getSession();
+  const token = data.session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 async function safeFetchJson<T = any>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
   const response = await fetch(input, {
     ...init,
     headers: {
       Accept: 'application/json',
+      ...(await authHeader()),
       ...(init?.headers || {}),
     },
   });
+
+  // Session revoked or expired beyond refresh: drop back to the login screen.
+  if (response.status === 401 && isSupabaseConfigured()) {
+    await getSupabase().auth.signOut();
+  }
 
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.includes('application/json')) {
@@ -411,33 +427,6 @@ export const api = {
     });
     if (!json.success) throw new Error(json.error || 'Failed to delete payment');
     return { success: true };
-  },
-
-  // Auth & Team
-  async login(email: string, password?: string): Promise<AuthSession> {
-    const json = await safeFetchJson<{ success: boolean; data: AuthSession; error?: string }>('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    if (!json.success) throw new Error(json.error || 'Login failed');
-    return json.data;
-  },
-
-  async register(payload: { name: string; email: string; phone?: string; role?: string; password?: string; title?: string }): Promise<AuthSession> {
-    const json = await safeFetchJson<{ success: boolean; data: AuthSession; error?: string }>('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!json.success) throw new Error(json.error || 'Registration failed');
-    return json.data;
-  },
-
-  async getUsers(): Promise<User[]> {
-    const json = await safeFetchJson<{ success: boolean; data: User[]; error?: string }>('/api/auth/users');
-    if (!json.success) throw new Error(json.error || 'Failed to fetch users');
-    return json.data;
   },
 
   // Floral Design Templates (Light & Attractive)
