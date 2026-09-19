@@ -60,6 +60,7 @@ import { CustomerHoverDropdown } from './components/CustomerHoverDropdown';
 import { AuthView } from './components/AuthView';
 import { getSupabase, isSupabaseConfigured } from './lib/supabaseClient';
 import { sessionFromSupabase } from './lib/session';
+import { SetPasswordView, arrivedFromAuthLink } from './components/SetPasswordView';
 
 type ViewTab =
   | 'DASHBOARD'
@@ -100,6 +101,8 @@ export default function App() {
   // sign-in; otherwise it stays open, as it was before auth existed.
   const [authed, setAuthed] = useState(!isSupabaseConfigured());
   const [authChecking, setAuthChecking] = useState(isSupabaseConfigured());
+  // Opened from an invite / password-reset email: ask for a password first.
+  const [needsPassword, setNeedsPassword] = useState(arrivedFromAuthLink);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) return;
@@ -500,6 +503,10 @@ export default function App() {
 
   if (!authed) {
     return <AuthView onLoginSuccess={(session) => setCurrentUser(session.user)} />;
+  }
+
+  if (needsPassword) {
+    return <SetPasswordView email={currentUser.email} onDone={() => setNeedsPassword(false)} />;
   }
 
   return (

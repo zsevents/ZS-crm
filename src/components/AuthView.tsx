@@ -61,6 +61,20 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    setErrorMessage(null);
+    setNotice(null);
+    if (!email.trim()) {
+      setErrorMessage('Enter your email address first, then tap "Forgot password?".');
+      return;
+    }
+    const { error } = await getSupabase().auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: window.location.origin,
+    });
+    if (error) setErrorMessage(error.message);
+    else setNotice('If that email has a CRM account, a password reset link is on its way.');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -182,6 +196,14 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
               />
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="block ml-auto text-[11px] font-bold text-[#831843] hover:underline cursor-pointer"
+          >
+            Forgot password?
+          </button>
 
           <button
             type="submit"
