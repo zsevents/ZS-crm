@@ -1318,7 +1318,7 @@ class FloristDatabase {
     }
 
     const tempLead: Partial<Lead> = {
-      budget: Number(data.budget) || 50000,
+      budget: Number(data.budget) || 0,
       eventDate: data.eventDate || '',
       source: (data.source as any) || 'WEBSITE',
       status: 'NEW',
@@ -1336,11 +1336,11 @@ class FloristDatabase {
       city: data.city || 'Bangalore',
       source: (data.source as any) || 'WEBSITE',
       eventType: data.eventType || 'Wedding',
-      eventDate: data.eventDate || new Date().toISOString().split('T')[0],
+      eventDate: data.eventDate || '',
       venue: data.venue,
       expectedGuests: data.expectedGuests ? Number(data.expectedGuests) : undefined,
       serviceRequired: data.serviceRequired || 'Floral Decoration',
-      budget: Number(data.budget) || 50000,
+      budget: Number(data.budget) || 0,
       leadScore: metrics.score,
       leadHealth: metrics.health,
       probability: metrics.probability,

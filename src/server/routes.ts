@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { db } from './db.js';
 import { Milestone } from '../types.js';
 import { generateQuotationSuggestions, generateWhatsAppPitch } from './assistant.js';
+import { sendInquiryEmail } from './notify.js';
 
 export const apiRouter = Router();
 
@@ -143,7 +144,7 @@ function allowInquiry(ip: string): boolean {
   return true;
 }
 
-apiRouter.post(['/website-inquiry', '/inquiry'], (req: Request, res: Response) => {
+apiRouter.post(['/website-inquiry', '/inquiry'], async (req: Request, res: Response) => {
   try {
     const name =
       req.body.name ||
@@ -246,6 +247,13 @@ apiRouter.post(['/website-inquiry', '/inquiry'], (req: Request, res: Response) =
       message: message.toString().trim(),
       priority: 'HIGH',
     });
+
+    // Email alert to the studio. Awaited (a serverless function is frozen once
+    // it responds) but capped, and a mail failure never loses the lead.
+    await Promise.race([
+      sendInquiryEmail(lead, message.toString().trim()),
+      new Promise((resolve) => setTimeout(resolve, 8000)),
+    ]).catch((err) => console.error('Inquiry email failed:', err?.message ?? err));
 
     res.status(201).json({
       success: true,
