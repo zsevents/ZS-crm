@@ -90,63 +90,37 @@ body {
 .penthouse-bg {
   position: fixed;
   inset: 0;
-  background: var(--canvas);
+  background-color: var(--canvas);
+  background-image: url('./assets/images/luxury_floral_bg_1788163266849.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
 }
 
-/* Slow drifting colour blooms that the glass panels frost over */
+/* The floral wallpaper stays as it is; two light washes tie its pinks to the sage palette */
 .penthouse-bg::before,
-.penthouse-bg::after,
-body::before {
-  content: '';
-  position: fixed;
-  border-radius: 9999px;
-  pointer-events: none;
-  z-index: 0;
-  will-change: transform;
-}
-
-.penthouse-bg::before {
-  width: 760px;
-  height: 760px;
-  top: -160px;
-  left: -140px;
-  background: radial-gradient(closest-side, rgba(127, 154, 124, 0.55), rgba(127, 154, 124, 0));
-  animation: float-slow 14s ease-in-out infinite;
-}
-
 .penthouse-bg::after {
-  width: 680px;
-  height: 680px;
-  bottom: -200px;
-  right: -100px;
-  background: radial-gradient(closest-side, rgba(192, 103, 74, 0.32), rgba(192, 103, 74, 0));
-  animation: float-reverse 18s ease-in-out infinite;
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-body::before {
-  width: 600px;
-  height: 600px;
-  top: 30%;
-  left: 42%;
-  background: radial-gradient(closest-side, rgba(232, 217, 184, 0.7), rgba(232, 217, 184, 0));
-  animation: float-slow 20s ease-in-out infinite;
+/* Sage colour wash: gently pulls the pinks toward muted, earthy tones */
+.penthouse-bg::before {
+  background: rgba(63, 91, 74, 0.22);
+  mix-blend-mode: color;
+}
+
+/* Ivory veil: softens the photo so the glass panels and text stay readable */
+.penthouse-bg::after {
+  background: rgba(247, 244, 238, 0.3);
 }
 
 .penthouse-overlay {
   display: none;
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, -24px, 0) scale(1.05); }
-}
-
-@keyframes float-reverse {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, 24px, 0) scale(0.96); }
 }
 
 .glass-screen,
@@ -492,11 +466,6 @@ button:not(:disabled):active {
   .glass-nav {
     backdrop-filter: blur(10px) saturate(140%);
     -webkit-backdrop-filter: blur(10px) saturate(140%);
-  }
-  .penthouse-bg::before,
-  .penthouse-bg::after,
-  body::before {
-    animation: none;
   }
 }
 
