@@ -9,5 +9,8 @@
   ],
   "ignoreDependencies": [
     "tailwindcss"
+  ],
+  "ignoreBinaries": [
+    "vercel"
   ]
 }

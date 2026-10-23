@@ -310,7 +310,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       </div>
 
       {/* 2. Quick Action + Search Bar Section */}
-      <div className="p-3.5 space-y-2.5 border-b border-white/60 bg-white/30 backdrop-blur-md">
+      <div className="relative z-20 p-3.5 space-y-2.5 border-b border-white/60 bg-white/30 backdrop-blur-md">
         {/* Quick + New Action Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
