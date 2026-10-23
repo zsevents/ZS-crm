@@ -1,20 +1,5 @@
 import React,{ useState } from 'react';
-import {
-Users,
-Search,
-Filter,
-Phone,
-MessageSquare,
-Calendar,Plus,
-ArrowRight,Clock,
-Briefcase,MapPin,
-Send,
-Sparkles,
-ExternalLink,
-ChevronRight,
-X,Copy,
-Check
-} from 'lucide-react';
+import { Users, Search, Filter, Phone, MessageSquare, Calendar, Plus, ArrowRight, Clock, Briefcase, MapPin, Send, Sparkles, ExternalLink, ChevronRight, X, Copy, Check, Pencil, Trash2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Lead,LeadStatus,ActivityItem,Project } from '../types';
 import { formatINR,formatDate,formatPhoneNumber,cleanPhoneNumber,formatDateTime } from '../lib/formatters';
@@ -30,6 +15,10 @@ interface LeadsViewProps {
   onConvertToProject: (leadId: string) => Promise<Project | void>;
   onOpenNewLeadModal: () => void;
   onNavigateToProject?: (projectId: string) => void;
+  onEditLead?: (lead: Lead) => void;
+  onDeleteLead?: (lead: Lead) => void;
+  onEditNote?: (leadId: string, note: ActivityItem) => void;
+  onDeleteNote?: (leadId: string, note: ActivityItem) => void;
 }
 
 export const LeadsView: React.FC<LeadsViewProps> = ({
@@ -42,6 +31,10 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
   onConvertToProject,
   onOpenNewLeadModal,
   onNavigateToProject,
+  onEditLead,
+  onDeleteLead,
+  onEditNote,
+  onDeleteNote,
 }) => {
   const [activeFilter, setActiveFilter] = useState<string>('ALL');
   const [eventTypeFilter, setEventTypeFilter] = useState<string>('ALL');
@@ -422,6 +415,20 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
+                  onClick={() => onEditLead?.(selectedLead)}
+                  className="px-3 py-2 rounded-xl glass-btn-secondary text-xs font-bold text-slate-800 flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Pencil className="w-3.5 h-3.5" /> Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onDeleteLead?.(selectedLead)}
+                  className="px-3 py-2 rounded-xl glass-btn-secondary text-xs font-bold text-red-700 flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                </button>
+                <button
                   onClick={() => onSelectLead(null)}
                   className="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-white/40 transition-colors cursor-pointer"
                 >
@@ -580,9 +587,13 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                       {selectedLead.activities && selectedLead.activities.length > 0 ? (
                         selectedLead.activities.map((act: ActivityItem, idx: number) => (
                           <div key={act.id || idx} className="p-3.5 rounded-2xl glass-card text-xs">
-                            <div className="flex items-center justify-between text-[10px] text-slate-500 mb-1">
+                            <div className="flex items-center justify-between gap-2 text-[10px] text-slate-500 mb-1">
                               <span className="font-bold text-[#3F5B4A]">{act.createdBy}</span>
-                              <span className="font-medium">{formatDateTime(act.timestamp)}</span>
+                              <span className="font-medium ml-auto">{formatDateTime(act.timestamp)}</span>
+                              <span className="flex items-center gap-1 shrink-0">
+                                <button type="button" aria-label="Edit" onClick={() => onEditNote?.(selectedLead.id, act)} className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-white/70 cursor-pointer"><Pencil className="w-3 h-3" /></button>
+                                <button type="button" aria-label="Delete" onClick={() => onDeleteNote?.(selectedLead.id, act)} className="p-1 rounded-lg text-slate-500 hover:text-red-700 hover:bg-white/70 cursor-pointer"><Trash2 className="w-3 h-3" /></button>
+                              </span>
                             </div>
                             <p className="text-slate-900 font-medium">{act.description}</p>
                           </div>

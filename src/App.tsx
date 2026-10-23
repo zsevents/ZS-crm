@@ -2,12 +2,14 @@ import React,{ useState,useEffect,useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import {
 Briefcase,Phone,
-MessageSquare
+MessageSquare,Pencil,Trash2
 } from 'lucide-react';
 
 import {
 Lead,
 LeadStatus,
+ActivityItem,
+ProjectTask,
 Project,
 Customer,
 Quotation,
@@ -33,6 +35,7 @@ import { CalendarView } from './components/CalendarView';
 import { WebsiteFormSimulator } from './components/WebsiteFormSimulator';
 import { SettingsView } from './components/SettingsView';
 import { NewEntryModals } from './components/NewEntryModals';
+import { ConfirmDialog, RecordEditModal, type FieldDef } from './components/RecordDialogs';
 import { AuthView } from './components/AuthView';
 import { getSupabase,isSupabaseConfigured } from './lib/supabaseClient';
 import { sessionFromSupabase } from './lib/session';
@@ -47,6 +50,59 @@ type ViewTab =
   | 'CALENDAR'
   | 'WEBSITE_FORM'
   | 'SETTINGS';
+
+// Fields shown in the edit forms
+const LEAD_FIELDS: FieldDef[] = [
+  { key: 'customerName', label: 'Client name', required: true },
+  { key: 'phone', label: 'Phone', type: 'tel', required: true },
+  { key: 'whatsapp', label: 'WhatsApp', type: 'tel' },
+  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'location', label: 'Area / location' },
+  { key: 'venue', label: 'Venue' },
+  { key: 'eventType', label: 'Event type' },
+  { key: 'eventDate', label: 'Event date', type: 'date' },
+  { key: 'expectedGuests', label: 'Expected guests', type: 'number' },
+  { key: 'budget', label: 'Budget (₹)', type: 'number' },
+  { key: 'serviceRequired', label: 'Service required', full: true, required: true },
+  { key: 'status', label: 'Status', type: 'select', required: true, options: ['NEW', 'CONTACTED', 'QUALIFIED', 'MEETING', 'QUOTATION', 'NEGOTIATION', 'WON', 'LOST', 'ON_HOLD'] },
+  { key: 'priority', label: 'Priority', type: 'select', required: true, options: ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] },
+  { key: 'source', label: 'Source', type: 'select', required: true, options: ['WEBSITE', 'WHATSAPP', 'INSTAGRAM', 'REFERRAL', 'WALK_IN', 'PHONE', 'PLANNER_PARTNER', 'OTHER'] },
+  { key: 'assignedStaff', label: 'Assigned to' },
+  { key: 'message', label: 'Client message / requirements', type: 'textarea' },
+];
+
+const PROJECT_FIELDS: FieldDef[] = [
+  { key: 'name', label: 'Project name', required: true, full: true },
+  { key: 'customerName', label: 'Client name', required: true },
+  { key: 'phone', label: 'Phone', type: 'tel' },
+  { key: 'email', label: 'Email', type: 'email' },
+  { key: 'eventType', label: 'Event type' },
+  { key: 'venue', label: 'Venue' },
+  { key: 'eventDate', label: 'Event date', type: 'date' },
+  { key: 'setupDate', label: 'Setup date', type: 'date' },
+  { key: 'setupTime', label: 'Setup time', type: 'time' },
+  { key: 'dismantlingDate', label: 'Dismantling date', type: 'date' },
+  { key: 'dismantlingTime', label: 'Dismantling time', type: 'time' },
+  { key: 'projectValue', label: 'Project value (₹)', type: 'number' },
+  { key: 'status', label: 'Status', type: 'select', required: true, options: ['PLANNING', 'IN_PROGRESS', 'EVENT_DAY', 'COMPLETED', 'CANCELLED', 'ON_HOLD'] },
+  { key: 'assignedStaff', label: 'Assigned to' },
+  { key: 'transport', label: 'Transport' },
+  { key: 'venueContact', label: 'Venue contact' },
+  { key: 'venuePhone', label: 'Venue phone', type: 'tel' },
+  { key: 'parkingNotes', label: 'Parking notes', type: 'textarea' },
+  { key: 'accessRestrictions', label: 'Access restrictions', type: 'textarea' },
+  { key: 'serviceDescription', label: 'Service description', type: 'textarea' },
+  { key: 'notes', label: 'Notes', type: 'textarea' },
+];
+
+const TASK_FIELDS: FieldDef[] = [
+  { key: 'title', label: 'Task', required: true, full: true },
+  { key: 'assignedTo', label: 'Assigned to' },
+  { key: 'dueDate', label: 'Due date', type: 'date' },
+  { key: 'status', label: 'Status', type: 'select', required: true, options: ['TODO', 'IN_PROGRESS', 'DONE'] },
+];
+
+const NOTE_FIELDS: FieldDef[] = [{ key: 'description', label: 'Note', type: 'textarea', required: true }];
 
 export default function App() {
   // Navigation & View state
@@ -288,6 +344,91 @@ export default function App() {
     setAuthed(false);
   };
 
+  // Edit and delete for every record type, through one form and one confirmation
+  type EditorState = { title: string; fields: FieldDef[]; initial: Record<string, unknown>; onSave: (v: Record<string, unknown>) => Promise<void> };
+  type ConfirmState = { title: string; message: string; onConfirm: () => Promise<void> };
+  const [editor, setEditor] = useState<EditorState | null>(null);
+  const [confirmBox, setConfirmBox] = useState<ConfirmState | null>(null);
+
+  const editLead = (lead: Lead) =>
+    setEditor({
+      title: `Edit lead · ${lead.customerName}`,
+      fields: LEAD_FIELDS,
+      initial: lead as unknown as Record<string, unknown>,
+      onSave: async (v) => {
+        await api.updateLead(lead.id, v as Partial<Lead>);
+        await loadData();
+      },
+    });
+  const deleteLead = (lead: Lead) =>
+    setConfirmBox({
+      title: 'Delete this lead?',
+      message: `${lead.customerName} (${lead.id}) and all its notes will be removed for good.`,
+      onConfirm: async () => {
+        await api.deleteLead(lead.id);
+        setInspectedLeadId(null);
+        await loadData();
+      },
+    });
+  const editLeadNote = (leadId: string, note: ActivityItem) =>
+    setEditor({
+      title: 'Edit note',
+      fields: NOTE_FIELDS,
+      initial: note as unknown as Record<string, unknown>,
+      onSave: async (v) => {
+        await api.updateNestedItem('leadNote', leadId, note.id, v);
+        await loadData();
+      },
+    });
+  const deleteLeadNote = (leadId: string, note: ActivityItem) =>
+    setConfirmBox({
+      title: 'Delete this note?',
+      message: `"${note.description.slice(0, 80)}${note.description.length > 80 ? '…' : ''}" will be removed for good.`,
+      onConfirm: async () => {
+        await api.deleteNestedItem('leadNote', leadId, note.id);
+        await loadData();
+      },
+    });
+  const editProject = (project: Project) =>
+    setEditor({
+      title: `Edit project · ${project.name}`,
+      fields: PROJECT_FIELDS,
+      initial: project as unknown as Record<string, unknown>,
+      onSave: async (v) => {
+        await api.updateProject(project.id, v as Partial<Project>);
+        await loadData();
+      },
+    });
+  const deleteProject = (project: Project) =>
+    setConfirmBox({
+      title: 'Delete this project?',
+      message: `${project.name} (${project.id}) with its milestones, tasks and logs will be removed for good. Invoices and payments stay in Finance.`,
+      onConfirm: async () => {
+        await api.deleteProject(project.id);
+        setSelectedProjectId(null);
+        await loadData();
+      },
+    });
+  const editTask = (projectId: string, task: ProjectTask) =>
+    setEditor({
+      title: 'Edit task',
+      fields: TASK_FIELDS,
+      initial: task as unknown as Record<string, unknown>,
+      onSave: async (v) => {
+        await api.updateTask(projectId, task.id, v as Partial<ProjectTask>);
+        await loadData();
+      },
+    });
+  const deleteTask = (projectId: string, task: ProjectTask) =>
+    setConfirmBox({
+      title: 'Delete this task?',
+      message: `"${task.title}" will be removed for good.`,
+      onConfirm: async () => {
+        await api.deleteNestedItem('task', projectId, task.id);
+        await loadData();
+      },
+    });
+
   const handleConvertToProject = async (leadId: string) => {
     setIsConvertingLead(true);
     try {
@@ -371,7 +512,7 @@ export default function App() {
       />
 
       {/* Main Workspace Area with left margin/padding for fixed sidebar & bottom safe clearance on mobile */}
-      <main className="md:pl-64 lg:pl-72 flex-1 w-full min-w-0 transition-all relative z-10">
+      <main className="md:pl-64 lg:pl-72 flex-1 w-full min-w-0 transition-all relative">
         <div key={activeTab} className="view-enter max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-3 sm:py-6 pb-28 md:pb-8">
         {/* DASHBOARD TAB */}
         {activeTab === 'DASHBOARD' && (
@@ -406,6 +547,10 @@ export default function App() {
             leads={leads}
             selectedLeadId={inspectedLeadId}
             onSelectLead={(id) => setInspectedLeadId(id)}
+            onEditLead={editLead}
+            onDeleteLead={deleteLead}
+            onEditNote={editLeadNote}
+            onDeleteNote={deleteLeadNote}
             onUpdateLeadStatus={async (leadId, status) => {
               await handleUpdateLeadStatus(leadId, status);
             }}
@@ -435,6 +580,10 @@ export default function App() {
             projects={projects}
             selectedProjectId={selectedProjectId}
             onSelectProject={setSelectedProjectId}
+            onEditProject={editProject}
+            onDeleteProject={deleteProject}
+            onEditTask={editTask}
+            onDeleteTask={deleteTask}
             onUpdateMilestone={async (pId, idx, payload) => {
               await api.updateMilestone(pId, idx, payload);
               loadData();
@@ -562,7 +711,7 @@ export default function App() {
       </main>
 
       {/* LEAD DETAIL INSPECTOR SLIDE-OVER */}
-      {inspectedLead && (
+      {inspectedLead && activeTab !== 'LEADS' && (
         <div
           data-closing={inspectorClosing || undefined}
           onClick={closeInspector}
@@ -580,12 +729,28 @@ export default function App() {
                 <p className="text-xs text-slate-600 font-semibold">{inspectedLead.eventType} · {formatDate(inspectedLead.eventDate)}</p>
               </div>
 
+              <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => editLead(inspectedLead)}
+                className="px-3 py-2 rounded-xl glass-btn-secondary text-xs font-bold text-slate-800 flex items-center gap-1.5 cursor-pointer"
+              >
+                <Pencil className="w-3.5 h-3.5" /> Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => deleteLead(inspectedLead)}
+                className="px-3 py-2 rounded-xl glass-btn-secondary text-xs font-bold text-red-700 flex items-center gap-1.5 cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" /> Delete
+              </button>
               <button
                 onClick={closeInspector}
                 className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-rose-100/60 glass-btn-secondary cursor-pointer"
               >
                 ✕
               </button>
+              </div>
             </div>
 
             {/* Body */}
@@ -695,9 +860,13 @@ export default function App() {
                   {inspectedLead.activities && inspectedLead.activities.length > 0 ? (
                     inspectedLead.activities.map((act) => (
                       <div key={act.id} className="p-3 rounded-xl glass-card text-xs">
-                        <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1">
+                        <div className="flex items-center justify-between gap-2 text-[11px] text-slate-500 mb-1">
                           <span className="font-bold text-slate-700">{act.createdBy}</span>
-                          <span>{formatDateTime(act.timestamp)}</span>
+                          <span className="ml-auto">{formatDateTime(act.timestamp)}</span>
+                          <span className="flex items-center gap-1 shrink-0">
+                            <button type="button" aria-label="Edit" onClick={() => editLeadNote(inspectedLead.id, act)} className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-white/70 cursor-pointer"><Pencil className="w-3 h-3" /></button>
+                            <button type="button" aria-label="Delete" onClick={() => deleteLeadNote(inspectedLead.id, act)} className="p-1 rounded-lg text-slate-500 hover:text-red-700 hover:bg-white/70 cursor-pointer"><Trash2 className="w-3 h-3" /></button>
+                          </span>
                         </div>
                         <p className="text-slate-800">{act.description}</p>
                       </div>
@@ -784,6 +953,24 @@ export default function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {editor && (
+        <RecordEditModal
+          title={editor.title}
+          fields={editor.fields}
+          initial={editor.initial}
+          onSave={editor.onSave}
+          onClose={() => setEditor(null)}
+        />
+      )}
+      {confirmBox && (
+        <ConfirmDialog
+          title={confirmBox.title}
+          message={confirmBox.message}
+          onConfirm={confirmBox.onConfirm}
+          onClose={() => setConfirmBox(null)}
+        />
       )}
 
       {/* Global Modals Registry */}

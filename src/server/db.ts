@@ -1645,6 +1645,44 @@ class FloristDatabase {
     return true;
   }
 
+  // --- Edit / delete any item nested inside a lead or project ---
+  // Only these lists can be reached this way; the item's own id and parent link never change.
+  private static readonly NESTED_LISTS = {
+    leads: ['activities'],
+    projects: ['tasks', 'dailyLogs', 'eventDayChecklist', 'internalNotes', 'procurementItems'],
+  } as const;
+
+  private nestedList(collection: 'leads' | 'projects', parentId: string, listKey: string): any[] {
+    const allowed = FloristDatabase.NESTED_LISTS[collection] as readonly string[];
+    if (!allowed.includes(listKey)) throw new Error(`Cannot edit ${listKey} on ${collection}`);
+    const parent = (this[collection] as any[]).find((p) => p.id === parentId);
+    if (!parent) throw new Error(`${collection === 'leads' ? 'Lead' : 'Project'} ${parentId} not found`);
+    if (!Array.isArray(parent[listKey])) parent[listKey] = [];
+    return parent[listKey];
+  }
+
+  public updateNestedItem(
+    collection: 'leads' | 'projects',
+    parentId: string,
+    listKey: string,
+    itemId: string,
+    updates: Record<string, unknown>
+  ): any {
+    const item = this.nestedList(collection, parentId, listKey).find((i) => i.id === itemId);
+    if (!item) throw new Error(`Item ${itemId} not found`);
+    const { id: _id, projectId: _projectId, ...safe } = updates;
+    Object.assign(item, safe);
+    return item;
+  }
+
+  public deleteNestedItem(collection: 'leads' | 'projects', parentId: string, listKey: string, itemId: string): boolean {
+    const list = this.nestedList(collection, parentId, listKey);
+    const idx = list.findIndex((i) => i.id === itemId);
+    if (idx === -1) return false;
+    list.splice(idx, 1);
+    return true;
+  }
+
   // --- Project Checklist Methods ---
   public addChecklistItem(projectId: string, item: Partial<EventChecklistItem>): EventChecklistItem {
     const project = this.projects.find((p) => p.id === projectId);

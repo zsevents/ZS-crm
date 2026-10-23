@@ -54,6 +54,21 @@ async function safeFetchJson<T = any>(input: RequestInfo | URL, init?: RequestIn
   return data;
 }
 
+type NestedKind = 'leadNote' | 'task' | 'dailyLog' | 'checklist' | 'projectNote';
+
+const NESTED_PATHS: Record<NestedKind, [string, string]> = {
+  leadNote: ['leads', 'activity'],
+  task: ['projects', 'tasks'],
+  dailyLog: ['projects', 'daily-update'],
+  checklist: ['projects', 'checklist'],
+  projectNote: ['projects', 'notes'],
+};
+
+function nestedUrl(kind: NestedKind, parentId: string, itemId: string): string {
+  const [parent, list] = NESTED_PATHS[kind];
+  return `/api/${parent}/${encodeURIComponent(parentId)}/${list}/${encodeURIComponent(itemId)}`;
+}
+
 export const api = {
   // Dashboard
   async getDashboardStats(): Promise<DashboardStats> {
@@ -326,6 +341,25 @@ export const api = {
     });
     if (!json.success) throw new Error(json.error || 'Failed to add project task');
     return json.data;
+  },
+
+  // Edit or delete an item inside a lead or project. `kind` picks the list.
+  async updateNestedItem(kind: NestedKind, parentId: string, itemId: string, updates: Record<string, unknown>): Promise<unknown> {
+    const json = await safeFetchJson<{ success: boolean; data: unknown; error?: string }>(nestedUrl(kind, parentId, itemId), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    if (!json.success) throw new Error(json.error || 'Failed to save changes');
+    return json.data;
+  },
+
+  async deleteNestedItem(kind: NestedKind, parentId: string, itemId: string): Promise<boolean> {
+    const json = await safeFetchJson<{ success: boolean; error?: string }>(nestedUrl(kind, parentId, itemId), {
+      method: 'DELETE',
+    });
+    if (!json.success) throw new Error(json.error || 'Failed to delete');
+    return true;
   },
 
   async updateTask(projectId: string, taskId: string, updates: Partial<ProjectTask>): Promise<ProjectTask> {

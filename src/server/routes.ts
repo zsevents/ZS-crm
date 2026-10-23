@@ -729,6 +729,39 @@ apiRouter.delete('/projects/:id/procurement/:itemId', (req: Request, res: Respon
   }
 });
 
+// --- Edit and delete items inside a lead or project (notes, tasks, daily logs, checklist, notes) ---
+const NESTED_ROUTES: { path: string; collection: 'leads' | 'projects'; listKey: string; label: string }[] = [
+  { path: '/leads/:id/activity/:itemId', collection: 'leads', listKey: 'activities', label: 'Note' },
+  { path: '/projects/:id/tasks/:itemId', collection: 'projects', listKey: 'tasks', label: 'Task' },
+  { path: '/projects/:id/daily-update/:itemId', collection: 'projects', listKey: 'dailyLogs', label: 'Daily log' },
+  { path: '/projects/:id/checklist/:itemId', collection: 'projects', listKey: 'eventDayChecklist', label: 'Checklist item' },
+  { path: '/projects/:id/notes/:itemId', collection: 'projects', listKey: 'internalNotes', label: 'Project note' },
+];
+
+for (const r of NESTED_ROUTES) {
+  // Tasks and checklist items already have their own PATCH routes above/below; keep those, add the rest.
+  if (r.listKey !== 'tasks' && r.listKey !== 'eventDayChecklist') {
+    apiRouter.patch(r.path, (req: Request, res: Response) => {
+      try {
+        const item = db.updateNestedItem(r.collection, req.params.id, r.listKey, req.params.itemId, req.body ?? {});
+        res.json({ success: true, data: item });
+      } catch (err: any) {
+        res.status(404).json({ success: false, error: err.message });
+      }
+    });
+  }
+
+  apiRouter.delete(r.path, (req: Request, res: Response) => {
+    try {
+      const ok = db.deleteNestedItem(r.collection, req.params.id, r.listKey, req.params.itemId);
+      if (!ok) return res.status(404).json({ success: false, error: `${r.label} not found` });
+      res.json({ success: true, message: `${r.label} deleted` });
+    } catch (err: any) {
+      res.status(404).json({ success: false, error: err.message });
+    }
+  });
+}
+
 // --- Project Event-Day Checklist (Pre-event, Transport, Setup, Dismantling) ---
 apiRouter.post('/projects/:id/checklist', (req: Request, res: Response) => {
   try {
