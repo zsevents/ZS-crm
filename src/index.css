@@ -33,6 +33,13 @@
   --color-pink-600: #4A6B55;
   --color-pink-700: #3F5B4A;
 
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 10px;
+  --blur-xl: 12px;
+  --blur-2xl: 14px;
+  --blur-3xl: 16px;
+
   --shadow-md: 0 1px 2px rgba(31, 38, 34, 0.05), 0 4px 12px -6px rgba(31, 38, 34, 0.1);
   --shadow-lg: 0 1px 2px rgba(31, 38, 34, 0.05), 0 8px 20px -10px rgba(31, 38, 34, 0.14);
   --shadow-xl: 0 2px 4px rgba(31, 38, 34, 0.05), 0 14px 30px -14px rgba(31, 38, 34, 0.18);
@@ -96,38 +103,35 @@ body::before {
   content: '';
   position: fixed;
   border-radius: 9999px;
-  filter: blur(90px);
   pointer-events: none;
   z-index: 0;
+  will-change: transform;
 }
 
 .penthouse-bg::before {
-  width: 560px;
-  height: 560px;
+  width: 760px;
+  height: 760px;
   top: -160px;
   left: -140px;
-  background: #7F9A7C;
-  opacity: 0.32;
+  background: radial-gradient(closest-side, rgba(127, 154, 124, 0.55), rgba(127, 154, 124, 0));
   animation: float-slow 14s ease-in-out infinite;
 }
 
 .penthouse-bg::after {
-  width: 480px;
-  height: 480px;
-  bottom: -120px;
+  width: 680px;
+  height: 680px;
+  bottom: -200px;
   right: -100px;
-  background: #C0674A;
-  opacity: 0.2;
+  background: radial-gradient(closest-side, rgba(192, 103, 74, 0.32), rgba(192, 103, 74, 0));
   animation: float-reverse 18s ease-in-out infinite;
 }
 
 body::before {
-  width: 420px;
-  height: 420px;
-  top: 38%;
+  width: 600px;
+  height: 600px;
+  top: 30%;
   left: 42%;
-  background: #E8D9B8;
-  opacity: 0.45;
+  background: radial-gradient(closest-side, rgba(232, 217, 184, 0.7), rgba(232, 217, 184, 0));
   animation: float-slow 20s ease-in-out infinite;
 }
 
@@ -155,14 +159,21 @@ body::before {
   box-shadow: 0 10px 30px -14px rgba(31, 38, 34, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.glass-subcard,
-.glass-card {
+.glass-subcard {
   background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 22px;
   box-shadow: 0 8px 24px -12px rgba(31, 38, 34, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Repeated list cards: translucent, no blur (blur on dozens of cards is what makes scrolling stutter) */
+.glass-card {
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 22px;
+  box-shadow: 0 6px 20px -12px rgba(31, 38, 34, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .glass-header-pill {
@@ -205,8 +216,6 @@ body::before {
 
 .glass-input {
   background: rgba(255, 255, 255, 0.78) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(63, 91, 74, 0.16) !important;
   box-shadow: none !important;
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
@@ -235,8 +244,6 @@ body::before {
 
 .glass-btn-secondary {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 2px 8px -4px rgba(31, 38, 34, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
   transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s var(--ease-spring);
@@ -250,10 +257,8 @@ body::before {
 
 .glass-badge,
 .glass-subtle {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.85);
 }
 
 .glass-bottom-dock,
@@ -475,6 +480,30 @@ button:not(:disabled):active {
   transform: scale(0);
   animation: ripple 0.45s var(--ease-out) forwards;
   pointer-events: none;
+}
+
+/* Phones: lighter frosting and stationary blooms keep scrolling at full frame rate */
+@media (max-width: 767px) {
+  .glass-screen,
+  .glass-panel,
+  .glass-subcard,
+  .glass-header-pill,
+  .glass-dark-card,
+  .glass-nav {
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+  }
+  .penthouse-bg::before,
+  .penthouse-bg::after,
+  body::before {
+    animation: none;
+  }
+}
+
+/* Touch feels immediate: no grey flash on tap, no double-tap-zoom delay */
+button, a, [role="button"], input, select, textarea, label {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 @media (prefers-reduced-motion: reduce) {
