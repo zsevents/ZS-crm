@@ -106,7 +106,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
       if (onCloseModal) onCloseModal(key);
       if (onClose) onClose();
       setClosing(false);
-    }, 200);
+    }, 70);
   };
 
   // Close the form as soon as the save succeeds (otherwise it just sits open and

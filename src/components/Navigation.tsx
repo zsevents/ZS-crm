@@ -127,7 +127,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     window.setTimeout(() => {
       setShowNewDropdown(false);
       setQuickClosing(false);
-    }, 200);
+    }, 70);
   };
 
   const runQuickAction = (action: QuickActionKey) => {
@@ -195,7 +195,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       } finally {
         setIsSearching(false);
       }
-    }, 200);
+    }, 70);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);

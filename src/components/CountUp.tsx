@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 /** Counts up to `value` with an ease-out curve the first time it appears. */
-export function CountUp({ value, duration = 900 }: { value: number; duration?: number }) {
+export function CountUp({ value, duration = 500 }: { value: number; duration?: number }) {
   const [shown, setShown] = useState(0);
   const from = useRef(0);
 

@@ -204,7 +204,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         ? 'bg-slate-950 shadow-md scale-105'
                         : 'bg-slate-300/80 hover:bg-slate-400'
                     }`}
-                    style={{ height: item.height, animationDelay: `${idx * 60}ms` }}
+                    style={{ height: item.height, animationDelay: `${idx * 20}ms` }}
                   >
                     {(item.isPeak || selectedDay === idx) && (
                       <span className="text-[9px] font-bold text-white">

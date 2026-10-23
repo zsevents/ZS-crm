@@ -337,17 +337,12 @@ body {
    ========================================================================= */
 
 @keyframes view-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes rise-in {
-  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: none; }
 }
 
 @keyframes pop-in {
-  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
   to { opacity: 1; transform: none; }
 }
 
@@ -363,27 +358,14 @@ body {
 
 /* Whole page content eases in when you switch tabs */
 .view-enter {
-  animation: view-in 0.5s var(--ease-out) backwards;
+  animation: view-in 0.16s ease-out backwards;
 }
-
-/* Cards rise in one after another (fill-mode is backwards-only so hover can still move them) */
-main .glass-subcard,
-main .glass-card,
-main .glass-dark-card {
-  animation: rise-in 0.7s var(--ease-out) backwards;
-}
-main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(2) { animation-delay: 70ms; }
-main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(3) { animation-delay: 140ms; }
-main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(4) { animation-delay: 210ms; }
-main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(5) { animation-delay: 280ms; }
-main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(6) { animation-delay: 350ms; }
-main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(n + 7) { animation-delay: 420ms; }
 
 /* Dashboard cards lift on hover (mouse devices only) */
 @media (hover: hover) {
   main .glass-subcard,
   main .glass-dark-card {
-    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   }
   main .glass-subcard:hover,
   main .glass-dark-card:hover {
@@ -395,16 +377,16 @@ main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(n + 7) { anima
 
 /* Pop-ups spring in; their backdrop fades */
 .glass-modal {
-  animation: pop-in 0.5s var(--ease-spring) backwards;
+  animation: pop-in 0.2s var(--ease-out) backwards;
 }
 .fixed.inset-0.z-50 {
-  animation: fade-in 0.25s ease backwards;
+  animation: fade-in 0.14s ease backwards;
 }
 
 /* Bars grow from their baseline */
 .bar-up {
   transform-origin: bottom;
-  animation: bar-up 0.8s var(--ease-out) backwards;
+  animation: bar-up 0.4s var(--ease-out) backwards;
 }
 
 /* Every button gives a little tactile feedback */
@@ -424,7 +406,7 @@ button:not(:disabled):active {
   z-index: 0;
   border-radius: 1rem;
   pointer-events: none;
-  transition: transform 0.55s var(--ease-spring), height 0.3s var(--ease-out);
+  transition: transform 0.26s var(--ease-out), height 0.2s var(--ease-out);
 }
 
 /* Marker above the active tab in the phone bottom bar */
@@ -436,7 +418,7 @@ button:not(:disabled):active {
   height: 3px;
   border-radius: 0 0 3px 3px;
   background: #7a1640;
-  transition: transform 0.5s var(--ease-spring);
+  transition: transform 0.26s var(--ease-out);
   pointer-events: none;
 }
 
@@ -446,16 +428,16 @@ button:not(:disabled):active {
 }
 
 @keyframes pop-out {
-  to { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 0; transform: translateY(6px) scale(0.985); }
 }
 
 .fixed.inset-0.z-50[data-closing] {
-  animation: fade-out 0.2s ease forwards;
+  animation: fade-out 0.07s ease forwards;
   pointer-events: none;
 }
 
 [data-closing] .glass-modal {
-  animation: pop-out 0.2s var(--ease-out) forwards;
+  animation: pop-out 0.07s ease-in forwards;
 }
 
 /* Click ripple (spans are added by src/lib/ripple.ts) */
@@ -477,7 +459,7 @@ button:not(:disabled):active {
   background: currentColor;
   opacity: 0.22;
   transform: scale(0);
-  animation: ripple 0.6s var(--ease-out) forwards;
+  animation: ripple 0.45s var(--ease-out) forwards;
   pointer-events: none;
 }
 

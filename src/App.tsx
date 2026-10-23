@@ -122,7 +122,7 @@ export default function App() {
     window.setTimeout(() => {
       setInspectedLeadId(null);
       setInspectorClosing(false);
-    }, 200);
+    }, 70);
   };
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
