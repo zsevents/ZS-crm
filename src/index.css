@@ -76,8 +76,8 @@ body {
 }
 
 /* =========================================================================
-   FLAT SURFACES: solid fills, thin warm hairlines, almost no shadow.
-   (The class names keep "glass-" so every screen picks them up unchanged.)
+   GLASS SURFACES in sage and ivory: frosted translucent panels over a soft
+   animated background. Primary buttons stay flat solid sage.
    ========================================================================= */
 
 .penthouse-bg {
@@ -86,65 +86,137 @@ body {
   background: var(--canvas);
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+}
+
+/* Slow drifting colour blooms that the glass panels frost over */
+.penthouse-bg::before,
+.penthouse-bg::after,
+body::before {
+  content: '';
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.penthouse-bg::before {
+  width: 560px;
+  height: 560px;
+  top: -160px;
+  left: -140px;
+  background: #7F9A7C;
+  opacity: 0.32;
+  animation: float-slow 14s ease-in-out infinite;
+}
+
+.penthouse-bg::after {
+  width: 480px;
+  height: 480px;
+  bottom: -120px;
+  right: -100px;
+  background: #C0674A;
+  opacity: 0.2;
+  animation: float-reverse 18s ease-in-out infinite;
+}
+
+body::before {
+  width: 420px;
+  height: 420px;
+  top: 38%;
+  left: 42%;
+  background: #E8D9B8;
+  opacity: 0.45;
+  animation: float-slow 20s ease-in-out infinite;
 }
 
 .penthouse-overlay {
   display: none;
 }
 
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -24px, 0) scale(1.05); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, 24px, 0) scale(0.96); }
+}
+
 .glass-screen,
-.glass-subcard,
-.glass-card,
 .glass-panel {
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  box-shadow: 0 1px 2px rgba(31, 38, 34, 0.04);
+  background: rgba(255, 255, 255, 0.66);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px -14px rgba(31, 38, 34, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.glass-subcard,
+.glass-card {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  box-shadow: 0 8px 24px -12px rgba(31, 38, 34, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .glass-header-pill {
-  background: #ffffff;
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 9999px;
-  box-shadow: 0 1px 2px rgba(31, 38, 34, 0.05);
+  box-shadow: 0 8px 22px -12px rgba(31, 38, 34, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .glass-dark-card {
-  background: #2C3A31;
-  border: 1px solid #2C3A31;
-  border-radius: 20px;
+  background: rgba(44, 58, 49, 0.92);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
   color: #ffffff;
-  box-shadow: 0 1px 2px rgba(31, 38, 34, 0.12), 0 14px 26px -18px rgba(31, 38, 34, 0.45);
+  box-shadow: 0 16px 34px -18px rgba(31, 38, 34, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .glass-card-hover {
-  transition: transform 0.2s var(--ease-out), border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s var(--ease-out), background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.82);
   transform: translateY(-2px);
-  border-color: #CFCABD;
-  box-shadow: 0 12px 24px -16px rgba(31, 38, 34, 0.25);
+  box-shadow: 0 16px 32px -16px rgba(31, 38, 34, 0.26), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .glass-modal {
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  box-shadow: 0 24px 60px -24px rgba(31, 38, 34, 0.35);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 26px;
+  box-shadow: 0 30px 70px -26px rgba(31, 38, 34, 0.4), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .glass-input {
-  background: #ffffff !important;
-  border: 1px solid var(--line) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(63, 91, 74, 0.16) !important;
   box-shadow: none !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  border-radius: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  border-radius: 14px;
 }
 
 .glass-input:focus {
+  background: rgba(255, 255, 255, 0.96) !important;
   border-color: var(--sage) !important;
-  box-shadow: 0 0 0 3px rgba(63, 91, 74, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(63, 91, 74, 0.16) !important;
 }
 
 /* Primary button: flat solid sage. No gradient, no glow, no inner highlight. */
@@ -162,52 +234,50 @@ body {
 }
 
 .glass-btn-secondary {
-  background: #ffffff;
-  border: 1px solid var(--line);
-  box-shadow: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease-spring);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px -4px rgba(31, 38, 34, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s var(--ease-spring);
 }
 
 .glass-btn-secondary:hover {
-  background: var(--tint);
-  border-color: #CFCABD;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 16px -8px rgba(31, 38, 34, 0.2);
   transform: translateY(-1px);
 }
 
 .glass-badge,
 .glass-subtle {
-  background: var(--tint);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .glass-bottom-dock,
 .glass-left-dock {
-  background: #2C3A31;
-  border: 1px solid #2C3A31;
-  box-shadow: 0 14px 30px -16px rgba(31, 38, 34, 0.5);
+  background: rgba(44, 58, 49, 0.9);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 38px -18px rgba(31, 38, 34, 0.55);
   border-radius: 9999px;
 }
 
 .glass-nav {
-  background: #ffffff;
-  border-right: 1px solid var(--line);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.64);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-right: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 4px 0 28px -14px rgba(31, 38, 34, 0.12), inset -1px 0 0 rgba(255, 255, 255, 0.9);
 }
 
 /* Drop the decorative hanging cable above the page title */
 .suspended-cable::before,
 .suspended-cable::after {
   display: none;
-}
-
-/* No frosted blur anywhere, and hairlines that read on ivory (dark cards keep their light lines) */
-[class*="backdrop-blur"] {
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-
-[class*="border-white"]:not(.glass-dark-card [class*="border-white"]) {
-  border-color: var(--line) !important;
 }
 
 /* Suspended cable visual effect */
@@ -289,6 +359,21 @@ body {
 .view-enter {
   animation: view-in 0.16s ease-out backwards;
 }
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Cards ease up together in about a quarter of a second (backwards-only fill so hover still works) */
+main .glass-subcard,
+main .glass-card,
+main .glass-dark-card {
+  animation: rise-in 0.26s var(--ease-out) backwards;
+}
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(2) { animation-delay: 30ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(3) { animation-delay: 60ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(n + 4) { animation-delay: 90ms; }
 
 /* Dashboard cards lift on hover (mouse devices only) */
 @media (hover: hover) {
