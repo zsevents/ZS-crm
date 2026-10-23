@@ -191,16 +191,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
   return (
     <div className="space-y-8 pb-16 text-slate-900 selection:bg-rose-200">
       {/* 1. TOP SUSPENDED CAPSULE HEADER */}
-      <div className="flex flex-col items-center justify-center pt-2">
-        <div className="suspended-cable flex flex-col items-center">
-          <div className="glass-header-pill px-8 py-2.5 flex items-center gap-3 shadow-xl hover:scale-102 transition-all">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-              Leads & CRM
-            </h1>
-            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
-          </div>
-        </div>
-      </div>
+
 
       {/* 2. MASTER FLOATING GLASS SCREEN CONTAINER */}
       <div className="glass-screen p-5 sm:p-7 md:p-8 space-y-6">
@@ -208,9 +199,9 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-black text-slate-950 tracking-tight">
-                Client Intake & Pipeline
-              </h2>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
+                Leads
+              </h1>
               <span className="text-xs px-3 py-1 rounded-full bg-emerald-100/90 text-emerald-950 border border-emerald-300/80 font-bold shadow-xs">
                 {leads.length} Inquiries
               </span>

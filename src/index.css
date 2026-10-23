@@ -110,13 +110,13 @@ body {
 
 /* Sage colour wash: gently pulls the pinks toward muted, earthy tones */
 .penthouse-bg::before {
-  background: rgba(63, 91, 74, 0.22);
+  background: rgba(63, 91, 74, 0.3);
   mix-blend-mode: color;
 }
 
-/* Ivory veil: softens the photo so the glass panels and text stay readable */
+/* Ivory veil: softens the photo so text sitting directly on it stays readable */
 .penthouse-bg::after {
-  background: rgba(247, 244, 238, 0.3);
+  background: rgba(247, 244, 238, 0.58);
 }
 
 .penthouse-overlay {
@@ -454,6 +454,17 @@ button:not(:disabled):active {
   transform: scale(0);
   animation: ripple 0.45s var(--ease-out) forwards;
   pointer-events: none;
+}
+
+/* Page sections sit directly on the background instead of inside one giant card */
+.glass-screen {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 /* Phones: lighter frosting and stationary blooms keep scrolling at full frame rate */

@@ -1,6 +1,5 @@
 import React,{ useState } from 'react';
 import {
-ShieldCheck,
 KeyRound,
 User as UserIcon,
 Smartphone,
@@ -252,20 +251,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   return (
     <div className="space-y-8 pb-16 text-slate-900 selection:bg-rose-200 selection:text-[#3F5B4A]">
       {/* 1. TOP SUSPENDED CAPSULE HEADER */}
-      <div className="flex flex-col items-center justify-center pt-2">
-        <div className="suspended-cable flex flex-col items-center">
-          <div className="glass-header-pill px-8 py-2.5 flex items-center gap-3 shadow-xl hover:scale-102 transition-all">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-              Account & Security Settings
-            </h1>
-            <span className="w-2.5 h-2.5 rounded-full bg-[#3F5B4A] animate-pulse" />
-          </div>
-        </div>
-        <div className="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full glass-subtle border border-rose-200/80 text-[11px] font-bold text-slate-600 shadow-xs">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#3F5B4A]" />
-          <span>256-bit AES Encrypted • Admin Credentials & Password Controls</span>
-        </div>
-      </div>
+      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-950 pt-1">Settings</h1>
 
       {/* 2. MASTER FLOATING GLASS SCREEN CONTAINER */}
       <div className="glass-screen p-5 sm:p-7 md:p-8 space-y-6">

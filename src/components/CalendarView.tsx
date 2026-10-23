@@ -127,16 +127,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       )}
 
       {/* 1. TOP SUSPENDED CAPSULE HEADER */}
-      <div className="flex flex-col items-center justify-center pt-2">
-        <div className="suspended-cable flex flex-col items-center">
-          <div className="glass-header-pill px-8 py-2.5 flex items-center gap-3 shadow-xl hover:scale-102 transition-all">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-              Schedule & Calendar
-            </h1>
-            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
-          </div>
-        </div>
-      </div>
+      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-950 pt-1">Schedule & Calendar</h1>
 
       {/* 2. MASTER FLOATING GLASS SCREEN CONTAINER */}
       <div className="glass-screen p-5 sm:p-7 md:p-8 space-y-6">

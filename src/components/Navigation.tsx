@@ -525,7 +525,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               id={`sidebar-nav-${item.id.toLowerCase()}`}
               data-nav-active={isActive}
               onClick={() => handleSelectNav(item.id)}
-              className={`relative z-10 w-full px-3.5 py-3 rounded-2xl flex items-center justify-between transition-all cursor-pointer text-left group ${
+              className={`relative z-10 w-full px-3 py-2.5 rounded-2xl flex items-center justify-between transition-all cursor-pointer text-left group ${
                 isActive
                   ? 'text-white font-bold border border-transparent'
                   : 'text-slate-800 hover:bg-white/60 hover:text-slate-950 font-bold border border-transparent hover:border-white/70'
@@ -533,7 +533,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all ${
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all ${
                     isActive
                       ? 'bg-white/20 text-white shadow-inner border border-white/25'
                       : 'bg-white/85 text-slate-700 shadow-xs border border-white/80 group-hover:scale-105'
@@ -542,15 +542,8 @@ export const Navigation: React.FC<NavigationProps> = ({
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="truncate">
-                  <div className={`text-xs leading-tight truncate ${isActive ? 'font-black text-white' : 'font-bold text-slate-900'}`}>
+                  <div className={`text-[13px] leading-tight truncate ${isActive ? 'font-bold text-white' : 'font-semibold text-slate-800'}`}>
                     {item.label}
-                  </div>
-                  <div
-                    className={`text-[10px] leading-tight truncate mt-0.5 ${
-                      isActive ? 'text-rose-100/90 font-medium' : 'text-slate-500 font-medium'
-                    }`}
-                  >
-                    {item.description}
                   </div>
                 </div>
               </div>

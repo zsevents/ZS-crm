@@ -1,18 +1,8 @@
-import React,{ useState } from 'react';
-import {
-Users,
-Briefcase,
-TrendingUp,Calendar,ArrowRight,
-CheckCircle2,
-AlertTriangle,MapPin,
-Globe,Receipt,ChevronRight,
-Flower2,ChevronLeft
-} from 'lucide-react';
-import { DashboardStats,Project,Lead,DateConflict,Quotation,Invoice } from '../types';
-import { formatINR,formatDate } from '../lib/formatters';
+import React, { useMemo } from 'react';
+import { AlertTriangle, ArrowRight, CalendarDays, Clock, MapPin, Plus } from 'lucide-react';
+import { DashboardStats, DateConflict, Invoice, Lead, Project, Quotation } from '../types';
+import { formatDate, formatINR } from '../lib/formatters';
 import { CountUp } from './CountUp';
-import { CustomerHoverDropdown } from './CustomerHoverDropdown';
-import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
 
 interface DashboardViewProps {
   stats: DashboardStats | null;
@@ -30,879 +20,324 @@ interface DashboardViewProps {
   onOpenPaymentModal?: () => void;
 }
 
+const OPEN_STATUSES = ['NEW', 'CONTACTED', 'QUALIFIED', 'MEETING', 'QUOTATION', 'NEGOTIATION', 'ON_HOLD'];
+
+// Pipeline stages in order, sage shades deepening toward a won deal (terracotta)
+const STAGES: { id: string; label: string; color: string }[] = [
+  { id: 'NEW', label: 'New', color: '#A9BDA3' },
+  { id: 'CONTACTED', label: 'Contacted', color: '#7F9A7C' },
+  { id: 'MEETING', label: 'Meeting', color: '#5E7E66' },
+  { id: 'QUOTATION', label: 'Quotation', color: '#3F5B4A' },
+  { id: 'NEGOTIATION', label: 'Negotiation', color: '#2F4A3A' },
+  { id: 'WON', label: 'Won', color: '#C0674A' },
+];
+
+const todayISO = () => new Date().toISOString().slice(0, 10);
+
+const greeting = () => {
+  const h = new Date().getHours();
+  return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+};
+
+const daysUntil = (iso: string) => Math.round((new Date(iso).getTime() - new Date(todayISO()).getTime()) / 86400000);
+
+function SectionCard({
+  title,
+  action,
+  onAction,
+  children,
+  className = '',
+}: {
+  title: string;
+  action?: string;
+  onAction?: () => void;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={`glass-subcard p-5 flex flex-col ${className}`}>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-sm font-bold text-slate-950">{title}</h2>
+        {action && (
+          <button
+            onClick={onAction}
+            className="text-xs font-semibold text-[#3F5B4A] hover:text-[#2F4A3A] flex items-center gap-1 cursor-pointer"
+          >
+            {action} <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Empty({ text }: { text: string }) {
+  return <p className="text-xs text-slate-500 py-6 text-center">{text}</p>;
+}
+
 export const DashboardView: React.FC<DashboardViewProps> = ({
   stats,
-  conflicts = [],
+  conflicts,
   projects = [],
   leads = [],
   invoices = [],
-  onSelectLead = (_leadId: string) => {},
-  onSelectProject = (_projectId: string) => {},
-  onNavigateTab = (_tab: string) => {},
+  onSelectLead,
+  onSelectProject,
+  onNavigateTab,
+  onOpenLeadModal,
+  onOpenProjectModal,
 }) => {
-  const [activeStreamTab, setActiveStreamTab] = useState<
-    'LEADS' | 'PROJECTS' | 'SCHEDULE' | 'FINANCE'
-  >('LEADS');
-  const [leadSourceFilter, setLeadSourceFilter] = useState<'ALL' | 'WEBSITE' | 'NEW'>('ALL');
-  const [selectedDay, setSelectedDay] = useState<number>(3); // Wed/Thu
+  const today = todayISO();
 
-  const activeProjects = (projects || []).filter((p) =>
-    ['PLANNING', 'IN_PROGRESS', 'EVENT_DAY'].includes(p.status)
+  const openLeads = useMemo(() => leads.filter((l) => OPEN_STATUSES.includes(l.status)), [leads]);
+  const newLeads = useMemo(() => leads.filter((l) => l.status === 'NEW').length, [leads]);
+  const pipelineValue = useMemo(() => openLeads.reduce((sum, l) => sum + (Number(l.budget) || 0), 0), [openLeads]);
+
+  const activeProjects = useMemo(
+    () => projects.filter((p) => !['COMPLETED', 'CANCELLED'].includes(p.status)),
+    [projects]
   );
-  const activeConflicts =
-    conflicts && conflicts.length > 0 ? conflicts : stats?.conflictingDates || [];
-  const websiteLeads = (leads || []).filter((l) => l.source === 'WEBSITE');
 
-  const filteredLeads = (leads || []).filter((l) => {
-    if (leadSourceFilter === 'WEBSITE') return l.source === 'WEBSITE';
-    if (leadSourceFilter === 'NEW') return l.status === 'NEW';
-    return true;
-  });
+  const upcomingEvents = useMemo(
+    () =>
+      activeProjects
+        .filter((p) => p.eventDate && p.eventDate >= today)
+        .sort((a, b) => a.eventDate.localeCompare(b.eventDate))
+        .slice(0, 5),
+    [activeProjects, today]
+  );
 
-  const weekLoadData = [
-    { day: 'Mon', count: 2, height: '40%' },
-    { day: 'Tue', count: 3, height: '55%' },
-    { day: 'Wed', count: 4, height: '75%' },
-    { day: 'Thu', count: 5, height: '95%', isPeak: true },
-    { day: 'Fri', count: 3, height: '60%' },
-    { day: 'Sat', count: 4, height: '85%' },
-    { day: 'Sun', count: 1, height: '25%' },
+  const followUps = useMemo(
+    () =>
+      openLeads
+        .filter((l) => l.nextFollowUpDate)
+        .sort((a, b) => (a.nextFollowUpDate || '').localeCompare(b.nextFollowUpDate || ''))
+        .slice(0, 5),
+    [openLeads]
+  );
+
+  const recentLeads = useMemo(
+    () => [...leads].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || '')).slice(0, 5),
+    [leads]
+  );
+
+  const invoiced = invoices.reduce((s, i) => s + (Number(i.total) || 0), 0);
+  const received = invoices.reduce((s, i) => s + (Number(i.amountPaid) || 0), 0);
+  const outstanding = stats?.totalOutstanding ?? Math.max(0, invoiced - received);
+  const receivedPct = invoiced > 0 ? Math.round((received / invoiced) * 100) : 0;
+
+  const stageCounts = STAGES.map((s) => ({ ...s, count: leads.filter((l) => l.status === s.id).length }));
+  const stageTotal = stageCounts.reduce((s, x) => s + x.count, 0) || 1;
+
+  const activeConflicts = conflicts && conflicts.length > 0 ? conflicts : stats?.conflictingDates || [];
+
+  const kpis = [
+    { label: 'Open enquiries', value: openLeads.length, hint: `${newLeads} new`, tab: 'LEADS' },
+    { label: 'Active projects', value: activeProjects.length, hint: `${upcomingEvents.length} upcoming`, tab: 'PROJECTS' },
+    { label: 'Pipeline value', money: pipelineValue, hint: 'Open lead budgets', tab: 'LEADS' },
+    { label: 'Outstanding', money: outstanding, hint: `${receivedPct}% collected`, tab: 'FINANCE' },
   ];
 
   return (
-    <div className="space-y-8 pb-16 text-slate-900 selection:bg-rose-200">
-      {/* ------------------------------------------------------------- */}
-      {/* 1. TOP SUSPENDED CAPSULE HEADER (Matching Reference Image)    */}
-      {/* ------------------------------------------------------------- */}
-      <div className="flex flex-col items-center justify-center pt-2">
-        <div className="suspended-cable flex flex-col items-center">
-          <div className="glass-header-pill px-8 py-2.5 flex items-center gap-3 shadow-xl hover:scale-102 transition-all">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
-              Dashboard
-            </h1>
-            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
-          </div>
+    <div className="space-y-6 pb-16 text-slate-900">
+      {/* Header */}
+      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-1">
+        <div>
+          <p className="text-xs font-semibold text-slate-500">
+            {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </p>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-950 mt-1">{greeting()}</h1>
         </div>
-      </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onOpenProjectModal}
+            className="px-4 py-2.5 rounded-xl glass-btn-secondary text-xs font-bold text-slate-800 cursor-pointer"
+          >
+            New project
+          </button>
+          <button
+            onClick={onOpenLeadModal}
+            className="px-4 py-2.5 rounded-xl glass-btn-primary text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" /> New lead
+          </button>
+        </div>
+      </header>
 
-      {/* Date Conflict Warning Banner (if conflicts exist) */}
+      {/* Date clash warning */}
       {activeConflicts.length > 0 && (
-        <div className="p-4 rounded-3xl bg-amber-50/80 backdrop-blur-xl border border-amber-200/90 shadow-lg">
-          <div className="flex items-start gap-3.5">
-            <div className="p-2.5 rounded-2xl bg-amber-100/90 border border-amber-300 text-amber-800 shrink-0 shadow-xs">
-              <AlertTriangle className="w-5 h-5 text-amber-600" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-amber-900">
-                  Bangalore Multi-Event Date Conflict Alert
-                </h4>
-                <button
-                  onClick={() => onNavigateTab('CALENDAR')}
-                  className="text-xs font-bold text-[#3F5B4A] underline cursor-pointer hover:text-[#2F4A3A]"
-                >
-                  Open Calendar →
-                </button>
-              </div>
-              <p className="text-xs text-amber-800 mt-0.5 font-medium">
-                Multiple active floral decorations are scheduled on the same date in Bangalore. Allocate transport, scaffolding, and floral masters.
-              </p>
-              <div className="mt-2.5 flex flex-wrap gap-2">
-                {activeConflicts.map((c) => (
-                  <div
-                    key={c.date}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-xl glass-subcard border border-amber-300/80 text-xs font-medium text-amber-950 shadow-xs"
-                  >
-                    <Calendar className="w-3.5 h-3.5 text-amber-600" />
-                    <span className="font-bold">{formatDate(c.date)}:</span>
-                    <span>{c.projectCount} Events</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <button
+          onClick={() => onNavigateTab?.('CALENDAR')}
+          className="w-full text-left px-4 py-3 rounded-2xl bg-amber-50/90 border border-amber-200 flex items-center gap-3 cursor-pointer"
+        >
+          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+          <span className="text-xs text-amber-900 flex-1">
+            <span className="font-bold">{activeConflicts.length} date clash{activeConflicts.length > 1 ? 'es' : ''}</span> · more than one
+            event on {activeConflicts.slice(0, 2).map((c) => formatDate(c.date)).join(', ')}
+          </span>
+          <ArrowRight className="w-4 h-4 text-amber-700 shrink-0" />
+        </button>
       )}
 
-      {/* ------------------------------------------------------------- */}
-      {/* 2. MASTER FLOATING GLASS SCREEN (Exact Reference Aesthetic)   */}
-      {/* ------------------------------------------------------------- */}
-      <div className="glass-screen p-5 sm:p-7 md:p-8 space-y-6">
-        
-        {/* ROW 1: Mandap Control + Weekly Muhurtham Load + Cold Storage Bandwidth + Live Staging Tracker */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          
-          {/* Card 1: Mandap & Production Control (Dark Frosted Glass Card) */}
-          <div className="glass-dark-card p-6 flex flex-col justify-between relative overflow-hidden group hover:border-white/40 transition-all shadow-2xl">
-            <div className="flex items-start justify-between z-10">
-              <div>
-                <span className="text-[11px] font-extrabold tracking-widest uppercase text-[#D98B6B]">
-                  MANDAP & STAGING CONTROL
-                </span>
-                <h3 className="text-2xl font-black text-white mt-1 tracking-tight">
-                  Active Venue Setups
-                </h3>
-              </div>
-              <div className="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shadow-inner group-hover:scale-105 transition-all">
-                <Flower2 className="w-5 h-5" />
-              </div>
-            </div>
+      {/* Key numbers */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {kpis.map((k) => (
+          <button
+            key={k.label}
+            onClick={() => onNavigateTab?.(k.tab)}
+            className="glass-subcard p-4 sm:p-5 text-left cursor-pointer"
+          >
+            <p className="text-xs font-semibold text-slate-500">{k.label}</p>
+            <p className="text-2xl sm:text-3xl font-black tracking-tight text-slate-950 mt-2">
+              {'money' in k ? formatINR(k.money) : <CountUp value={k.value ?? 0} />}
+            </p>
+            <p className="text-[11px] font-medium text-slate-500 mt-1">{k.hint}</p>
+          </button>
+        ))}
+      </div>
 
-            {/* Visual sculpture / Geometric floral motif with rotating dashed ring */}
-            <div className="my-4 flex items-center justify-center relative py-1">
-              <div className="relative w-28 h-28 flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full border-2 border-dashed border-rose-400/50 animate-[spin_30s_linear_infinite]" />
-                <div className="w-20 h-20 rounded-full bg-white/95 p-1 border-2 border-rose-400/80 shadow-2xl group-hover:scale-105 transition-transform duration-300 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={zsEventsLogo}
-                    alt="ZS Events Logo"
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="z-10 pt-3 border-t border-white/15 flex items-center justify-between text-xs">
-              <div>
-                <p className="text-[10.5px] text-slate-400 font-medium">KR Market Flower Dispatch</p>
-                <p className="font-extrabold text-white text-sm">4,200 kg Staged Blooms</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-rose-300 font-black tracking-tight">18 Riggers & Florists</p>
-                <p className="text-[10.5px] text-slate-400">Muhurtham: 04:30 AM</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Weekly Wedding & Muhurtham Load */}
-          <div className="glass-subcard p-5 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-slate-500">
-                  Weekly Wedding & Muhurtham Load
-                </span>
-                <div className="text-xl font-black text-slate-950 mt-0.5">
-                  <CountUp value={activeProjects.length > 0 ? activeProjects.length : 6} /> Mandaps <span className="text-xs font-bold text-slate-500">/ 7-Day Window</span>
-                </div>
-              </div>
-              <div className="w-7 h-7 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xs font-bold shadow-xs">
-                7d
-              </div>
-            </div>
-
-            {/* Vertical Bar Meters */}
-            <div className="my-5 flex items-end justify-between gap-2 h-28 px-1">
-              {weekLoadData.map((item, idx) => (
-                <div
-                  key={item.day}
-                  onClick={() => setSelectedDay(idx)}
-                  className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end cursor-pointer group"
-                >
-                  <div
-                    className={`bar-up w-full rounded-full transition-all duration-300 relative flex items-center justify-center ${
-                      item.isPeak || selectedDay === idx
-                        ? 'bg-slate-950 shadow-md scale-105'
-                        : 'bg-slate-300/80 hover:bg-slate-400'
-                    }`}
-                    style={{ height: item.height, animationDelay: `${idx * 20}ms` }}
-                  >
-                    {(item.isPeak || selectedDay === idx) && (
-                      <span className="text-[9px] font-bold text-white">
-                        {item.count}
-                      </span>
-                    )}
-                  </div>
-                  <span
-                    className={`text-[10px] font-bold transition-colors ${
-                      selectedDay === idx ? 'text-slate-950 font-black' : 'text-slate-500'
-                    }`}
-                  >
-                    {item.day}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-600">
-              <span className="font-semibold">Peak Day: Thursday (3 Mandaps, 2 Galas)</span>
-              <span className="font-bold text-[#3F5B4A]">South Zone</span>
-            </div>
-          </div>
-
-        </div>
-
-        {/* ROW 2: Revenue Pipeline Velocity + Venue Staging Run-Sheet */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
-          
-          {/* Revenue Pipeline Spline Chart (Dark Frosted, 4 cols) */}
-          <div className="lg:col-span-4 glass-dark-card p-6 flex flex-col justify-between shadow-2xl">
-            <div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-[11px] font-extrabold tracking-widest uppercase text-[#D98B6B]">
-                    REVENUE & BOOKINGS
-                  </span>
-                  <h4 className="text-2xl font-black text-white mt-1 tracking-tight">
-                    Quotation Pipeline
-                  </h4>
-                </div>
-                <div className="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shadow-inner">
-                  <TrendingUp className="w-5 h-5 text-rose-300" />
-                </div>
-              </div>
-
-              {/* Monthly Stats / Status Pills */}
-              <div className="mt-4 flex items-center gap-2 flex-wrap">
-                <span className="px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 text-xs font-black border border-emerald-500/40 shadow-xs">
-                  ₹28.5L Confirmed
-                </span>
-                <span className="px-3 py-1 rounded-full bg-purple-950/70 text-purple-300 text-xs font-black border border-purple-500/40 shadow-xs">
-                  ₹46.0L In Proposals
-                </span>
-                <span className="px-3 py-1 rounded-full bg-blue-950/70 text-blue-300 text-xs font-black border border-blue-500/40 shadow-xs">
-                  94% Advance Recd
-                </span>
-                <span className="px-3 py-1 rounded-full bg-amber-950/70 text-amber-300 text-xs font-black border border-amber-500/40 shadow-xs">
-                  <CountUp value={leads.filter(l => l.status === 'NEW').length || 12} /> Open Enquiries
-                </span>
-              </div>
-            </div>
-
-            {/* Glowing Spline SVG Line Chart */}
-            <div className="my-5 relative h-28 w-full flex items-center">
-              <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="splineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#3F5B4A" stopOpacity="0.85" />
-                    <stop offset="60%" stopColor="#2F4A3A" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#1e293b" stopOpacity="0.0" />
-                  </linearGradient>
-                </defs>
-                {/* Area under curve */}
-                <path
-                  d="M 0 85 Q 50 20, 100 60 T 200 25 T 300 50 L 300 100 L 0 100 Z"
-                  fill="url(#splineGradient)"
-                />
-                {/* Main spline line */}
-                <path
-                  d="M 0 85 Q 50 20, 100 60 T 200 25 T 300 50"
-                  fill="none"
-                  stroke="#ffffff"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                {/* Data Points */}
-                <circle cx="0" cy="85" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
-                <circle cx="85" cy="45" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
-                <circle cx="170" cy="38" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
-                <circle cx="250" cy="28" r="5" fill="#ffffff" stroke="#D98B6B" strokeWidth="2.5" />
-                <circle cx="300" cy="50" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
-              </svg>
-            </div>
-
-            <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs text-slate-300">
-              <span className="font-medium">Forecast Peak Season (Q3/Q4): 18 Luxury Bookings</span>
-              <span className="font-extrabold text-rose-300 text-sm">₹74.5L Pipeline</span>
-            </div>
-          </div>
-
-          {/* Venue Staging & Loading Schedule (Frosted Light, 8 cols) */}
-          <div className="lg:col-span-8 glass-subcard p-5 flex flex-col justify-between">
-            <div>
-              {/* Calendar Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200/70">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Calendar className="w-4 h-4 text-[#3F5B4A] shrink-0" />
-                  <h4 className="text-sm sm:text-base font-black text-slate-950">
-                    Venue Staging & Loading Schedule
-                  </h4>
-                  <span className="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full bg-slate-900 text-white">
-                    Live Production
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between sm:justify-end gap-1">
-                  <button className="p-1.5 rounded-xl hover:bg-slate-200 text-slate-600 transition-colors">
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <span className="text-[11px] sm:text-xs font-bold text-slate-700 px-1">Bangalore Central & South</span>
-                  <button className="p-1.5 rounded-xl hover:bg-slate-200 text-slate-600 transition-colors">
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Day Columns Header */}
-              <div className="overflow-x-auto no-scrollbar">
-                <div className="min-w-[340px] grid grid-cols-7 gap-1 py-2 text-center text-[10px] sm:text-[11px] font-bold text-slate-500 border-b border-slate-200/50">
-                  <span>Mon 19</span>
-                  <span>Tue 20</span>
-                  <span>Wed 21</span>
-                  <span className="text-slate-950 font-black">Thu 22</span>
-                  <span>Fri 23</span>
-                  <span className="text-[#3F5B4A] font-black">Sat 24</span>
-                  <span>Sun 25</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Time slot schedule rows (Actionable South India wedding decor run-sheet) */}
-            <div className="my-3 space-y-2">
-              <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-slate-950 text-white shadow-md">
-                <span className="text-xs font-mono font-bold text-rose-300 w-16 shrink-0">
-                  04:00 AM
-                </span>
-                <div className="w-1.5 h-6 rounded-full bg-rose-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold truncate">KR Market Flower Van Ingress (Loading Bay 2)</p>
-                  <p className="text-[10px] text-slate-400 truncate">4,200 kg Tuberoses, Jasmine & Imported Dutch Roses • Quality Checked</p>
-                </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 font-bold shrink-0">
-                  Dispatched
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-slate-900/90 text-white shadow-sm">
-                <span className="text-xs font-mono font-bold text-amber-300 w-16 shrink-0">
-                  06:30 AM
-                </span>
-                <div className="w-1.5 h-6 rounded-full bg-amber-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold truncate">Mandap Truss & Scaffolding Ingress</p>
-                  <p className="text-[10px] text-slate-400 truncate">The Tamarind Tree, Kanakapura Road · 14 Structural Riggers</p>
-                </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/30 text-amber-300 font-bold shrink-0">
-                  Active On-Site
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-slate-800/80 text-white shadow-sm">
-                <span className="text-xs font-mono font-bold text-blue-300 w-16 shrink-0">
-                  11:00 AM
-                </span>
-                <div className="w-1.5 h-6 rounded-full bg-blue-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold truncate">Stage Lighting & Floral Chandelier Rigging Briefing</p>
-                  <p className="text-[10px] text-slate-400 truncate">The Leela Palace Bengaluru, Grand Ballroom · 15 kW Power DB Passed</p>
-                </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/30 text-blue-300 font-bold shrink-0">
-                  In Progress
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-slate-950 text-white shadow-md">
-                <span className="text-xs font-mono font-bold text-emerald-300 w-16 shrink-0">
-                  03:30 PM
-                </span>
-                <div className="w-1.5 h-6 rounded-full bg-emerald-400 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold truncate">Final Muhurtham Walkthrough & Misting Inspection</p>
-                  <p className="text-[10px] text-slate-400 truncate">Taj West End Heritage Lawn · Wedding & Reception Stage Ready</p>
-                </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 font-bold shrink-0">
-                  Confirmed
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-              <span className="text-slate-600 font-medium">4 Critical Setup Milestones Scheduled Today</span>
-              <button
-                onClick={() => onNavigateTab('CALENDAR')}
-                className="text-xs font-bold text-[#3F5B4A] hover:underline flex items-center gap-1"
-              >
-                <span>Full Calendar Run-sheet</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* ROW 3: Logistics Flow Mountain Chart + Venue Compliance Gauges + South India Luxury Venues Map */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-4 sm:gap-5">
-          
-          {/* Dual Efficiency Gauges (3 cols) */}
-          <div className="lg:col-span-3 glass-subcard p-5 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-slate-500">
-                  Venue Compliance & Timing
-                </span>
-                <h4 className="text-base font-black text-slate-950 mt-0.5">
-                  Muhurtham SLA
-                </h4>
-              </div>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            </div>
-
-            {/* Two Circular Meters */}
-            <div className="my-2 flex items-center justify-around">
-              <div className="flex flex-col items-center">
-                <div className="relative w-14 h-14 flex items-center justify-center">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                    <path
-                      className="text-slate-200"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                    <path
-                      className="text-slate-950"
-                      strokeDasharray="0, 100"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                  </svg>
-                  <span className="absolute text-xs font-black text-slate-950">0%</span>
-                </div>
-                <span className="text-[9px] font-bold text-slate-600 mt-1">Ingress Delays</span>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div className="relative w-14 h-14 flex items-center justify-center">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                    <path
-                      className="text-slate-200"
-                      strokeWidth="3.5"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                    <path
-                      className="text-emerald-700"
-                      strokeDasharray="99.2, 100"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                  </svg>
-                  <span className="absolute text-xs font-black text-emerald-800">99.2%</span>
-                </div>
-                <span className="text-[9px] font-bold text-slate-600 mt-1">On-Time Muhurtham</span>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-slate-200/60 text-center">
-              <span className="text-[11px] font-bold text-slate-800">
-                100% Ingress Pass & Fire Safety Cleared
-              </span>
-            </div>
-          </div>
-
-          {/* Bangalore Luxury Venues Map (4 cols) */}
-          <div className="lg:col-span-4 glass-subcard p-5 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-slate-500">
-                  Regional Production Hub
-                </span>
-                <h4 className="text-base font-black text-slate-950 mt-0.5">
-                  South India Luxury Venues
-                </h4>
-              </div>
-              <span className="text-xs font-bold text-[#3F5B4A] bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
-                54 Partner Venues
-              </span>
-            </div>
-
-            {/* Minimalist Regional Map Visual */}
-            <div className="my-3 h-28 w-full bg-slate-950 rounded-2xl p-2.5 relative overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:12px_12px]" />
-              
-              {/* Radar Circles */}
-              <div className="absolute w-24 h-24 rounded-full border border-white/20" />
-              <div className="absolute w-16 h-16 rounded-full border border-white/30" />
-
-              {/* Pin Locations */}
-              <div className="absolute top-4 left-8 flex items-center gap-1 group">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white animate-ping" />
-                <span className="w-2 h-2 rounded-full bg-rose-500 ring-1 ring-white absolute" />
-                <span className="text-[8px] font-bold text-white bg-slate-900/80 px-1 rounded ml-3">
-                  Palace Grounds
-                </span>
-              </div>
-
-              <div className="absolute bottom-5 left-14 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-amber-400 ring-1 ring-white" />
-                <span className="text-[8px] font-bold text-white bg-slate-900/80 px-1 rounded ml-3">
-                  The Leela Palace
-                </span>
-              </div>
-
-              <div className="absolute top-7 right-6 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 ring-1 ring-white" />
-                <span className="text-[8px] font-bold text-white bg-slate-900/80 px-1 rounded ml-3">
-                  Taj West End
-                </span>
-              </div>
-
-              <div className="absolute bottom-3 right-10 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-rose-400 ring-1 ring-white" />
-                <span className="text-[8px] font-bold text-white bg-slate-900/80 px-1 rounded ml-3">
-                  The Tamarind Tree
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-600">
-              <span>Palace Grounds · Central · Kanakapura</span>
-              <span className="font-bold text-slate-950">Active Cold Vans: 4</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ------------------------------------------------------------- */}
-        {/* ROW 4: INTERACTIVE DATA WORKSPACE STREAM                      */}
-        {/* ------------------------------------------------------------- */}
-        <div className="glass-panel rounded-3xl p-5 sm:p-6 space-y-5 shadow-lg">
-          {/* Workspace Segmented Navigation */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/60">
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-              <button
-                onClick={() => setActiveStreamTab('LEADS')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  activeStreamTab === 'LEADS'
-                    ? 'glass-btn-primary text-white shadow-md'
-                    : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
-                }`}
-              >
-                <Users className="w-3.5 h-3.5" />
-                <span>Inbound Leads ({leads.length})</span>
-              </button>
-
-              <button
-                onClick={() => setActiveStreamTab('PROJECTS')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  activeStreamTab === 'PROJECTS'
-                    ? 'glass-btn-primary text-white shadow-md'
-                    : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
-                }`}
-              >
-                <Briefcase className="w-3.5 h-3.5" />
-                <span>Active Staging Projects ({activeProjects.length})</span>
-              </button>
-
-              <button
-                onClick={() => setActiveStreamTab('SCHEDULE')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  activeStreamTab === 'SCHEDULE'
-                    ? 'glass-btn-primary text-white shadow-md'
-                    : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
-                }`}
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>Event Schedule ({projects.length})</span>
-              </button>
-
-              <button
-                onClick={() => setActiveStreamTab('FINANCE')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  activeStreamTab === 'FINANCE'
-                    ? 'glass-btn-primary text-white shadow-md'
-                    : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
-                }`}
-              >
-                <Receipt className="w-3.5 h-3.5" />
-                <span>Invoices & Billing ({invoices.length})</span>
-              </button>
-            </div>
-
-            <button
-              onClick={() =>
-                onNavigateTab(
-                  activeStreamTab === 'LEADS'
-                    ? 'LEADS'
-                    : activeStreamTab === 'PROJECTS'
-                    ? 'PROJECTS'
-                    : activeStreamTab === 'SCHEDULE'
-                    ? 'CALENDAR'
-                    : 'FINANCE'
-                )
-              }
-              className="text-xs font-bold text-[#3F5B4A] hover:underline flex items-center gap-1 cursor-pointer self-start sm:self-auto"
-            >
-              <span>Open Dedicated View</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* 1. INBOUND LEADS STREAM */}
-          {activeStreamTab === 'LEADS' && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-500">Filter Source:</span>
-                <button
-                  onClick={() => setLeadSourceFilter('ALL')}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    leadSourceFilter === 'ALL'
-                      ? 'glass-btn-primary text-white'
-                      : 'glass-btn-secondary text-slate-700 hover:text-slate-900'
-                  }`}
-                >
-                  All ({leads.length})
-                </button>
-                <button
-                  onClick={() => setLeadSourceFilter('WEBSITE')}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                    leadSourceFilter === 'WEBSITE'
-                      ? 'glass-btn-primary text-white'
-                      : 'glass-btn-secondary text-slate-700 hover:text-slate-900'
-                  }`}
-                >
-                  <Globe className="w-3 h-3" />
-                  Website ({websiteLeads.length})
-                </button>
-                <button
-                  onClick={() => setLeadSourceFilter('NEW')}
-                  className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    leadSourceFilter === 'NEW'
-                      ? 'glass-btn-primary text-white'
-                      : 'glass-btn-secondary text-slate-700 hover:text-slate-900'
-                  }`}
-                >
-                  New ({leads.filter((l) => l.status === 'NEW').length})
-                </button>
-              </div>
-
-              <div className="divide-y divide-white/60 rounded-2xl overflow-hidden glass-card shadow-sm">
-                {filteredLeads.length > 0 ? (
-                  filteredLeads.slice(0, 8).map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="p-4 hover:bg-white/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Upcoming events */}
+        <SectionCard title="Upcoming events" action="All projects" onAction={() => onNavigateTab?.('PROJECTS')} className="lg:col-span-2">
+          {upcomingEvents.length === 0 ? (
+            <Empty text="No upcoming events. New projects will show here." />
+          ) : (
+            <ul className="divide-y divide-slate-200/70">
+              {upcomingEvents.map((p) => {
+                const d = new Date(p.eventDate);
+                const left = daysUntil(p.eventDate);
+                return (
+                  <li key={p.id}>
+                    <button
+                      onClick={() => onSelectProject?.(p.id)}
+                      className="w-full py-3 flex items-center gap-3 text-left cursor-pointer group"
                     >
-                      <div className="flex items-start sm:items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-rose-50/90 border border-rose-200/80 text-[#3F5B4A] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
-                          {lead.customerName?.charAt(0) || 'L'}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <CustomerHoverDropdown
-                              customer={{
-                                name: lead.customerName,
-                                phone: lead.phone,
-                                email: lead.email,
-                                location: lead.location,
-                                totalSpend: lead.budget ? Number(lead.budget) : undefined,
-                                notes: lead.notes,
-                              }}
-                            />
-                            <span
-                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
-                                lead.status === 'NEW'
-                                  ? 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
-                                  : lead.status === 'PROPOSAL_SENT'
-                                  ? 'bg-blue-100/90 text-blue-800 border border-blue-200/80'
-                                  : 'glass-subtle text-slate-700'
-                              }`}
-                            >
-                              {lead.status.replace('_', ' ')}
-                            </span>
-                            {lead.source === 'WEBSITE' && (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50/90 text-purple-700 border border-purple-200/80 shadow-xs">
-                                Website
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="text-xs text-slate-500 mt-1 flex items-center gap-3 flex-wrap">
-                            <span>{lead.eventType || 'Event'}</span>
-                            <span>•</span>
-                            <span>Date: {formatDate(lead.eventDate)}</span>
-                            <span>•</span>
-                            <span className="text-slate-700 font-semibold">{lead.location}</span>
-                          </div>
-                        </div>
+                      <div className="w-12 h-12 rounded-xl bg-[#3F5B4A] text-white flex flex-col items-center justify-center shrink-0">
+                        <span className="text-[10px] font-semibold uppercase leading-none">
+                          {d.toLocaleDateString('en-IN', { month: 'short' })}
+                        </span>
+                        <span className="text-lg font-black leading-tight">{d.getDate()}</span>
                       </div>
-
-                      <div className="flex items-center gap-3 self-end sm:self-center">
-                        <div className="text-right">
-                          <div className="text-xs font-black text-slate-900">
-                            {lead.budget ? formatINR(lead.budget) : 'Custom'}
-                          </div>
-                          <div className="text-[10px] text-slate-400">Budget Est.</div>
-                        </div>
-
-                        <button
-                          onClick={() => onSelectLead(lead.id)}
-                          className="px-3.5 py-1.5 rounded-xl glass-btn-secondary text-slate-700 text-xs font-bold hover:text-[#3F5B4A] transition-all cursor-pointer shadow-xs"
-                        >
-                          Inspect
-                        </button>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-950 truncate group-hover:text-[#3F5B4A]">{p.name}</p>
+                        <p className="text-xs text-slate-500 truncate flex items-center gap-1 mt-0.5">
+                          <MapPin className="w-3 h-3 shrink-0" /> {p.venue || 'Venue to be confirmed'}
+                        </p>
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="p-8 text-center text-slate-400 text-xs font-medium">
-                    No inquiries found in this view.
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* 2. ACTIVE PROJECTS STREAM */}
-          {activeStreamTab === 'PROJECTS' && (
-            <div className="divide-y divide-white/60 rounded-2xl overflow-hidden glass-card shadow-sm">
-              {activeProjects.length > 0 ? (
-                activeProjects.map((p) => {
-                  const completedCount =
-                    p.milestones?.filter((m) => m.status === 'COMPLETED').length || 0;
-                  const totalCount = p.milestones?.length || 0;
-                  return (
-                    <div
-                      key={p.id}
-                      className="p-4 hover:bg-white/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-bold text-slate-950 text-sm">{p.name}</h4>
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
-                              p.status === 'EVENT_DAY'
-                                ? 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
-                                : 'bg-emerald-100/90 text-emerald-800 border border-emerald-200/80'
-                            }`}
-                          >
-                            {p.status.replace('_', ' ')}
-                          </span>
-                          <span className="text-[10px] font-mono font-bold text-slate-500">
-                            {completedCount}/{totalCount} Milestones Achieved
-                          </span>
-                        </div>
-
-                        <div className="mt-1 flex items-center gap-2 text-xs text-slate-600 flex-wrap">
-                          <CustomerHoverDropdown
-                            customer={{
-                              name: p.customerName,
-                              phone: p.customerPhone || '',
-                              location: p.venue,
-                              totalSpend: p.contractValue,
-                            }}
-                          />
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-[#3F5B4A]" />
-                            {p.venue || 'Bangalore'}
-                          </span>
-                          <span>•</span>
-                          <span>Event: {formatDate(p.eventDate)}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 self-end sm:self-center">
-                        <div className="text-right">
-                          <div className="text-sm font-black text-slate-950">
-                            {formatINR(p.contractValue)}
-                          </div>
-                          <div className="text-[10px] text-slate-400">
-                            Staff: {p.assignedStaff?.split(' ')[0] || 'Unassigned'}
-                          </div>
-                        </div>
-
-                        <button
-                          onClick={() => onSelectProject(p.id)}
-                          className="px-3.5 py-1.5 rounded-xl glass-btn-secondary text-slate-700 text-xs font-bold hover:text-[#3F5B4A] transition-all cursor-pointer shadow-xs"
-                        >
-                          Run-sheet & Milestones
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="p-8 text-center text-slate-400 text-xs font-medium">
-                  No active projects currently in staging.
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* 3. UPCOMING SCHEDULE */}
-          {activeStreamTab === 'SCHEDULE' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {projects.slice(0, 6).map((proj) => (
-                <div
-                  key={proj.id}
-                  onClick={() => onSelectProject(proj.id)}
-                  className="p-4 rounded-2xl glass-card hover:border-[#3F5B4A]/50 transition-all cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-0.5"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#3F5B4A]">
-                      {formatDate(proj.eventDate)}
-                    </span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full glass-subtle text-slate-700">
-                      {proj.eventType || 'Floral Decor'}
-                    </span>
-                  </div>
-                  <h4 className="font-bold text-slate-900 text-sm mt-1">{proj.name}</h4>
-                  <div className="mt-2 text-xs text-slate-600 flex items-center justify-between">
-                    <CustomerHoverDropdown
-                      customer={{
-                        name: proj.customerName,
-                        phone: proj.customerPhone || '',
-                        location: proj.venue,
-                      }}
-                    />
-                    <span className="font-bold text-slate-900">
-                      {formatINR(proj.contractValue)}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* 4. RECENT GST INVOICES */}
-          {activeStreamTab === 'FINANCE' && (
-            <div className="divide-y divide-white/60 rounded-2xl overflow-hidden glass-card shadow-sm">
-              {invoices.length > 0 ? (
-                invoices.slice(0, 6).map((inv) => (
-                  <div
-                    key={inv.id}
-                    className="p-4 hover:bg-white/40 flex items-center justify-between text-xs transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="font-mono font-bold text-[#3F5B4A]">{inv.invoiceNumber}</div>
-                      <CustomerHoverDropdown
-                        customer={{
-                          name: inv.customerName,
-                          phone: inv.customerPhone || '',
-                          location: inv.billingAddress,
-                          totalSpend: inv.total,
-                        }}
-                      />
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-black text-slate-950 text-sm">
-                        {formatINR(inv.total)}
-                      </span>
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
-                          inv.status === 'PAID'
-                            ? 'bg-emerald-100/90 text-emerald-800 border border-emerald-200/80'
-                            : 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
+                        className={`text-[11px] font-bold px-2.5 py-1 rounded-full shrink-0 ${
+                          left <= 3 ? 'bg-[#C0674A]/12 text-[#9A4A31]' : 'bg-slate-100 text-slate-600'
                         }`}
                       >
-                        {inv.status}
+                        {left === 0 ? 'Today' : left === 1 ? 'Tomorrow' : `In ${left} days`}
                       </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-8 text-center text-slate-400 text-xs font-medium">
-                  No invoices found.
-                </div>
-              )}
-            </div>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
           )}
-        </div>
+        </SectionCard>
+
+        {/* Follow-ups */}
+        <SectionCard title="Follow-ups" action="Leads" onAction={() => onNavigateTab?.('LEADS')}>
+          {followUps.length === 0 ? (
+            <Empty text="No follow-ups scheduled." />
+          ) : (
+            <ul className="space-y-2">
+              {followUps.map((l) => {
+                const overdue = (l.nextFollowUpDate || '') < today;
+                return (
+                  <li key={l.id}>
+                    <button
+                      onClick={() => onSelectLead?.(l.id)}
+                      className="w-full p-3 rounded-xl bg-white/60 hover:bg-white/90 text-left flex items-start gap-3 cursor-pointer transition-colors"
+                    >
+                      <Clock className={`w-4 h-4 mt-0.5 shrink-0 ${overdue ? 'text-[#C0674A]' : 'text-slate-400'}`} />
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-slate-950 truncate">{l.customerName}</p>
+                        <p className={`text-xs ${overdue ? 'text-[#9A4A31] font-semibold' : 'text-slate-500'}`}>
+                          {overdue ? 'Overdue · ' : ''}
+                          {formatDate(l.nextFollowUpDate)}
+                          {l.nextFollowUpType ? ` · ${l.nextFollowUpType.replace(/_/g, ' ').toLowerCase()}` : ''}
+                        </p>
+                      </div>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </SectionCard>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Pipeline */}
+        <SectionCard title="Lead pipeline" action="Open pipeline" onAction={() => onNavigateTab?.('LEADS')} className="lg:col-span-2">
+          <div className="flex h-3 w-full rounded-full overflow-hidden bg-slate-100">
+            {stageCounts.map((s) =>
+              s.count > 0 ? (
+                <div
+                  key={s.id}
+                  title={`${s.label}: ${s.count}`}
+                  className="h-full transition-[width] duration-500"
+                  style={{ width: `${(s.count / stageTotal) * 100}%`, background: s.color }}
+                />
+              ) : null
+            )}
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-5">
+            {stageCounts.map((s) => (
+              <div key={s.id}>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full" style={{ background: s.color }} />
+                  <span className="text-[11px] font-semibold text-slate-500">{s.label}</span>
+                </div>
+                <p className="text-xl font-black text-slate-950 mt-1">
+                  <CountUp value={s.count} />
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 pt-4 border-t border-slate-200/70">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-slate-600">Collected this season</span>
+              <span className="font-bold text-slate-950">
+                {formatINR(received)} <span className="text-slate-500 font-medium">of {formatINR(invoiced)}</span>
+              </span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-slate-100 mt-2 overflow-hidden">
+              <div className="h-full rounded-full bg-[#3F5B4A] transition-[width] duration-700" style={{ width: `${receivedPct}%` }} />
+            </div>
+          </div>
+        </SectionCard>
+
+        {/* Recent leads */}
+        <SectionCard title="Recent enquiries" action="All" onAction={() => onNavigateTab?.('LEADS')}>
+          {recentLeads.length === 0 ? (
+            <Empty text="No enquiries yet." />
+          ) : (
+            <ul className="divide-y divide-slate-200/70">
+              {recentLeads.map((l) => (
+                <li key={l.id}>
+                  <button onClick={() => onSelectLead?.(l.id)} className="w-full py-2.5 flex items-center gap-3 text-left cursor-pointer group">
+                    <span className="w-8 h-8 rounded-full bg-[#E3EADF] text-[#3F5B4A] text-xs font-black flex items-center justify-center shrink-0">
+                      {l.customerName.slice(0, 1).toUpperCase()}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold text-slate-950 truncate group-hover:text-[#3F5B4A]">{l.customerName}</p>
+                      <p className="text-xs text-slate-500 truncate flex items-center gap-1">
+                        <CalendarDays className="w-3 h-3 shrink-0" /> {l.eventType} · {formatDate(l.eventDate)}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase shrink-0">{l.status.replace(/_/g, ' ')}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
       </div>
     </div>
   );
