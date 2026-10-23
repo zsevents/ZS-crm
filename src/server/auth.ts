@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express';
 import type { User } from '@supabase/supabase-js';
 import { getSupabase, isSupabaseConfigured } from './supabase.js';
+import { recordAuthFailure } from './security.js';
 
 // API authentication.
 //
@@ -41,6 +42,12 @@ export function isApprovedUser(user: User): boolean {
   return allowedEmails().has((user.email ?? '').toLowerCase());
 }
 
+export type CrmRole = 'admin' | 'staff' | 'viewer';
+export function roleOf(user: User): CrmRole {
+  const r = user.app_metadata?.crm_role;
+  return r === 'viewer' || r === 'staff' ? r : 'admin';
+}
+
 async function verifyToken(token: string): Promise<User | null> {
   const cached = tokenCache.get(token);
   if (cached && cached.expires > Date.now()) return cached.user;
@@ -69,6 +76,9 @@ export const requireAuth: RequestHandler = async (req, res, next) => {
   try {
     const user = await verifyToken(token);
     if (!user) {
+      if (!recordAuthFailure(req)) {
+        return res.status(429).json({ success: false, error: 'Too many failed attempts. Try again later.' });
+      }
       return res.status(401).json({ success: false, error: 'Session expired. Please sign in again.' });
     }
     if (!isApprovedUser(user)) {
@@ -77,7 +87,14 @@ export const requireAuth: RequestHandler = async (req, res, next) => {
         error: 'This account has not been given CRM access. Ask the studio admin to approve it.',
       });
     }
+    // Roles live in app_metadata.crm_role ('admin' | 'staff' | 'viewer').
+    // No role set = admin, so existing users keep working. Viewers are read-only.
+    const role = roleOf(user);
+    if (role === 'viewer' && req.method !== 'GET') {
+      return res.status(403).json({ success: false, error: 'Your account is view-only.' });
+    }
     res.locals.user = user;
+    res.locals.role = role;
     next();
   } catch (err: any) {
     res.status(503).json({ success: false, error: `Auth service unavailable: ${err.message}` });

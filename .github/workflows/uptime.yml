@@ -1,0 +1,15 @@
+name: Uptime check
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CRM health
+        run: curl --fail --silent --show-error --max-time 20 https://crm.zsevents.in/api/health
+      - name: CRM sign-in wall still enforced
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 https://crm.zsevents.in/api/leads)
+          [ "$code" = "401" ] || { echo "Expected 401, got $code"; exit 1; }

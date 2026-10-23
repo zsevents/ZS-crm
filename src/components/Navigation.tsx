@@ -78,7 +78,8 @@ export const Navigation: React.FC<NavigationProps> = ({
   // Close menus on outside click or ESC key
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      const inMobileQuick = (e.target as HTMLElement | null)?.closest?.('[data-mobile-quick]');
+      if (!inMobileQuick && dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setShowNewDropdown(false);
       }
       if (
@@ -675,7 +676,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         </button>
 
         {/* Floating Quick Action Center (+) Button */}
-        <div className="relative -top-3">
+        <div className="relative -top-3" data-mobile-quick>
           <button
             onClick={() => setShowNewDropdown(!showNewDropdown)}
             className="w-12 h-12 rounded-full glass-btn-primary text-white shadow-xl shadow-[#961b45]/40 border-2 border-white flex items-center justify-center active:scale-95 transition-transform cursor-pointer"
@@ -734,7 +735,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* 4. MOBILE QUICK ACTION BOTTOM SHEET OVERLAY (< md)            */}
       {/* ------------------------------------------------------------- */}
       {showNewDropdown && (
-        <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end animate-in fade-in duration-200">
+        <div data-mobile-quick className="md:hidden fixed inset-0 z-50 flex flex-col justify-end animate-in fade-in duration-200">
           <div
             onClick={() => setShowNewDropdown(false)}
             className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm transition-opacity"

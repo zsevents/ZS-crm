@@ -332,12 +332,19 @@ export function generateQuotationPDF(quotation: Quotation, settings?: BusinessSe
   doc.setFontSize(7.5);
   doc.setTextColor(100, 116, 139);
 
-  const terms = quotation.termsAndConditions || [
-    '50% advance upon quotation sign-off to reserve dates and fresh flower stocks.',
-    '40% upon staging structural frame setup 12 hours prior to the event.',
-    '10% balance payable at venue handover before guests arrive.',
-    'Includes 18% GST (9% CGST + 9% SGST). SAC Code: 998599.',
-  ];
+  // Terms may arrive as a list or as one text block (one term per line).
+  const rawTerms: unknown = quotation.termsAndConditions;
+  const savedTerms = (Array.isArray(rawTerms) ? rawTerms : String(rawTerms ?? '').split(/\r?\n/))
+    .map((t) => String(t).replace(/^\s*[\u2022*-]\s*/, '').trim())
+    .filter(Boolean);
+  const terms = savedTerms.length
+    ? savedTerms
+    : [
+        '50% advance upon quotation sign-off to reserve dates and fresh flower stocks.',
+        '40% upon staging structural frame setup 12 hours prior to the event.',
+        '10% balance payable at venue handover before guests arrive.',
+        'Includes 18% GST (9% CGST + 9% SGST). SAC Code: 998599.',
+      ];
 
   terms.slice(0, 4).forEach((term, idx) => {
     const lines = doc.splitTextToSize(`• ${term}`, 92);

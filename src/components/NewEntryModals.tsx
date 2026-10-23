@@ -104,7 +104,10 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
     if (onClose) onClose();
   };
 
-  const handleRefresh = async (cb?: () => void) => {
+  // Close the form as soon as the save succeeds (otherwise it just sits open and
+  // looks like nothing happened), then refresh the lists behind it.
+  const handleRefresh = async (key: string, cb?: () => void) => {
+    handleClose(key);
     if (cb) cb();
     if (onRefreshData) await onRefreshData();
   };
@@ -123,7 +126,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
           templates={templates}
           settings={safeSettings}
           initialTemplate={activeQuotationTemplate}
-          onSuccess={() => handleRefresh(onQuotationCreated)}
+          onSuccess={() => handleRefresh('quotation', onQuotationCreated)}
         />
       )}
 
@@ -131,7 +134,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
         <NewLeadModal
           onClose={() => handleClose('lead')}
           settings={safeSettings}
-          onSuccess={() => handleRefresh(onLeadCreated)}
+          onSuccess={() => handleRefresh('lead', onLeadCreated)}
         />
       )}
 
@@ -140,7 +143,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
           onClose={() => handleClose('project')}
           customers={customers}
           settings={safeSettings}
-          onSuccess={() => handleRefresh(onProjectCreated)}
+          onSuccess={() => handleRefresh('project', onProjectCreated)}
         />
       )}
 
@@ -148,7 +151,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
         <NewCustomerModal
           onClose={() => handleClose('customer')}
           settings={safeSettings}
-          onSuccess={() => handleRefresh(onCustomerCreated)}
+          onSuccess={() => handleRefresh('customer', onCustomerCreated)}
         />
       )}
 
@@ -158,7 +161,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
           projects={projects}
           settings={safeSettings}
           preselectedProjectId={activeInvoiceProjectId}
-          onSuccess={() => handleRefresh(onInvoiceCreated)}
+          onSuccess={() => handleRefresh('invoice', onInvoiceCreated)}
         />
       )}
 
@@ -167,7 +170,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
           onClose={() => handleClose('payment')}
           invoices={invoices}
           preselectedInvoiceId={activePaymentInvoiceId}
-          onSuccess={() => handleRefresh(onPaymentRecorded)}
+          onSuccess={() => handleRefresh('payment', onPaymentRecorded)}
         />
       )}
 
@@ -176,7 +179,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
           onClose={() => handleClose('dailyLog')}
           projects={projects}
           preselectedProjectId={activeDailyLogProjectId}
-          onSuccess={() => handleRefresh(onDailyUpdatePosted)}
+          onSuccess={() => handleRefresh('dailyLog', onDailyUpdatePosted)}
         />
       )}
     </div>

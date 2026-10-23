@@ -157,8 +157,21 @@ async function seedIfEmpty(): Promise<void> {
   if (settingsError) throw settingsError;
 }
 
+// A page load fires ~10 API calls at once; they share one database read instead
+// of each doing their own.
+let hydrating: Promise<void> | null = null;
+
 /** Load Postgres into the in-memory arrays. */
-export async function hydrate(): Promise<void> {
+export function hydrate(): Promise<void> {
+  if (!hydrating) {
+    hydrating = hydrateNow().finally(() => {
+      hydrating = null;
+    });
+  }
+  return hydrating;
+}
+
+async function hydrateNow(): Promise<void> {
   if (!isSupabaseConfigured()) return;
 
   const supabase = getSupabase();
@@ -168,26 +181,29 @@ export async function hydrate(): Promise<void> {
     seeded = true;
   }
 
-  for (const name of COLLECTIONS) {
-    // Postgres returns rows unordered. The IDs are sequential per entity
-    // ("LD-2026-00421", "PRJ-2026-089"), so ordering by id reproduces the
-    // stable insertion order the in-memory arrays used to guarantee.
-    const { data, error } = await supabase
-      .from(name)
-      .select('*')
-      .order('id', { ascending: true });
-    if (error) throw error;
-    (db as any)[name] = (data ?? []).map(fromRow);
-  }
+  // All tables and the settings row load in parallel (one round trip, not seven).
+  const [tables, settingsResult] = await Promise.all([
+    Promise.all(
+      COLLECTIONS.map(async (name) => {
+        // Postgres returns rows unordered. The IDs are sequential per entity
+        // ("LD-2026-00421", "PRJ-2026-089"), so ordering by id reproduces the
+        // stable insertion order the in-memory arrays used to guarantee.
+        const { data, error } = await supabase
+          .from(name)
+          .select('*')
+          .order('id', { ascending: true });
+        if (error) throw error;
+        return [name, (data ?? []).map(fromRow)] as const;
+      })
+    ),
+    supabase.from('business_settings').select('settings').eq('id', 1).maybeSingle(),
+  ]);
+  for (const [name, rows] of tables) (db as any)[name] = rows;
 
   // Never re-issue an ID that is already stored (would overwrite that row).
   db.syncCountersFromData();
 
-  const { data: settingsRow } = await supabase
-    .from('business_settings')
-    .select('settings')
-    .eq('id', 1)
-    .maybeSingle();
+  const settingsRow = settingsResult.data;
   if (settingsRow?.settings) {
     db.settings = { ...db.settings, ...settingsRow.settings };
   }
@@ -199,24 +215,27 @@ export async function flush(): Promise<void> {
 
   const supabase = getSupabase();
 
+  // Which rows exist in each table, fetched together up front.
+  const existing = await Promise.all(
+    COLLECTIONS.map(async (name) => {
+      const { data, error } = await supabase.from(name).select('id');
+      if (error) throw error;
+      return (data ?? []).map((r: any) => r.id as string);
+    })
+  );
+
+  // Upserts keep dependency order (customers first, then rows that reference them).
   for (const name of COLLECTIONS) {
     const items = (db as any)[name] as any[];
-    const keepIds = items.map((item) => item.id);
+    if (items.length) await upsertRows(supabase, name, items.map(toRow));
+  }
 
-    if (items.length) {
-      await upsertRows(supabase, name, items.map(toRow));
-    }
-
-    // Remove rows that no longer exist in memory (handles DELETE routes).
-    const { data: existing, error: listError } = await supabase.from(name).select('id');
-    if (listError) throw listError;
-
-    const stale = (existing ?? [])
-      .map((r: any) => r.id)
-      .filter((id: string) => !keepIds.includes(id));
-
+  // Remove rows that no longer exist in memory (handles DELETE routes), children first.
+  for (let i = COLLECTIONS.length - 1; i >= 0; i--) {
+    const keep = new Set(((db as any)[COLLECTIONS[i]] as any[]).map((item) => item.id));
+    const stale = existing[i].filter((id) => !keep.has(id));
     if (stale.length) {
-      const { error } = await supabase.from(name).delete().in('id', stale);
+      const { error } = await supabase.from(COLLECTIONS[i]).delete().in('id', stale);
       if (error) throw error;
     }
   }

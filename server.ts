@@ -7,25 +7,18 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { apiRouter } from './src/server/routes.js';
 import { withPersistence } from './src/server/persistence.js';
+import { apiRateLimit, corsPolicy, securityHeaders, requestLogger, errorHandler } from './src/server/security.js';
 import { requireAuth } from './src/server/auth.js';
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+  app.use(express.json({ limit: '2mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
-  // Enable CORS for external website form integration
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
-    next();
-  });
+  // Same-origin by default; only the enquiry endpoint is open to any website
+  app.use('/api', securityHeaders, requestLogger, corsPolicy, apiRateLimit);
 
   // Reject unauthenticated calls before touching the database
   app.use('/api', requireAuth);
@@ -45,6 +38,8 @@ async function startServer() {
   app.all('/api/*', (req, res) => {
     res.status(404).json({ success: false, error: `Endpoint not found: ${req.method} ${req.path}` });
   });
+
+  app.use(errorHandler);
 
   // Vite middleware setup
   if (process.env.NODE_ENV !== 'production') {

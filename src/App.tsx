@@ -729,8 +729,14 @@ export default function App() {
 
       {/* LEAD DETAIL INSPECTOR SLIDE-OVER */}
       {inspectedLead && (
-        <div className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md flex items-center justify-end animate-in fade-in duration-150">
-          <div className="w-full max-w-lg h-full glass-modal shadow-2xl flex flex-col overflow-hidden text-slate-900 border-l border-white/80">
+        <div
+          onClick={() => setInspectedLeadId(null)}
+          className="fixed inset-0 z-50 bg-slate-950/40 flex items-end sm:items-center justify-center sm:p-4 animate-in fade-in duration-150"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full sm:max-w-lg max-h-[92vh] sm:max-h-[88vh] rounded-t-3xl sm:rounded-3xl glass-modal shadow-2xl flex flex-col overflow-hidden text-slate-900 border border-white/80 animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+          >
             {/* Header */}
             <div className="p-5 border-b border-rose-200/50 bg-white/40 backdrop-blur-md flex items-center justify-between">
               <div>
@@ -948,7 +954,7 @@ export default function App() {
       {/* Floating Keyboard Shortcuts Trigger Button */}
       <button
         onClick={() => setShowShortcutsModal(true)}
-        className="fixed bottom-4 right-4 z-40 px-3.5 py-2 glass-btn-secondary text-slate-900 rounded-full text-xs font-bold shadow-xl flex items-center gap-2 border border-white/90 transition-all cursor-pointer hover:scale-105"
+        className="hidden md:flex fixed bottom-4 right-4 z-40 px-3.5 py-2 glass-btn-secondary text-slate-900 rounded-full text-xs font-bold shadow-xl flex items-center gap-2 border border-white/90 transition-all cursor-pointer hover:scale-105"
         title="Keyboard Shortcuts (?)"
       >
         <Keyboard className="w-3.5 h-3.5 text-[#831843]" />
