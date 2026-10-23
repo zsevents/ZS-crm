@@ -35,6 +35,7 @@ import { CalendarView } from './components/CalendarView';
 import { WebsiteFormSimulator } from './components/WebsiteFormSimulator';
 import { SettingsView } from './components/SettingsView';
 import { NewEntryModals } from './components/NewEntryModals';
+import { ExposView } from './components/ExposView';
 import { ConfirmDialog, RecordEditModal, type FieldDef } from './components/RecordDialogs';
 import { AuthView } from './components/AuthView';
 import { getSupabase,isSupabaseConfigured } from './lib/supabaseClient';
@@ -49,6 +50,7 @@ type ViewTab =
   | 'FINANCE'
   | 'CALENDAR'
   | 'WEBSITE_FORM'
+  | 'EXPOS'
   | 'SETTINGS';
 
 // Fields shown in the edit forms
@@ -660,6 +662,8 @@ export default function App() {
         )}
 
         {/* CALENDAR & SCHEDULE CONFLICTS TAB */}
+        {activeTab === 'EXPOS' && <ExposView />}
+
         {activeTab === 'CALENDAR' && (
           <CalendarView
             projects={projects}

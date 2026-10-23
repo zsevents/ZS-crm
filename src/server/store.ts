@@ -19,7 +19,8 @@ type Collection =
   | 'projects'
   | 'quotations'
   | 'invoices'
-  | 'payments';
+  | 'payments'
+  | 'expos';
 
 // db property -> table name (identical here, but kept explicit).
 const COLLECTIONS: Collection[] = [
@@ -29,6 +30,7 @@ const COLLECTIONS: Collection[] = [
   'quotations',
   'invoices',
   'payments',
+  'expos',
 ];
 
 // Columns that are date/timestamp typed: empty strings must become NULL.
@@ -51,6 +53,8 @@ const DATE_COLUMNS = new Set([
 // Columns stored as numeric: PostgREST can hand these back as strings.
 const NUMERIC_COLUMNS = new Set([
   'budget',
+  'booth_cost',
+  'leads_collected',
   'estimated_project_value',
   'probability',
   'lead_score',
