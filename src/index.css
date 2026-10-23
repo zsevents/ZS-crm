@@ -16,6 +16,9 @@
   --burgundy-dark: #751437;
   --burgundy-light: #b82357;
   --rose-accent: #fb7185;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.45, 0.64, 1);
 }
 
 body {
@@ -211,21 +214,17 @@ body {
               inset 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
 }
 
-/* Glass Buttons (Exact Rich Plum Velvet Gradient from image.png) */
+/* Primary button: flat solid wine fill. No gradient, no glow, no inner highlight. */
 .glass-btn-primary {
-  background: linear-gradient(135deg, #961b45 0%, #751437 100%);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 8px 24px -4px rgba(150, 27, 69, 0.42),
-              inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  transition: all 0.2s ease;
+  background: #7a1640;
+  border: 1px solid #641133;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
+  transition: background-color 0.2s ease, box-shadow 0.25s var(--ease-out), transform 0.2s var(--ease-spring);
 }
 
 .glass-btn-primary:hover {
-  background: linear-gradient(135deg, #a81e4e 0%, #85163e 100%);
-  box-shadow: 0 12px 28px -4px rgba(150, 27, 69, 0.55),
-              inset 0 1px 2px 0 rgba(255, 255, 255, 0.7);
+  background: #641133;
+  box-shadow: 0 8px 16px -8px rgba(15, 23, 42, 0.38);
   transform: translateY(-1px);
 }
 
@@ -331,3 +330,96 @@ body {
   background: rgba(131, 24, 67, 0.4);
 }
 
+/* =========================================================================
+   MOTION SYSTEM: one easing curve, short staggers, no layout jank.
+   Only transform/opacity animate. Everything is switched off for users who
+   ask for reduced motion.
+   ========================================================================= */
+
+@keyframes view-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bar-up {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* Whole page content eases in when you switch tabs */
+.view-enter {
+  animation: view-in 0.5s var(--ease-out) backwards;
+}
+
+/* Cards rise in one after another (fill-mode is backwards-only so hover can still move them) */
+main .glass-subcard,
+main .glass-card,
+main .glass-dark-card {
+  animation: rise-in 0.7s var(--ease-out) backwards;
+}
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(2) { animation-delay: 70ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(3) { animation-delay: 140ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(4) { animation-delay: 210ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(5) { animation-delay: 280ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(6) { animation-delay: 350ms; }
+main :is(.glass-subcard, .glass-card, .glass-dark-card):nth-child(n + 7) { animation-delay: 420ms; }
+
+/* Dashboard cards lift on hover (mouse devices only) */
+@media (hover: hover) {
+  main .glass-subcard,
+  main .glass-dark-card {
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  }
+  main .glass-subcard:hover,
+  main .glass-dark-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 46px -18px rgba(15, 23, 42, 0.24),
+                inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Pop-ups spring in; their backdrop fades */
+.glass-modal {
+  animation: pop-in 0.5s var(--ease-spring) backwards;
+}
+.fixed.inset-0.z-50 {
+  animation: fade-in 0.25s ease backwards;
+}
+
+/* Bars grow from their baseline */
+.bar-up {
+  transform-origin: bottom;
+  animation: bar-up 0.8s var(--ease-out) backwards;
+}
+
+/* Every button gives a little tactile feedback */
+button:not(:disabled) {
+  transition: transform 0.2s var(--ease-spring), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease, color 0.2s ease;
+}
+button:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

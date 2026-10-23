@@ -241,7 +241,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
             <button
               type="button"
               onClick={handleOpenCreateModal}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#831843]/20 transition-all cursor-pointer w-fit hover:scale-102"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer w-fit hover:scale-102"
             >
               <Plus className="w-4 h-4" />
               <span>Add Customer</span>
@@ -540,7 +540,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#831843] to-[#9f1239] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-white/20">
+                      <div className="w-10 h-10 rounded-xl bg-[#7a1640] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-white/20">
                         {customer.name.slice(0, 2).toUpperCase()}
                       </div>
                       <div>
@@ -632,7 +632,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
             {/* Drawer Header */}
             <div className="p-5 border-b border-white/60 bg-white/40 backdrop-blur-md flex items-center justify-between">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#831843] to-[#9f1239] text-white flex items-center justify-center font-bold text-lg shadow-sm border border-white/20">
+                <div className="w-12 h-12 rounded-2xl bg-[#7a1640] text-white flex items-center justify-center font-bold text-lg shadow-sm border border-white/20">
                   {selectedCustomer.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div>
@@ -963,7 +963,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                 <button
                   type="submit"
                   disabled={isSavingCustomer}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold disabled:opacity-50 transition-all shadow-md shadow-[#831843]/20 border border-white/20 cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold disabled:opacity-50 transition-all shadow-sm border border-white/20 cursor-pointer"
                 >
                   {isSavingCustomer ? 'Saving...' : editingCustomer ? 'Update Customer' : 'Create Customer'}
                 </button>

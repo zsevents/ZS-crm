@@ -382,7 +382,7 @@ const NewLeadModal: React.FC<{
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold cursor-pointer shadow-md shadow-[#831843]/20 border border-white/20 transition-all disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold cursor-pointer shadow-sm border border-white/20 transition-all disabled:opacity-50"
           >
             {isSubmitting ? 'Saving...' : 'Create Lead'}
           </button>
@@ -530,7 +530,7 @@ const NewProjectModal: React.FC<{
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 font-bold cursor-pointer transition-colors border border-transparent hover:border-white/60">
             Cancel
           </button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold cursor-pointer shadow-md shadow-[#831843]/20 border border-white/20 transition-all disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold cursor-pointer shadow-sm border border-white/20 transition-all disabled:opacity-50">
             {isSubmitting ? 'Creating...' : 'Launch Project'}
           </button>
         </div>
@@ -612,7 +612,7 @@ const NewCustomerModal: React.FC<{
         </div>
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer">Save Customer</button>
+          <button type="submit" className="px-5 py-2 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer">Save Customer</button>
         </div>
       </form>
     </div>
@@ -793,7 +793,7 @@ const NewInvoiceModal: React.FC<{
 
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
             {isSubmitting ? 'Creating...' : 'Issue Invoice'}
           </button>
         </div>
@@ -933,7 +933,7 @@ const RecordPaymentModal: React.FC<{
 
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
             {isSubmitting ? 'Recording...' : 'Save & Update Balance'}
           </button>
         </div>
@@ -1053,7 +1053,7 @@ const PostDailyUpdateModal: React.FC<{
 
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
             {isSubmitting ? 'Posting...' : 'Save Log'}
           </button>
         </div>
@@ -1281,7 +1281,7 @@ const NewQuotationModal: React.FC<{
                 type="button"
                 onClick={handleAiGenerateQuotation}
                 disabled={isAiGenerating}
-                className="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs border border-white/20 cursor-pointer transition-all disabled:opacity-50"
+                className="flex-1 px-3 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs border border-white/20 cursor-pointer transition-all disabled:opacity-50"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 {isAiGenerating ? 'Calculating...' : 'AI Auto-Fill Items'}
@@ -1506,7 +1506,7 @@ const NewQuotationModal: React.FC<{
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? 'Generating Proposal...' : 'Create & Save Quotation'}
           </button>

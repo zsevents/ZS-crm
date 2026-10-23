@@ -225,7 +225,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={() => handleSelectNav('DASHBOARD')}
           className="flex items-center gap-3 cursor-pointer group"
         >
-          <div className="w-12 h-12 rounded-2xl overflow-hidden border border-rose-200/90 shadow-md shadow-[#961b45]/20 group-hover:scale-105 transition-all shrink-0 bg-white/90 p-0.5">
+          <div className="w-12 h-12 rounded-2xl overflow-hidden border border-rose-200/90 shadow-sm group-hover:scale-105 transition-all shrink-0 bg-white/90 p-0.5">
             <img
               src={zsEventsLogo}
               alt="ZS Events Logo"
@@ -264,7 +264,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           <button
             id="btn-sidebar-quick-new"
             onClick={() => setShowNewDropdown(!showNewDropdown)}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl glass-btn-primary text-white font-bold text-xs shadow-lg shadow-[#961b45]/30 active:scale-98 transition-all cursor-pointer hover:scale-102"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl glass-btn-primary text-white font-bold text-xs shadow-sm active:scale-98 transition-all cursor-pointer hover:scale-102"
           >
             <Plus className="w-4 h-4" />
             <span>Create New Entry</span>
@@ -474,7 +474,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               onClick={() => handleSelectNav(item.id)}
               className={`w-full px-3.5 py-3 rounded-2xl flex items-center justify-between transition-all cursor-pointer text-left group ${
                 isActive
-                  ? 'glass-btn-primary text-white font-bold shadow-xl shadow-[#961b45]/35 border border-white/30'
+                  ? 'glass-btn-primary text-white font-bold shadow-sm border border-white/30'
                   : 'text-slate-800 hover:bg-white/60 hover:text-slate-950 font-bold border border-transparent hover:border-white/70'
               }`}
             >
@@ -529,7 +529,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* 4. Bottom Footer: User Profile & Logout */}
       <div className="p-3.5 border-t border-white/60 bg-white/40 backdrop-blur-md flex items-center justify-between text-xs shrink-0">
         <div className="flex items-center gap-2.5 truncate min-w-0">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#961b45] to-[#751437] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-md shadow-[#961b45]/20">
+          <div className="w-10 h-10 rounded-2xl bg-[#7a1640] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
             {currentUser?.name?.charAt(0) || 'S'}
           </div>
           <div className="truncate">
@@ -599,7 +599,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setShowNewDropdown(!showNewDropdown)}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-xl glass-btn-primary text-white text-xs font-bold shadow-md shadow-[#961b45]/30 cursor-pointer min-h-[38px]"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-xl glass-btn-primary text-white text-xs font-bold shadow-sm cursor-pointer min-h-[38px]"
           >
             <Plus className="w-4 h-4" />
             <span>New</span>
@@ -650,7 +650,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <div className="relative -top-3" data-mobile-quick>
           <button
             onClick={() => setShowNewDropdown(!showNewDropdown)}
-            className="w-12 h-12 rounded-full glass-btn-primary text-white shadow-xl shadow-[#961b45]/40 border-2 border-white flex items-center justify-center active:scale-95 transition-transform cursor-pointer"
+            className="w-12 h-12 rounded-full glass-btn-primary text-white shadow-sm border-2 border-white flex items-center justify-center active:scale-95 transition-transform cursor-pointer"
             title="Create New Entry"
           >
             <Plus className="w-6 h-6" />

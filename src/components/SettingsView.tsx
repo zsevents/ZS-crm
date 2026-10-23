@@ -133,7 +133,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     if (strengthScore === 1) return { text: 'Weak', color: 'bg-rose-500 text-white' };
     if (strengthScore === 2) return { text: 'Fair', color: 'bg-amber-500 text-white' };
     if (strengthScore === 3) return { text: 'Good', color: 'bg-emerald-500 text-white' };
-    return { text: 'Luxury-Grade Strong', color: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white' };
+    return { text: 'Luxury-Grade Strong', color: 'bg-emerald-700 text-white' };
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -277,7 +277,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             onClick={() => setActiveTab('PASSWORD')}
             className={`px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all shrink-0 cursor-pointer ${
               activeTab === 'PASSWORD'
-                ? 'glass-btn-primary text-white shadow-lg shadow-[#961b45]/30'
+                ? 'glass-btn-primary text-white shadow-sm'
                 : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
             }`}
           >
@@ -290,7 +290,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             onClick={() => setActiveTab('PROFILE')}
             className={`px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all shrink-0 cursor-pointer ${
               activeTab === 'PROFILE'
-                ? 'glass-btn-primary text-white shadow-lg shadow-[#961b45]/30'
+                ? 'glass-btn-primary text-white shadow-sm'
                 : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
             }`}
           >
@@ -303,7 +303,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             onClick={() => setActiveTab('2FA_SESSIONS')}
             className={`px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all shrink-0 cursor-pointer ${
               activeTab === '2FA_SESSIONS'
-                ? 'glass-btn-primary text-white shadow-lg shadow-[#961b45]/30'
+                ? 'glass-btn-primary text-white shadow-sm'
                 : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
             }`}
           >
@@ -319,7 +319,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             onClick={() => setActiveTab('NOTIFICATIONS')}
             className={`px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all shrink-0 cursor-pointer ${
               activeTab === 'NOTIFICATIONS'
-                ? 'glass-btn-primary text-white shadow-lg shadow-[#961b45]/30'
+                ? 'glass-btn-primary text-white shadow-sm'
                 : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
             }`}
           >
@@ -332,7 +332,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             onClick={() => setActiveTab('AUDIT_PREFS')}
             className={`px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all shrink-0 cursor-pointer ${
               activeTab === 'AUDIT_PREFS'
-                ? 'glass-btn-primary text-white shadow-lg shadow-[#961b45]/30'
+                ? 'glass-btn-primary text-white shadow-sm'
                 : 'glass-btn-secondary text-slate-700 hover:text-slate-950'
             }`}
           >
@@ -377,7 +377,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <div className="space-y-6">
             
             {/* Quick Email Reset Capsule Banner */}
-            <div className="glass-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-rose-200/60 bg-gradient-to-r from-rose-50/70 to-white/70">
+            <div className="glass-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-rose-200/60 bg-rose-50/70">
               <div className="flex items-start gap-3.5">
                 <div className="w-10 h-10 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-[#961b45] shrink-0">
                   <Mail className="w-5 h-5" />
@@ -394,7 +394,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 id="btn-send-reset-email"
                 type="button"
                 onClick={handleSendResetEmail}
-                className="px-4 py-2.5 rounded-xl glass-btn-primary text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-[#961b45]/20 shrink-0 cursor-pointer active:scale-98"
+                className="px-4 py-2.5 rounded-xl glass-btn-primary text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shrink-0 cursor-pointer active:scale-98"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Send Reset Link</span>
@@ -559,7 +559,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   id="btn-submit-update-password"
                   type="submit"
                   disabled={isUpdatingPassword}
-                  className="px-6 py-2.5 rounded-2xl glass-btn-primary text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-[#961b45]/25 cursor-pointer hover:scale-102 active:scale-98 transition-all disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-2xl glass-btn-primary text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer hover:scale-102 active:scale-98 transition-all disabled:opacity-50"
                 >
                   {isUpdatingPassword ? (
                     <>
@@ -598,12 +598,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 <div className="flex flex-col sm:flex-row items-center gap-5">
                   <div className={`w-20 h-20 rounded-3xl flex items-center justify-center text-white text-2xl font-black shadow-xl shrink-0 ${
                     avatarTheme === 'plum'
-                      ? 'bg-gradient-to-br from-[#961b45] to-[#751437] shadow-[#961b45]/30'
+                      ? 'bg-[#7a1640] '
                       : avatarTheme === 'emerald'
-                      ? 'bg-gradient-to-br from-emerald-700 to-teal-900 shadow-emerald-900/30'
+                      ? 'bg-emerald-800 '
                       : avatarTheme === 'rose'
-                      ? 'bg-gradient-to-br from-rose-500 to-pink-700 shadow-rose-500/30'
-                      : 'bg-gradient-to-br from-slate-800 to-slate-950 shadow-slate-900/30'
+                      ? 'bg-rose-600 '
+                      : 'bg-slate-900 '
                   }`}>
                     {name.charAt(0) || 'S'}
                   </div>
@@ -736,7 +736,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <div className="flex justify-end pt-3 border-t border-slate-200/60">
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-2xl glass-btn-primary text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-[#961b45]/25 cursor-pointer hover:scale-102 active:scale-98 transition-all"
+                  className="px-6 py-2.5 rounded-2xl glass-btn-primary text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer hover:scale-102 active:scale-98 transition-all"
                 >
                   <Save className="w-4 h-4" />
                   <span>Save Profile Changes</span>
@@ -1035,7 +1035,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   setNotifSaved(true);
                   setTimeout(() => setNotifSaved(false), 2500);
                 }}
-                className="px-6 py-2.5 rounded-2xl glass-btn-primary text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-[#961b45]/25 cursor-pointer"
+                className="px-6 py-2.5 rounded-2xl glass-btn-primary text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer"
               >
                 <Save className="w-4 h-4" />
                 <span>Save Notification Settings</span>

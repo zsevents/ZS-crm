@@ -319,7 +319,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
 
           <button
             onClick={onOpenNewProjectModal}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#831843]/20 transition-all cursor-pointer w-fit hover:scale-102"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer w-fit hover:scale-102"
           >
             <Plus className="w-4 h-4" />
             <span>New Project</span>

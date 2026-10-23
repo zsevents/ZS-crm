@@ -117,7 +117,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
           {/* Header Card */}
           <div className="flex items-start justify-between gap-3 pb-3 border-b border-white/60">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#831843] to-[#9f1239] text-white flex items-center justify-center text-xs font-black shadow-xs shrink-0 border border-white/20">
+              <div className="w-9 h-9 rounded-xl bg-[#7a1640] text-white flex items-center justify-center text-xs font-black shadow-xs shrink-0 border border-white/20">
                 {(customer.name || 'C').charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
@@ -293,7 +293,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
                 setIsOpen(false);
                 onViewCustomer(customer.id!);
               }}
-              className="mt-3 w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer"
+              className="mt-3 w-full py-2 px-3 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm border border-white/20 transition-all cursor-pointer"
             >
               <span>View Client Full Profile</span>
               <ExternalLink className="w-3 h-3" />

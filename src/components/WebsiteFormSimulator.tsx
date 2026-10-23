@@ -298,7 +298,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                 <button
                   type="button"
                   onClick={() => setActiveSubTab('SIMULATOR')}
-                  className="mt-4 px-5 py-2.5 bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white text-xs font-bold rounded-xl shadow-lg shadow-[#831843]/20 border border-white/20 cursor-pointer transition-all"
+                  className="mt-4 px-5 py-2.5 bg-[#7a1640] hover:bg-[#641133] text-white text-xs font-bold rounded-xl shadow-sm border border-white/20 cursor-pointer transition-all"
                 >
                   Open Simulator
                 </button>
@@ -361,7 +361,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                       onViewLeads();
                     }
                   }}
-                  className="w-full mt-2 py-2.5 bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold rounded-xl text-xs shadow-md shadow-[#831843]/20 border border-white/20 cursor-pointer transition-all flex items-center justify-center gap-1.5"
+                  className="w-full mt-2 py-2.5 bg-[#7a1640] hover:bg-[#641133] text-white font-bold rounded-xl text-xs shadow-sm border border-white/20 cursor-pointer transition-all flex items-center justify-center gap-1.5"
                 >
                   <span>Open Full Lead Record</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -593,7 +593,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-lg shadow-[#831843]/25 border border-white/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                className="w-full py-3.5 bg-[#7a1640] hover:bg-[#641133] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-sm border border-white/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <span>Submitting Inquiry to Z S EVENTS CRM...</span>

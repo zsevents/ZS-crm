@@ -459,7 +459,7 @@ export default function App() {
 
       {/* Main Workspace Area with left margin/padding for fixed sidebar & bottom safe clearance on mobile */}
       <main className="md:pl-64 lg:pl-72 flex-1 w-full min-w-0 transition-all relative z-10">
-        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-3 sm:py-6 pb-28 md:pb-8">
+        <div key={activeTab} className="view-enter max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-3 sm:py-6 pb-28 md:pb-8">
         {/* DASHBOARD TAB */}
         {activeTab === 'DASHBOARD' && (
           <DashboardView

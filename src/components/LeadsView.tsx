@@ -229,7 +229,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
           <button
             onClick={onOpenNewLeadModal}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#831843]/20 transition-all cursor-pointer w-fit hover:scale-102"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer w-fit hover:scale-102"
           >
             <Plus className="w-4 h-4" />
             <span>Add New Lead</span>
@@ -704,7 +704,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     <button
                       onClick={handleConvertLead}
                       disabled={isConverting}
-                      className="w-full py-2.5 rounded-xl glass-btn-primary active:scale-95 text-white text-xs font-bold shadow-md shadow-[#831843]/20 transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:scale-102"
+                      className="w-full py-2.5 rounded-xl glass-btn-primary active:scale-95 text-white text-xs font-bold shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:scale-102"
                     >
                       <Briefcase className="w-4 h-4" />
                       <span>{isConverting ? 'Converting...' : 'Convert to Project'}</span>

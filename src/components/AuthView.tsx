@@ -114,7 +114,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
       <div className="penthouse-bg" aria-hidden="true" />
       {/* Brand Header with Logo */}
       <div className="text-center mb-6 relative z-10 flex flex-col items-center">
-        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-white/90 shadow-2xl shadow-[#961b45]/30 mb-4 bg-white/95 p-1 hover:scale-105 transition-transform duration-300">
+        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-white/90 shadow-sm mb-4 bg-white/95 p-1 hover:scale-105 transition-transform duration-300">
           <img
             src={zsEventsLogo}
             alt="ZS Events - Where Every Celebration Blooms"
@@ -209,7 +209,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
             type="submit"
             id="auth-submit-btn"
             disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-lg shadow-[#831843]/25 border border-white/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer mt-2"
+            className="w-full py-3 bg-[#7a1640] hover:bg-[#641133] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-sm border border-white/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer mt-2"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">

@@ -10,6 +10,7 @@ Flower2,ChevronLeft
 } from 'lucide-react';
 import { DashboardStats,Project,Lead,DateConflict,Quotation,Invoice } from '../types';
 import { formatINR,formatDate } from '../lib/formatters';
+import { CountUp } from './CountUp';
 import { CustomerHoverDropdown } from './CustomerHoverDropdown';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
 
@@ -181,7 +182,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   Weekly Wedding & Muhurtham Load
                 </span>
                 <div className="text-xl font-black text-slate-950 mt-0.5">
-                  {activeProjects.length > 0 ? activeProjects.length : 6} Mandaps <span className="text-xs font-bold text-slate-500">/ 7-Day Window</span>
+                  <CountUp value={activeProjects.length > 0 ? activeProjects.length : 6} /> Mandaps <span className="text-xs font-bold text-slate-500">/ 7-Day Window</span>
                 </div>
               </div>
               <div className="w-7 h-7 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xs font-bold shadow-xs">
@@ -198,12 +199,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end cursor-pointer group"
                 >
                   <div
-                    className={`w-full rounded-full transition-all duration-300 relative flex items-center justify-center ${
+                    className={`bar-up w-full rounded-full transition-all duration-300 relative flex items-center justify-center ${
                       item.isPeak || selectedDay === idx
                         ? 'bg-slate-950 shadow-md scale-105'
                         : 'bg-slate-300/80 hover:bg-slate-400'
                     }`}
-                    style={{ height: item.height }}
+                    style={{ height: item.height, animationDelay: `${idx * 60}ms` }}
                   >
                     {(item.isPeak || selectedDay === idx) && (
                       <span className="text-[9px] font-bold text-white">
@@ -262,7 +263,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   94% Advance Recd
                 </span>
                 <span className="px-3 py-1 rounded-full bg-amber-950/70 text-amber-300 text-xs font-black border border-amber-500/40 shadow-xs">
-                  {leads.filter(l => l.status === 'NEW').length || 12} Open Enquiries
+                  <CountUp value={leads.filter(l => l.status === 'NEW').length || 12} /> Open Enquiries
                 </span>
               </div>
             </div>

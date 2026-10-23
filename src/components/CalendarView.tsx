@@ -162,7 +162,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
               type="button"
               id="btn-sync-google-calendar"
               onClick={() => setShowSyncModal(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs font-bold shadow-md shadow-[#831843]/20 transition-all cursor-pointer hover:scale-102"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass-btn-primary text-white text-xs font-bold shadow-sm transition-all cursor-pointer hover:scale-102"
             >
               <CalendarCheck className="w-4 h-4" />
               <span>Sync to Google Calendar</span>
@@ -485,7 +485,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleSyncProjectToGoogleCalendar(p)}
-                      className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#831843] to-[#9f1239] hover:from-[#701a39] hover:to-[#881337] text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-[#831843]/20 border border-white/20 transition-all cursor-pointer whitespace-nowrap"
+                      className="px-3 py-1.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm border border-white/20 transition-all cursor-pointer whitespace-nowrap"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       <span>Add to G-Cal</span>
