@@ -58,7 +58,7 @@ function nestedUrl(kind: NestedKind, parentId: string, itemId: string): string {
 }
 
 interface ExpoFinderInfo {
-  configured: { search: boolean; ai: boolean };
+  configured: { search: boolean };
   queries: string[];
   searchesUsed: number;
   limit: number;

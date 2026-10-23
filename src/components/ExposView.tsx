@@ -183,9 +183,7 @@ export const ExposView: React.FC = () => {
                 ? 'Loading…'
                 : !finder.configured.search
                 ? 'Not set up yet: add a SERPAPI_KEY in Vercel to turn it on.'
-                : `Searches Google every Monday and when you tap Find expos · ${finder.searchesUsed} of ${finder.limit} searches used this month${
-                    finder.configured.ai ? '' : ' · add ANTHROPIC_API_KEY for full details'
-                  }`}
+                : `Searches Google every Monday and when you tap Find expos · ${finder.searchesUsed} of ${finder.limit} searches used this month`}
             </p>
             {finder?.lastRunAt && (
               <p className="text-[11px] text-slate-500 mt-0.5">
