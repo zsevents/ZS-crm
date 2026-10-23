@@ -1,31 +1,16 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Globe,
-  Send,
-  Sparkles,
-  CheckCircle2,
-  AlertTriangle,
-  ArrowRight,
-  Flower2,
-  Phone,
-  Calendar,
-  MapPin,
-  Heart,
-  DollarSign,
-  User,
-  Mail,
-  MessageSquare,
-  Copy,
-  Check,
-  ExternalLink,
-  Filter,
-  Eye,
-  ChevronRight,
-  Clock,
+Globe,
+Send,
+Sparkles,
+CheckCircle2,
+AlertTriangle,
+ArrowRight,Eye,
+ChevronRight
 } from 'lucide-react';
-import { Lead, DEFAULT_BUSINESS_SETTINGS } from '../types';
+import { Lead,DEFAULT_BUSINESS_SETTINGS } from '../types';
 import { api } from '../lib/api';
-import { formatINR, formatDate } from '../lib/formatters';
+import { formatINR,formatDate } from '../lib/formatters';
 
 interface WebsiteFormSimulatorProps {
   leads?: Lead[];
@@ -44,8 +29,6 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
   bangaloreAreas = DEFAULT_BUSINESS_SETTINGS.bangaloreAreas,
   eventTypes = DEFAULT_BUSINESS_SETTINGS.eventTypes,
   onSelectLead,
-  templates = [],
-  onLeadSubmitted,
   onViewLeads,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'INBOX' | 'SIMULATOR'>('INBOX');

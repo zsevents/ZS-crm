@@ -1,33 +1,18 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Receipt,
-  CheckCircle2,
-  AlertCircle,
-  Plus,
-  Search,
-  Download,
-  CreditCard,
-  Building2,
-  Calendar,
-  FileText,
-  Percent,
-  ChevronRight,
-  Phone,
-  Clock,
-  Send,
-  Trash2,
-  Edit3,
-  MessageSquare,
-  DollarSign,
-  MoreVertical,
-  Check,
-  X,
-  Briefcase,
-  ExternalLink,
+Receipt,
+CheckCircle2,Plus,
+Search,
+Download,
+CreditCard,FileText,
+Percent,Trash2,
+Edit3,
+MessageSquare,X,
+Briefcase
 } from 'lucide-react';
-import { Invoice, Payment, Project, BusinessSettings, Quotation, Lead } from '../types';
-import { formatINR, formatDate, formatDateTime, cleanPhoneNumber } from '../lib/formatters';
-import { generateInvoicePDF, generateQuotationPDF } from '../utils/pdfGenerator';
+import { Invoice,Payment,Project,BusinessSettings,Quotation,Lead } from '../types';
+import { formatINR,formatDate,cleanPhoneNumber } from '../lib/formatters';
+import { generateInvoicePDF,generateQuotationPDF } from '../utils/pdfGenerator';
 import { api } from '../lib/api';
 import { CustomerHoverDropdown } from './CustomerHoverDropdown';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
@@ -49,9 +34,7 @@ interface FinanceViewProps {
 export const FinanceView: React.FC<FinanceViewProps> = ({
   invoices = [],
   payments = [],
-  projects = [],
   quotations = [],
-  leads = [],
   settings,
   onOpenNewInvoiceModal,
   onOpenPaymentModal,
@@ -62,8 +45,8 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
   const [activeFinanceTab, setActiveFinanceTab] = useState<'INVOICES' | 'QUOTATIONS' | 'PAYMENTS' | 'GST_SUMMARY'>('INVOICES');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedQuote, setSelectedQuote] = useState<Quotation | null>(quotations[0] || null);
-  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-  const [activeMenuInvoiceId, setActiveMenuInvoiceId] = useState<string | null>(null);
+  const [, setIsGeneratingPdf] = useState(false);
+  const [, setActiveMenuInvoiceId] = useState<string | null>(null);
 
   // Quick edit modal states
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
@@ -215,14 +198,6 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
     }
   };
 
-  const handleQuoteTotalChange = async (quoteId: string, total: number) => {
-    try {
-      await api.updateQuotation(quoteId, { total });
-      if (onQuotationUpdated) onQuotationUpdated();
-    } catch (err) {
-      console.error('Quotation total update failed:', err);
-    }
-  };
 
   const handleDeleteQuotation = async (quoteId: string) => {
     if (window.confirm(`Are you sure you want to delete this quotation?`)) {
@@ -633,7 +608,6 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   {filteredInvoices.length > 0 ? (
                     filteredInvoices.map((inv) => {
                       const balance = Math.max(0, inv.total - (inv.amountPaid || 0));
-                      const isMenuOpen = activeMenuInvoiceId === inv.id;
 
                       return (
                         <tr key={inv.id} className="hover:bg-white/40 transition-colors">

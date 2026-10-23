@@ -13,6 +13,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx tsc --noEmit
+      - run: npm run lint
+      - run: npm run check:dead
       - run: npm test
       - run: npx vite build

@@ -95,7 +95,7 @@ export type FollowUpType =
 
 export type FollowUpStatus = 'DUE' | 'COMPLETED' | 'OVERDUE' | 'CANCELLED';
 
-export type CommunicationType =
+type CommunicationType =
   | 'CALL'
   | 'WHATSAPP'
   | 'EMAIL'

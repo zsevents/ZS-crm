@@ -1,32 +1,23 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Users,
-  Search,
-  Filter,
-  Phone,
-  MessageSquare,
-  Calendar,
-  DollarSign,
-  Plus,
-  ArrowRight,
-  CheckCircle2,
-  Clock,
-  Briefcase,
-  AlertCircle,
-  Tag,
-  MapPin,
-  Send,
-  Sparkles,
-  ExternalLink,
-  ChevronRight,
-  X,
-  FileText,
-  Copy,
-  Check,
+Users,
+Search,
+Filter,
+Phone,
+MessageSquare,
+Calendar,Plus,
+ArrowRight,Clock,
+Briefcase,MapPin,
+Send,
+Sparkles,
+ExternalLink,
+ChevronRight,
+X,Copy,
+Check
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { Lead, LeadStatus, ActivityItem, Project } from '../types';
-import { formatINR, formatDate, formatPhoneNumber, cleanPhoneNumber, formatDateTime } from '../lib/formatters';
+import { Lead,LeadStatus,ActivityItem,Project } from '../types';
+import { formatINR,formatDate,formatPhoneNumber,cleanPhoneNumber,formatDateTime } from '../lib/formatters';
 import { api } from '../lib/api';
 
 interface LeadsViewProps {

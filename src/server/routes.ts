@@ -1,13 +1,13 @@
-import { Router, Request, Response } from 'express';
+import { Router,Request,Response } from 'express';
 import { db } from './db.js';
 import { Milestone } from '../types.js';
-import { generateQuotationSuggestions, generateWhatsAppPitch } from './assistant.js';
+import { generateQuotationSuggestions,generateWhatsAppPitch } from './assistant.js';
 import { sendInquiryEmail } from './notify.js';
 
 export const apiRouter = Router();
 
 // --- Dashboard Stats ---
-apiRouter.get('/dashboard/stats', (req: Request, res: Response) => {
+apiRouter.get('/dashboard/stats', (_req: Request, res: Response) => {
   try {
     const stats = db.getDashboardStats();
     res.json({ success: true, data: stats });
@@ -17,7 +17,7 @@ apiRouter.get('/dashboard/stats', (req: Request, res: Response) => {
 });
 
 // Event-date clashes between active projects (computed with the dashboard stats)
-apiRouter.get('/dashboard/conflicts', (req: Request, res: Response) => {
+apiRouter.get('/dashboard/conflicts', (_req: Request, res: Response) => {
   try {
     res.json({ success: true, data: db.getDashboardStats().conflictingDates });
   } catch (err: any) {
@@ -85,7 +85,7 @@ apiRouter.get('/leads/:id', (req: Request, res: Response) => {
 
 apiRouter.post('/leads', (req: Request, res: Response) => {
   try {
-    const { customerName, phone, eventType, eventDate, budget, serviceRequired } = req.body;
+    const { customerName, phone, serviceRequired } = req.body;
     if (!customerName || !phone || !serviceRequired) {
       return res.status(400).json({
         success: false,
@@ -101,7 +101,7 @@ apiRouter.post('/leads', (req: Request, res: Response) => {
 });
 
 // Website public inquiry endpoint (PRD requirement #12, #13, #51)
-apiRouter.get(['/website-inquiry', '/inquiry'], (req: Request, res: Response) => {
+apiRouter.get(['/website-inquiry', '/inquiry'], (_req: Request, res: Response) => {
   res.json({
     status: 'online',
     endpoint: 'POST /api/website-inquiry',
@@ -240,7 +240,7 @@ apiRouter.post(['/website-inquiry', '/inquiry'], async (req: Request, res: Respo
     // Check duplicate
     const dupCheck = db.checkDuplicateLead(phone.toString().trim(), name.toString().trim());
 
-    const { lead, customer } = db.createLead({
+    const { lead } = db.createLead({
       customerName: name.toString().trim(),
       phone: phone.toString().trim(),
       email: email.toString().trim(),
@@ -762,7 +762,7 @@ apiRouter.post('/projects/:id/notes', (req: Request, res: Response) => {
 // in-memory /auth/login, /auth/register and /auth/users routes were removed.
 
 // --- Floral Templates Routes ---
-apiRouter.get('/templates', (req: Request, res: Response) => {
+apiRouter.get('/templates', (_req: Request, res: Response) => {
   try {
     const templates = db.getFloralTemplates();
     res.json({ success: true, data: templates });
@@ -823,7 +823,7 @@ apiRouter.get('/quotations/:id', (req: Request, res: Response) => {
 
 apiRouter.post('/quotations', (req: Request, res: Response) => {
   try {
-    const { customerName, customerPhone, eventType, eventDate, venue, items } = req.body;
+    const { customerName, customerPhone, items } = req.body;
     if (!customerName || !customerPhone || !items || !items.length) {
       return res.status(400).json({
         success: false,
@@ -867,7 +867,7 @@ apiRouter.post('/quotations/:id/convert-to-project', (req: Request, res: Respons
 });
 
 // --- Calendar Events & Admin Schedule Sync ---
-apiRouter.get('/calendar/events', (req: Request, res: Response) => {
+apiRouter.get('/calendar/events', (_req: Request, res: Response) => {
   try {
     const events: any[] = [];
 
@@ -950,7 +950,7 @@ apiRouter.get('/calendar/events', (req: Request, res: Response) => {
   }
 });
 
-apiRouter.get('/calendar/export-ics', (req: Request, res: Response) => {
+apiRouter.get('/calendar/export-ics', (_req: Request, res: Response) => {
   try {
     const calName = 'Z S EVENTS - Event & Floral Schedule';
     let icsContent = [
@@ -1058,7 +1058,7 @@ apiRouter.patch('/invoices/:id', (req: Request, res: Response) => {
 });
 
 // --- Payments ---
-apiRouter.get('/payments', (req: Request, res: Response) => {
+apiRouter.get('/payments', (_req: Request, res: Response) => {
   try {
     db.recalculateFinancials();
     res.json({ success: true, data: db.payments });
@@ -1110,7 +1110,7 @@ apiRouter.delete('/payments/:id', (req: Request, res: Response) => {
 });
 
 // --- Business Settings ---
-apiRouter.get('/settings', (req: Request, res: Response) => {
+apiRouter.get('/settings', (_req: Request, res: Response) => {
   res.json({ success: true, data: db.settings });
 });
 

@@ -1,27 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React,{ Fragment,useState,useEffect,useRef } from 'react';
 import {
-  Menu,
-  LayoutDashboard,
-  Users,
-  Briefcase,
-  Receipt,
-  CalendarDays,
-  Globe,
-  Settings,
-  ShieldCheck,
-  Plus,
-  Search,
-  CheckCircle2,
-  AlertTriangle,
-  Sparkles,
-  FileText,
-  LogOut,
-  X,
-  ChevronRight,
+Menu,
+LayoutDashboard,
+Users,
+Briefcase,
+Receipt,
+CalendarDays,
+Globe,ShieldCheck,
+Plus,
+Search,
+CheckCircle2,Sparkles,
+FileText,
+LogOut,
+X
 } from 'lucide-react';
-import { User, Lead, Project, Customer, Quotation, Invoice } from '../types';
+import { User,Lead,Project,Customer,Quotation,Invoice } from '../types';
 import { api } from '../lib/api';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
+
+type QuickActionKey = 'NEW_LEAD' | 'NEW_PROJECT' | 'POST_DAILY_UPDATE' | 'CREATE_INVOICE' | 'CREATE_QUOTATION' | 'RECORD_PAYMENT';
+
+// One list drives both the desktop dropdown and the phone bottom sheet.
+const QUICK_ACTIONS: {
+  action: QuickActionKey;
+  Icon: React.ComponentType<{ className?: string }> | null;
+  menuLabel: string;
+  menuTone: string;
+  cardTitle: string;
+  cardSub: string;
+  cardTone: string;
+  dividerBefore?: boolean;
+}[] = [
+  { action: 'NEW_LEAD', Icon: Users, menuLabel: 'New Lead Inquiry', menuTone: 'text-[#831843]', cardTitle: 'New Lead', cardSub: 'Inbound inquiry', cardTone: 'bg-rose-100/90 text-[#831843]' },
+  { action: 'CREATE_QUOTATION', Icon: FileText, menuLabel: 'New Quotation / Proposal', menuTone: 'text-[#831843]', cardTitle: 'New Proposal', cardSub: 'Quotation / PDF', cardTone: 'bg-purple-100/90 text-purple-900' },
+  { action: 'NEW_PROJECT', Icon: Briefcase, menuLabel: 'New Event Project & Staging', menuTone: 'text-slate-700', cardTitle: 'New Project', cardSub: 'Staging & venue', cardTone: 'bg-blue-100/90 text-blue-900' },
+  { action: 'POST_DAILY_UPDATE', Icon: Sparkles, menuLabel: 'Post Daily Site Staging Log', menuTone: 'text-amber-600', cardTitle: 'Daily Site Log', cardSub: 'On-site status', cardTone: 'bg-amber-100/90 text-amber-900', dividerBefore: true },
+  { action: 'CREATE_INVOICE', Icon: Receipt, menuLabel: 'Create Tax Invoice (GST)', menuTone: 'text-[#831843]', cardTitle: 'GST Invoice', cardSub: 'Tax bill & PDF', cardTone: 'bg-emerald-100/90 text-emerald-900' },
+  { action: 'RECORD_PAYMENT', Icon: null, menuLabel: 'Record Payment (UPI/NEFT)', menuTone: '', cardTitle: 'Record Payment', cardSub: 'UPI / NEFT receipt', cardTone: 'bg-rose-100/90 text-[#831843]' },
+];
 
 interface NavigationProps {
   activeTab: string;
@@ -61,6 +77,12 @@ export const Navigation: React.FC<NavigationProps> = ({
   // Quick Action Dropdown state
   const [showNewDropdown, setShowNewDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const runQuickAction = (action: QuickActionKey) => {
+    setShowNewDropdown(false);
+    onQuickAction(action);
+    setIsMobileOpen(false);
+  };
 
   // Global search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -253,73 +275,22 @@ export const Navigation: React.FC<NavigationProps> = ({
               <div className="px-4 py-1.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                 Event Management Actions
               </div>
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('NEW_LEAD');
-                  setIsMobileOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
-              >
-                <Users className="w-4 h-4 text-[#831843]" />
-                <span>New Lead Inquiry</span>
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('CREATE_QUOTATION');
-                  setIsMobileOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
-              >
-                <FileText className="w-4 h-4 text-[#831843]" />
-                <span>New Quotation / Proposal</span>
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('NEW_PROJECT');
-                  setIsMobileOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
-              >
-                <Briefcase className="w-4 h-4 text-slate-700" />
-                <span>New Event Project & Staging</span>
-              </button>
-              <div className="my-1 border-t border-white/60" />
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('POST_DAILY_UPDATE');
-                  setIsMobileOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
-              >
-                <Sparkles className="w-4 h-4 text-amber-600" />
-                <span>Post Daily Site Staging Log</span>
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('CREATE_INVOICE');
-                  setIsMobileOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
-              >
-                <Receipt className="w-4 h-4 text-[#831843]" />
-                <span>Create Tax Invoice (GST)</span>
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('RECORD_PAYMENT');
-                  setIsMobileOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
-              >
-                <span className="w-4 h-4 font-bold text-emerald-700 text-center inline-block">₹</span>
-                <span>Record Payment (UPI/NEFT)</span>
-              </button>
+              {QUICK_ACTIONS.map((q) => (
+                <Fragment key={q.action}>
+                  {q.dividerBefore && <div className="my-1 border-t border-white/60" />}
+                  <button
+                    onClick={() => runQuickAction(q.action)}
+                    className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
+                  >
+                    {q.Icon ? (
+                      <q.Icon className={`w-4 h-4 ${q.menuTone}`} />
+                    ) : (
+                      <span className="w-4 h-4 font-bold text-emerald-700 text-center inline-block">₹</span>
+                    )}
+                    <span>{q.menuLabel}</span>
+                  </button>
+                </Fragment>
+              ))}
             </div>
           )}
         </div>
@@ -756,107 +727,21 @@ export const Navigation: React.FC<NavigationProps> = ({
             </div>
 
             <div className="grid grid-cols-2 gap-2.5 mt-4">
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('NEW_LEAD');
-                  setIsMobileOpen(false);
-                }}
-                className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
-              >
-                <div className="w-9 h-9 rounded-xl bg-rose-100/90 text-[#831843] flex items-center justify-center mb-2">
-                  <Users className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-950 block">New Lead</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Inbound inquiry</span>
-                </div>
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('CREATE_QUOTATION');
-                  setIsMobileOpen(false);
-                }}
-                className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
-              >
-                <div className="w-9 h-9 rounded-xl bg-purple-100/90 text-purple-900 flex items-center justify-center mb-2">
-                  <FileText className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-950 block">New Proposal</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Quotation / PDF</span>
-                </div>
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('NEW_PROJECT');
-                  setIsMobileOpen(false);
-                }}
-                className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
-              >
-                <div className="w-9 h-9 rounded-xl bg-blue-100/90 text-blue-900 flex items-center justify-center mb-2">
-                  <Briefcase className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-950 block">New Project</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Staging & venue</span>
-                </div>
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('POST_DAILY_UPDATE');
-                  setIsMobileOpen(false);
-                }}
-                className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
-              >
-                <div className="w-9 h-9 rounded-xl bg-amber-100/90 text-amber-900 flex items-center justify-center mb-2">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-950 block">Daily Site Log</span>
-                  <span className="text-[10px] text-slate-500 font-medium">On-site status</span>
-                </div>
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('CREATE_INVOICE');
-                  setIsMobileOpen(false);
-                }}
-                className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
-              >
-                <div className="w-9 h-9 rounded-xl bg-emerald-100/90 text-emerald-900 flex items-center justify-center mb-2">
-                  <Receipt className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-950 block">GST Invoice</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Tax bill & PDF</span>
-                </div>
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowNewDropdown(false);
-                  onQuickAction('RECORD_PAYMENT');
-                  setIsMobileOpen(false);
-                }}
-                className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
-              >
-                <div className="w-9 h-9 rounded-xl bg-rose-100/90 text-[#831843] flex items-center justify-center mb-2 font-bold text-sm">
-                  ₹
-                </div>
-                <div>
-                  <span className="font-bold text-xs text-slate-950 block">Record Payment</span>
-                  <span className="text-[10px] text-slate-500 font-medium">UPI / NEFT receipt</span>
-                </div>
-              </button>
+              {QUICK_ACTIONS.map((q) => (
+                <button
+                  key={q.action}
+                  onClick={() => runQuickAction(q.action)}
+                  className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
+                >
+                  <div className={`w-9 h-9 rounded-xl ${q.cardTone} flex items-center justify-center mb-2 ${q.Icon ? '' : 'font-bold text-sm'}`}>
+                    {q.Icon ? <q.Icon className="w-4 h-4" /> : '₹'}
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-950 block">{q.cardTitle}</span>
+                    <span className="text-[10px] text-slate-500 font-medium">{q.cardSub}</span>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
         </div>

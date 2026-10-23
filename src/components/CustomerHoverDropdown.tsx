@@ -1,23 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React,{ useState,useRef,useEffect } from 'react';
 import {
-  User,
-  Phone,
-  MessageSquare,
-  Mail,
-  MapPin,
-  Briefcase,
-  TrendingUp,
-  Receipt,
-  ExternalLink,
-  ChevronDown,
-  Sparkles,
-  StickyNote,
-  Edit3,
-  Check,
+Phone,
+MessageSquare,
+Mail,
+MapPin,ExternalLink,
+ChevronDown,StickyNote,
+Edit3
 } from 'lucide-react';
-import { formatINR, formatPhoneNumber, cleanPhoneNumber } from '../lib/formatters';
+import { formatINR,formatPhoneNumber,cleanPhoneNumber } from '../lib/formatters';
 
-export interface CustomerSummaryData {
+interface CustomerSummaryData {
   id?: string;
   name: string;
   phone: string;
@@ -43,7 +35,6 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
   onViewCustomer,
   onUpdateNotes,
   className = '',
-  badgeOnly = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditingNote, setIsEditingNote] = useState(false);

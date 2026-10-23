@@ -1,26 +1,22 @@
 import {
-  Lead,
-  Customer,
-  Project,
-  Invoice,
-  Payment,
-  BusinessSettings,
-  DashboardStats,
-  DailyLog,
-  ProjectTask,
-  Milestone,
-  ActivityItem,
-  User,
-  Quotation,
-  FloralTemplate,
-  ProcurementItem,
-  EventChecklistItem,
-  ProjectNote,
-  LeadHealth,
+Lead,
+Customer,
+Project,
+Invoice,
+Payment,
+BusinessSettings,
+DashboardStats,
+DailyLog,Milestone,User,
+Quotation,
+FloralTemplate,
+ProcurementItem,
+EventChecklistItem,
+ProjectNote,
+LeadHealth
 } from '../types.js';
 import { FLORAL_TEMPLATES } from './templatesData.js';
 
-export const FLORIST_16_MILESTONES = [
+const FLORIST_16_MILESTONES = [
   'Brief & Moodboard',
   'Quotation & Contract',
   'Advance Booking Payment',
@@ -39,7 +35,7 @@ export const FLORIST_16_MILESTONES = [
   'Final Settlement & Closure',
 ];
 
-export function calculateLeadMetrics(lead: Partial<Lead>): {
+function calculateLeadMetrics(lead: Partial<Lead>): {
   score: number;
   health: LeadHealth;
   probability: number;
@@ -1236,7 +1232,7 @@ class FloristDatabase {
   }
 
   // --- Duplicate Lead Protection ---
-  public checkDuplicateLead(phone: string, customerName?: string) {
+  public checkDuplicateLead(phone: string, _customerName?: string) {
     const cleanPhone = phone.replace(/[^0-9]/g, '').slice(-10);
     const existingLead = this.leads.find((l) => {
       const p = l.phone.replace(/[^0-9]/g, '').slice(-10);

@@ -1,37 +1,15 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Users,
-  Briefcase,
-  TrendingUp,
-  AlertCircle,
-  Calendar,
-  Clock,
-  Phone,
-  ArrowRight,
-  CheckCircle2,
-  AlertTriangle,
-  Plus,
-  Sparkles,
-  MapPin,
-  Globe,
-  MessageCircle,
-  ExternalLink,
-  Filter,
-  RefreshCw,
-  ChevronDown,
-  FileText,
-  Receipt,
-  Layers,
-  ChevronRight,
-  Flower2,
-  Activity,
-  Compass,
-  Zap,
-  Sliders,
-  ChevronLeft,
+Users,
+Briefcase,
+TrendingUp,Calendar,ArrowRight,
+CheckCircle2,
+AlertTriangle,MapPin,
+Globe,Receipt,ChevronRight,
+Flower2,ChevronLeft
 } from 'lucide-react';
-import { DashboardStats, Project, Lead, DateConflict, Quotation, Invoice } from '../types';
-import { formatINR, formatDate, formatPhoneNumber } from '../lib/formatters';
+import { DashboardStats,Project,Lead,DateConflict,Quotation,Invoice } from '../types';
+import { formatINR,formatDate } from '../lib/formatters';
 import { CustomerHoverDropdown } from './CustomerHoverDropdown';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
 
@@ -56,15 +34,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   conflicts = [],
   projects = [],
   leads = [],
-  quotations = [],
   invoices = [],
   onSelectLead = (_leadId: string) => {},
   onSelectProject = (_projectId: string) => {},
   onNavigateTab = (_tab: string) => {},
-  onOpenDailyUpdateModal = (_projectId?: string) => {},
-  onOpenLeadModal = () => {},
-  onOpenProjectModal = () => {},
-  onOpenPaymentModal = () => {},
 }) => {
   const [activeStreamTab, setActiveStreamTab] = useState<
     'LEADS' | 'PROJECTS' | 'SCHEDULE' | 'FINANCE'

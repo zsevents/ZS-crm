@@ -1,4 +1,3 @@
-import { Project, Lead } from '../types';
 
 /**
  * Creates a direct Google Calendar web URL to add an event without OAuth.
@@ -12,16 +11,6 @@ export function createGoogleCalendarUrl(event: {
   location?: string;
   description?: string;
 }): string {
-  const formatGCalDate = (dateStr: string, timeStr?: string) => {
-    // If no time, standard all-day event format YYYYMMDD
-    const cleanDate = dateStr.replace(/-/g, '');
-    if (!timeStr) {
-      return `${cleanDate}/${cleanDate}`;
-    }
-    const [hh, mm] = timeStr.split(':');
-    const isoTime = `${hh || '09'}${mm || '00'}00`;
-    return `${cleanDate}T${isoTime}`;
-  };
 
   const startFormatted = event.startTime
     ? `${event.startDate.replace(/-/g, '')}T${(event.startTime || '09:00').replace(':', '')}00`

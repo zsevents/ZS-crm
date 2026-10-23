@@ -1,4 +1,4 @@
-import { getSupabase, isSupabaseConfigured } from './supabase.js';
+import { getSupabase,isSupabaseConfigured } from './supabase.js';
 import { db } from './db.js';
 
 // Supabase persistence layer.

@@ -1,20 +1,17 @@
 import {
-  Lead,
-  Customer,
-  Project,
-  Invoice,
-  Payment,
-  BusinessSettings,
-  DashboardStats,
-  DailyLog,
-  ProjectTask,
-  DateConflict,
-  User,
-  AuthSession,
-  FloralTemplate,
-  Quotation,
+Lead,
+Customer,
+Project,
+Invoice,
+Payment,
+BusinessSettings,
+DashboardStats,
+DailyLog,
+ProjectTask,
+DateConflict,FloralTemplate,
+Quotation
 } from '../types';
-import { getSupabase, isSupabaseConfigured } from './supabaseClient';
+import { getSupabase,isSupabaseConfigured } from './supabaseClient';
 
 // Every /api call carries the signed-in user's Supabase access token; the
 // server rejects requests without one (see src/server/auth.ts).

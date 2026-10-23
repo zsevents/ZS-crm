@@ -1,35 +1,31 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  ShieldCheck,
-  KeyRound,
-  User as UserIcon,
-  Smartphone,
-  Bell,
-  SlidersHorizontal,
-  Eye,
-  EyeOff,
-  Check,
-  AlertCircle,
-  Copy,
-  LogOut,
-  RefreshCw,
-  Laptop,
-  CheckCircle2,
-  Mail,
-  Phone,
-  Lock,
-  Sparkles,
-  QrCode,
-  Globe,
-  Sliders,
-  RotateCcw,
-  Clock,
-  Shield,
-  Trash2,
-  Save,
-  Send,
+ShieldCheck,
+KeyRound,
+User as UserIcon,
+Smartphone,
+Bell,
+SlidersHorizontal,
+Eye,
+EyeOff,
+Check,
+AlertCircle,
+Copy,
+LogOut,
+RefreshCw,
+Laptop,
+CheckCircle2,
+Mail,
+Phone,
+Lock,QrCode,Sliders,
+RotateCcw,
+Clock,
+Shield,
+Trash2,
+Save,
+Send
 } from 'lucide-react';
-import { BusinessSettings, User } from '../types';
+import { BusinessSettings,User } from '../types';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
 
 interface SettingsViewProps {
@@ -44,7 +40,6 @@ type TabType = 'PASSWORD' | 'PROFILE' | '2FA_SESSIONS' | 'NOTIFICATIONS' | 'AUDI
 export const SettingsView: React.FC<SettingsViewProps> = ({
   settings,
   currentUser,
-  onSaveSettings,
   onUpdateUser,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('PASSWORD');
@@ -76,7 +71,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [showQrModal, setShowQrModal] = useState(false);
   const [testOtp, setTestOtp] = useState('');
   const [otpVerified, setOtpVerified] = useState(false);
-  const [copiedKey, setCopiedKey] = useState(false);
+
   const [copiedCodes, setCopiedCodes] = useState(false);
 
   // Active Sessions State
@@ -116,8 +111,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [notifWhatsAppConflicts, setNotifWhatsAppConflicts] = useState(true);
   const [notifEmailDailyDigest, setNotifEmailDailyDigest] = useState(true);
   const [notifEmailInvoices, setNotifEmailInvoices] = useState(true);
-  const [notifSmsMilestones, setNotifSmsMilestones] = useState(false);
-  const [notifVipPings, setNotifVipPings] = useState(true);
+
+
   const [notifSaved, setNotifSaved] = useState(false);
 
   // Studio Preferences

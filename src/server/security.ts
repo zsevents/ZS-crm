@@ -1,4 +1,4 @@
-import type { ErrorRequestHandler, Request, RequestHandler } from 'express';
+import type { ErrorRequestHandler,Request,RequestHandler } from 'express';
 
 // ---------------------------------------------------------------------------
 // Rate limiting
@@ -89,7 +89,7 @@ export const corsPolicy: RequestHandler = (req, res, next) => {
 // Logging + error tracking
 // ---------------------------------------------------------------------------
 
-export function logEvent(level: 'info' | 'warn' | 'error', msg: string, extra: Record<string, unknown> = {}) {
+function logEvent(level: 'info' | 'warn' | 'error', msg: string, extra: Record<string, unknown> = {}) {
   const line = JSON.stringify({ level, msg, time: new Date().toISOString(), ...extra });
   (level === 'error' ? console.error : console.log)(line);
 }
@@ -117,7 +117,7 @@ export const requestLogger: RequestHandler = (req, res, next) => {
  * fast). Active only when SENTRY_DSN is set; otherwise errors still go to the
  * structured log above.
  */
-export async function reportError(err: unknown, context: Record<string, unknown> = {}) {
+async function reportError(err: unknown, context: Record<string, unknown> = {}) {
   const e = err instanceof Error ? err : new Error(String(err));
   logEvent('error', e.message, { stack: e.stack, ...context });
 

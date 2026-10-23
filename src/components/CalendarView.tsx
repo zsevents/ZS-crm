@@ -1,26 +1,16 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Calendar as CalendarIcon,
-  ChevronLeft,
-  ChevronRight,
-  AlertTriangle,
-  MapPin,
-  Clock,
-  Briefcase,
-  Users,
-  Plus,
-  ExternalLink,
-  Download,
-  Share2,
-  CheckCircle2,
-  Sparkles,
-  CalendarCheck,
-  Flower2,
-  X,
+Calendar as CalendarIcon,
+ChevronLeft,
+ChevronRight,
+AlertTriangle,
+MapPin,Briefcase,
+Users,ExternalLink,
+Download,CheckCircle2,CalendarCheck,X
 } from 'lucide-react';
-import { Project, Lead, DateConflict } from '../types';
-import { formatDate, formatINR } from '../lib/formatters';
-import { createGoogleCalendarUrl, generateICS, downloadICSFile } from '../utils/calendarSync';
+import { Project,Lead,DateConflict } from '../types';
+import { formatDate,formatINR } from '../lib/formatters';
+import { createGoogleCalendarUrl,generateICS,downloadICSFile } from '../utils/calendarSync';
 
 interface CalendarViewProps {
   projects?: Project[];
@@ -33,7 +23,6 @@ interface CalendarViewProps {
 export const CalendarView: React.FC<CalendarViewProps> = ({
   projects = [],
   leads = [],
-  conflicts = [],
   onSelectProject = (_id: string) => {},
   onSelectLead = (_id: string) => {},
 }) => {

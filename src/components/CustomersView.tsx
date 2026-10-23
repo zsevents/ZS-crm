@@ -1,33 +1,20 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Users,
-  Search,
-  Phone,
-  MessageSquare,
-  Mail,
-  MapPin,
-  Briefcase,
-  TrendingUp,
-  Receipt,
-  Calendar,
-  ChevronRight,
-  X,
-  Plus,
-  ArrowRight,
-  ExternalLink,
-  StickyNote,
-  Edit3,
-  Trash2,
-  Check,
-  Save,
-  Clock,
-  Sparkles,
-  List,
-  Grid,
-  ShieldCheck,
+Users,
+Search,
+Phone,
+MessageSquare,
+Mail,
+MapPin,
+Briefcase,ChevronRight,
+X,
+Plus,StickyNote,
+Edit3,
+Trash2,Save,List,
+Grid
 } from 'lucide-react';
-import { Customer, Lead, Project, Invoice } from '../types';
-import { formatINR, formatDate, formatDateTime, formatPhoneNumber, cleanPhoneNumber } from '../lib/formatters';
+import { Customer,Lead,Project,Invoice } from '../types';
+import { formatINR,formatDate,formatDateTime,formatPhoneNumber,cleanPhoneNumber } from '../lib/formatters';
 import { CustomerHoverDropdown } from './CustomerHoverDropdown';
 import { api } from '../lib/api';
 
@@ -46,10 +33,8 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
   customers = [],
   leads = [],
   projects = [],
-  invoices = [],
   onSelectLead = (_id: string) => {},
   onSelectProject = (_id: string) => {},
-  onOpenNewCustomerModal = () => {},
   onCustomerUpdated = () => {},
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,9 +81,6 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
     : [];
   const customerProjects = selectedCustomer
     ? (projects || []).filter((p) => p.customerId === selectedCustomer.id || (selectedCustomer.projectIds || []).includes(p.id))
-    : [];
-  const customerInvoices = selectedCustomer
-    ? (invoices || []).filter((i) => i.customerId === selectedCustomer.id)
     : [];
 
   // Quick save inline note from table column

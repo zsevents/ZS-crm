@@ -2,7 +2,7 @@
 // Built-in intelligent quotation builder and communication generator
 // Runs completely locally with ZERO API key required!
 
-export interface QuotationSuggestionRequest {
+interface QuotationSuggestionRequest {
   eventType: string;
   theme?: string;
   budget?: number;
@@ -10,7 +10,7 @@ export interface QuotationSuggestionRequest {
   specialRequirements?: string;
 }
 
-export interface AIQuotationItem {
+interface AIQuotationItem {
   description: string;
   hsnSac: string;
   quantity: number;
@@ -19,7 +19,7 @@ export interface AIQuotationItem {
   amount: number;
 }
 
-export interface AIQuotationResponse {
+interface AIQuotationResponse {
   themeName: string;
   palette: string[];
   suggestedItems: AIQuotationItem[];

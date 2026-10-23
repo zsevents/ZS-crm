@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Sparkles,
-  Lock,
-  Mail,
-  ArrowRight,
-  CheckCircle2,
-  AlertCircle,
+Sparkles,
+Lock,
+Mail,
+ArrowRight,
+CheckCircle2,
+AlertCircle,
 } from 'lucide-react';
 import { AuthSession } from '../types';
-import { getSupabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import { getSupabase,isSupabaseConfigured } from '../lib/supabaseClient';
 import { sessionFromSupabase } from '../lib/session';
 import zsEventsLogo from '../assets/images/zs_events_logo_1788181982999.jpg';
 

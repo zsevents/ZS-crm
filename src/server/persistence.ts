@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express';
-import { hydrate, flush } from './store.js';
+import { hydrate,flush } from './store.js';
 import { isSupabaseConfigured } from './supabase.js';
 
 // Express middleware that makes the in-memory database durable.

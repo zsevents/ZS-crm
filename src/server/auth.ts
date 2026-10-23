@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express';
 import type { User } from '@supabase/supabase-js';
-import { getSupabase, isSupabaseConfigured } from './supabase.js';
+import { getSupabase,isSupabaseConfigured } from './supabase.js';
 import { recordAuthFailure } from './security.js';
 
 // API authentication.
@@ -42,7 +42,7 @@ export function isApprovedUser(user: User): boolean {
   return allowedEmails().has((user.email ?? '').toLowerCase());
 }
 
-export type CrmRole = 'admin' | 'staff' | 'viewer';
+type CrmRole = 'admin' | 'staff' | 'viewer';
 export function roleOf(user: User): CrmRole {
   const r = user.app_metadata?.crm_role;
   return r === 'viewer' || r === 'staff' ? r : 'admin';

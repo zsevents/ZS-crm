@@ -1,34 +1,19 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import {
-  Briefcase,
-  Calendar,
-  MapPin,
-  Clock,
-  CheckCircle2,
-  AlertTriangle,
-  Plus,
-  ArrowRight,
-  TrendingUp,
-  Receipt,
-  User,
-  Sparkles,
-  ChevronRight,
-  X,
-  ListTodo,
-  History,
-  FileCheck,
-  CalendarCheck,
-  ExternalLink,
-  Edit2,
-  Trash2,
-  Check,
-  ChevronDown,
-  Layers,
-  Flag,
-  RotateCcw,
+Briefcase,
+Calendar,
+MapPin,Plus,
+ArrowRight,Receipt,Sparkles,X,
+ListTodo,
+History,
+FileCheck,
+CalendarCheck,Edit2,
+Trash2,
+Check,
+ChevronDown
 } from 'lucide-react';
-import { Project, ProjectStatus, Milestone, MilestoneStatus, ProjectTask, DailyLog, DailyLogHealth } from '../types';
-import { formatINR, formatDate, formatPhoneNumber } from '../lib/formatters';
+import { Project,MilestoneStatus,DailyLogHealth } from '../types';
+import { formatINR,formatDate } from '../lib/formatters';
 import { createGoogleCalendarUrl } from '../utils/calendarSync';
 import { api } from '../lib/api';
 
@@ -116,7 +101,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
 
   // New task inline state
   const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [newTaskAssignee, setNewTaskAssignee] = useState('');
+  const [newTaskAssignee] = useState('');
   const [isAddingTask, setIsAddingTask] = useState(false);
 
   // Milestone edit modal state
@@ -133,7 +118,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
   const [newMilestoneName, setNewMilestoneName] = useState('');
   const [newMilestoneStatus, setNewMilestoneStatus] = useState<MilestoneStatus>('NOT_STARTED');
   const [newMilestoneDueDate, setNewMilestoneDueDate] = useState('');
-  const [newMilestoneAssignee, setNewMilestoneAssignee] = useState('');
+  const [newMilestoneAssignee] = useState('');
   const [newMilestoneNotes, setNewMilestoneNotes] = useState('');
   const [isAddingMilestone, setIsAddingMilestone] = useState(false);
 
@@ -277,18 +262,6 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
         });
       } else {
         // Fallback to update with newly constructed array
-        const updated = [
-          ...selectedProject.milestones,
-          {
-            id: `m-custom-${Date.now()}`,
-            name: newMilestoneName.trim(),
-            status: newMilestoneStatus,
-            dueDate: newMilestoneDueDate || selectedProject.eventDate,
-            responsiblePerson: newMilestoneAssignee || selectedProject.assignedStaff,
-            notes: newMilestoneNotes.trim() || undefined,
-            completedDate: newMilestoneStatus === 'COMPLETED' ? new Date().toISOString() : undefined,
-          },
-        ];
         await onUpdateMilestone(selectedProject.id, selectedProject.milestones.length, {
           name: newMilestoneName.trim(),
           status: newMilestoneStatus,

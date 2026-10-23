@@ -1,5 +1,5 @@
 import type { Session } from '@supabase/supabase-js';
-import { AuthSession, User } from '../types';
+import { AuthSession,User } from '../types';
 import { getSupabase } from './supabaseClient';
 
 // Maps a Supabase session onto the app's existing AuthSession shape, so the

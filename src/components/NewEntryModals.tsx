@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React,{ useState,useEffect } from 'react';
 import {
-  X,
-  Users,
-  Briefcase,
-  Receipt,
-  Sparkles,
-  AlertTriangle,
-  Plus,
-  Trash2,
-  DollarSign,
-  Calendar,
+X,
+Users,
+Briefcase,
+Receipt,
+Sparkles,
+AlertTriangle,
+Plus,
+Trash2
 } from 'lucide-react';
-import { Customer, Project, Invoice, BusinessSettings, Lead, FloralTemplate, DEFAULT_BUSINESS_SETTINGS } from '../types';
+import { Customer,Project,Invoice,BusinessSettings,Lead,FloralTemplate,DEFAULT_BUSINESS_SETTINGS } from '../types';
 import { api } from '../lib/api';
 import { formatINR } from '../lib/formatters';
 
-export interface ModalState {
+interface ModalState {
   lead?: boolean;
   project?: boolean;
   customer?: boolean;
@@ -198,15 +196,15 @@ const NewLeadModal: React.FC<{
 
   const [customerName, setCustomerName] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [email] = useState('');
   const [location, setLocation] = useState(bangaloreAreas[0] || 'Whitefield, Bangalore');
   const [eventType, setEventType] = useState(eventTypes[0] || 'Wedding');
   const [eventDate, setEventDate] = useState(new Date().toISOString().split('T')[0]);
   const [serviceRequired, setServiceRequired] = useState('Stage Floral Arch & Entrance Decor');
   const [budget, setBudget] = useState('150000');
   const [message, setMessage] = useState('');
-  const [priority, setPriority] = useState<'HIGH' | 'MEDIUM' | 'LOW'>('HIGH');
-  const [source, setSource] = useState('PHONE');
+  const [priority] = useState<'HIGH' | 'MEDIUM' | 'LOW'>('HIGH');
+  const [source] = useState('PHONE');
 
   const [dupWarning, setDupWarning] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -636,7 +634,7 @@ const NewInvoiceModal: React.FC<{
     { description: 'Floral Stage Decoration & Mandap Setup', quantity: 1, unitPrice: 95000 },
     { description: 'Grand Entrance Floral Archway', quantity: 1, unitPrice: 35000 },
   ]);
-  const [discount, setDiscount] = useState('0');
+  const [discount] = useState('0');
   const [taxRate, setTaxRate] = useState(safeSettings.enableGst ? '18' : '0');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -1094,11 +1092,11 @@ const NewQuotationModal: React.FC<{
   const [discount, setDiscount] = useState('0');
   const [taxRate, setTaxRate] = useState(safeSettings.enableGst ? '18' : '0');
   const [botanicalSpecs, setBotanicalSpecs] = useState('Premium Grade-A Dutch Roses, Orchids, Mogra & Jasmine strings, Foliage: Eucalyptus, Ruscus.');
-  const [termsAndConditions, setTermsAndConditions] = useState('50% advance booking deposit required to lock event dates. Balance payable 48 hours prior to event staging.');
+  const [termsAndConditions] = useState('50% advance booking deposit required to lock event dates. Balance payable 48 hours prior to event staging.');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [aiBudgetInput, setAiBudgetInput] = useState('200000');
-  const [aiThemeInput, setAiThemeInput] = useState('Royal Blush Roses & Fragrant Madurai Mogra');
+  const [aiThemeInput] = useState('Royal Blush Roses & Fragrant Madurai Mogra');
 
   const handleAiGenerateQuotation = async () => {
     setIsAiGenerating(true);

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Lock, ArrowRight, AlertCircle } from 'lucide-react';
+import React,{ useState } from 'react';
+import { Lock,ArrowRight,AlertCircle } from 'lucide-react';
 import { getSupabase } from '../lib/supabaseClient';
 
 // Shown after someone opens an invite or password-reset email link. Supabase

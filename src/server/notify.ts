@@ -26,7 +26,7 @@ function readConfig() {
   };
 }
 
-export function isEmailConfigured(): boolean {
+function isEmailConfigured(): boolean {
   const c = readConfig();
   return Boolean(c.user && c.pass && c.to);
 }

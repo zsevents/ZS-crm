@@ -1,49 +1,27 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React,{ useState,useEffect,useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import floralBgImage from './assets/images/luxury_floral_bg_1788163266849.jpg';
 import {
-  Users,
-  Briefcase,
-  Receipt,
-  Calendar,
-  Settings,
-  Plus,
-  Search,
-  CheckCircle2,
-  AlertTriangle,
-  Sparkles,
-  FileText,
-  Phone,
-  MessageSquare,
-  ChevronRight,
-  TrendingUp,
-  LayoutDashboard,
-  Globe,
-  DollarSign,
-  Clock,
-  List,
-  Grid,
-  Keyboard,
-  Command,
-  X,
+Briefcase,Phone,
+MessageSquare,Keyboard,X
 } from 'lucide-react';
 
 import {
-  Lead,
-  LeadStatus,
-  Project,
-  Customer,
-  Quotation,
-  Invoice,
-  Payment,
-  DashboardStats,
-  DateConflict,
-  BusinessSettings,
-  User,
-  DEFAULT_BUSINESS_SETTINGS,
+Lead,
+LeadStatus,
+Project,
+Customer,
+Quotation,
+Invoice,
+Payment,
+DashboardStats,
+DateConflict,
+BusinessSettings,
+User,
+DEFAULT_BUSINESS_SETTINGS,
 } from './types';
 import { api } from './lib/api';
-import { formatINR, formatDate, formatPhoneNumber, cleanPhoneNumber, formatDateTime } from './lib/formatters';
+import { formatINR,formatDate,cleanPhoneNumber,formatDateTime } from './lib/formatters';
 
 // Views
 import { Navigation } from './components/Navigation';
@@ -56,11 +34,10 @@ import { CalendarView } from './components/CalendarView';
 import { WebsiteFormSimulator } from './components/WebsiteFormSimulator';
 import { SettingsView } from './components/SettingsView';
 import { NewEntryModals } from './components/NewEntryModals';
-import { CustomerHoverDropdown } from './components/CustomerHoverDropdown';
 import { AuthView } from './components/AuthView';
-import { getSupabase, isSupabaseConfigured } from './lib/supabaseClient';
+import { getSupabase,isSupabaseConfigured } from './lib/supabaseClient';
 import { sessionFromSupabase } from './lib/session';
-import { SetPasswordView, arrivedFromAuthLink } from './components/SetPasswordView';
+import { SetPasswordView,arrivedFromAuthLink } from './components/SetPasswordView';
 
 type ViewTab =
   | 'DASHBOARD'
@@ -86,7 +63,7 @@ export default function App() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [settings, setSettings] = useState<BusinessSettings | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User>({
     id: 'USR-01',
     name: 'Syed',
@@ -130,18 +107,14 @@ export default function App() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const handleSignOut = async () => {
-    if (!isSupabaseConfigured()) return;
-    await getSupabase().auth.signOut();
-    setAuthed(false);
-  };
+
 
   // Leads CRM Filter state
-  const [leadFilterTab, setLeadFilterTab] = useState<string>('ALL');
-  const [leadEventTypeFilter, setLeadEventTypeFilter] = useState<string>('ALL');
-  const [leadSearchQuery, setLeadSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
-  const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
+
+
+
+
+
   const [inspectedLeadId, setInspectedLeadId] = useState<string | null>(null);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
@@ -325,38 +298,11 @@ export default function App() {
   }, [leads, inspectedLeadId]);
 
   // Filtered Leads
-  const filteredLeads = useMemo(() => {
-    return leads.filter((lead) => {
-      if (leadEventTypeFilter !== 'ALL' && lead.eventType !== leadEventTypeFilter) {
-        return false;
-      }
 
-      if (leadSearchQuery.trim()) {
-        const q = leadSearchQuery.toLowerCase();
-        const matchesName = lead.customerName.toLowerCase().includes(q);
-        const matchesPhone = lead.phone.includes(q);
-        const matchesVenue = (lead.venue || lead.location || '').toLowerCase().includes(q);
-        const matchesId = lead.id.toLowerCase().includes(q);
-        if (!matchesName && !matchesPhone && !matchesVenue && !matchesId) return false;
-      }
 
-      return true;
-    });
-  }, [leads, leadEventTypeFilter, leadSearchQuery]);
 
-  const handleToggleSelectAll = () => {
-    if (selectedLeadIds.length === filteredLeads.length) {
-      setSelectedLeadIds([]);
-    } else {
-      setSelectedLeadIds(filteredLeads.map((l) => l.id));
-    }
-  };
 
-  const handleToggleSelectLead = (id: string) => {
-    setSelectedLeadIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
+
 
   const handleUpdateLeadStatus = async (leadId: string, status: LeadStatus) => {
     try {
@@ -370,23 +316,9 @@ export default function App() {
     }
   };
 
-  const handleUpdateLeadDate = async (leadId: string, eventDate: string) => {
-    try {
-      const updated = await api.updateLead(leadId, { eventDate });
-      setLeads((prev) => prev.map((l) => (l.id === leadId ? updated : l)));
-    } catch (err) {
-      console.error('Failed to update lead event date', err);
-    }
-  };
 
-  const handleUpdateLeadBudget = async (leadId: string, budget: number) => {
-    try {
-      const updated = await api.updateLead(leadId, { budget });
-      setLeads((prev) => prev.map((l) => (l.id === leadId ? updated : l)));
-    } catch (err) {
-      console.error('Failed to update lead budget', err);
-    }
-  };
+
+
 
   const handleAddActivityNote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -423,10 +355,17 @@ export default function App() {
     }
   };
 
+
+
+  const handleSignOut = async () => {
+    await getSupabase().auth.signOut();
+    setAuthed(false);
+  };
+
   const handleConvertToProject = async (leadId: string) => {
     setIsConvertingLead(true);
     try {
-      const res = await api.convertLeadToProject(leadId);
+      await api.convertLeadToProject(leadId);
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
       await loadData();
       setActiveTab('PROJECTS');
@@ -465,31 +404,12 @@ export default function App() {
   };
 
   // KPI Calculations
-  const totalInquiriesCount = leads.length;
-  const qualifiedLeadsCount = leads.filter((l) => ['QUOTATION', 'NEGOTIATION', 'WON'].includes(l.status)).length;
-  const activeProjectsCount = projects.filter((p) => ['PLANNING', 'IN_PROGRESS', 'EVENT_DAY'].includes(p.status)).length;
-  const totalRevenueNumber = projects.reduce((acc, p) => acc + (p.projectValue || 0), 0);
 
-  const getStatusBadgeStyle = (status: LeadStatus) => {
-    switch (status) {
-      case 'NEW':
-        return 'bg-blue-50 text-blue-800 border-blue-200';
-      case 'CONTACTED':
-        return 'bg-indigo-50 text-indigo-800 border-indigo-200';
-      case 'MEETING':
-        return 'bg-purple-50 text-purple-800 border-purple-200';
-      case 'QUOTATION':
-        return 'bg-rose-50 text-[#831843] border-rose-200';
-      case 'NEGOTIATION':
-        return 'bg-amber-50 text-amber-900 border-amber-200';
-      case 'WON':
-        return 'bg-emerald-50 text-emerald-900 border-emerald-300 font-bold';
-      case 'LOST':
-        return 'bg-slate-100 text-slate-600 border-slate-200';
-      default:
-        return 'bg-slate-50 text-slate-700 border-slate-200';
-    }
-  };
+
+
+
+
+
 
   // Auth gate. Every hook above has already run, so these early returns are safe.
   if (authChecking) {
@@ -530,6 +450,7 @@ export default function App() {
       <Navigation
         activeTab={activeTab}
         onSelectTab={(tab) => setActiveTab(tab as ViewTab)}
+        onLogout={isSupabaseConfigured() ? handleSignOut : undefined}
         onQuickAction={handleQuickAction}
         conflictsCount={conflicts.length}
         newLeadsCount={leads.filter((l) => l.status === 'NEW').length}
