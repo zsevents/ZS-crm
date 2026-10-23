@@ -2,7 +2,7 @@ import React,{ useState,useEffect,useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import {
 Briefcase,Phone,
-MessageSquare,Keyboard,X
+MessageSquare
 } from 'lucide-react';
 
 import {
@@ -150,101 +150,20 @@ export default function App() {
   const [newActivityNote, setNewActivityNote] = useState('');
   const [isSubmittingNote, setIsSubmittingNote] = useState(false);
   const [isConvertingLead, setIsConvertingLead] = useState(false);
-  const [showShortcutsModal, setShowShortcutsModal] = useState(false);
-
-  // Global Keyboard Shortcuts
+  // Escape closes any open pop-up
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger letter shortcuts if user is typing in input/textarea/select
-      const target = e.target as HTMLElement;
-      const isInput =
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.tagName === 'SELECT' ||
-        target.isContentEditable;
-
-      if (e.key === 'Escape') {
-        setShowShortcutsModal(false);
-        setInspectedLeadId(null);
-        setModalState({
-          lead: false,
-          project: false,
-          dailyLog: false,
-          quotation: false,
-          invoice: false,
-          payment: false,
-        });
-        return;
-      }
-
-      if (isInput) return;
-
-      // Key '?' or 'Shift+/' opens shortcuts guide
-      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
-        e.preventDefault();
-        setShowShortcutsModal((prev) => !prev);
-        return;
-      }
-
-      // Quick tab switching 1-8
-      switch (e.key) {
-        case '1':
-          setActiveTab('DASHBOARD');
-          break;
-        case '2':
-          setActiveTab('LEADS');
-          break;
-        case '3':
-          setActiveTab('PROJECTS');
-          break;
-        case '4':
-          setActiveTab('CUSTOMERS');
-          break;
-        case '5':
-          setActiveTab('FINANCE');
-          break;
-        case '6':
-          setActiveTab('CALENDAR');
-          break;
-        case '7':
-          setActiveTab('WEBSITE');
-          break;
-        case '8':
-          setActiveTab('SETTINGS');
-          break;
-        case 'n':
-        case 'N':
-          e.preventDefault();
-          setModalState((prev) => ({ ...prev, lead: true }));
-          break;
-        case 'p':
-        case 'P':
-          e.preventDefault();
-          setModalState((prev) => ({ ...prev, project: true }));
-          break;
-        case 'q':
-        case 'Q':
-          e.preventDefault();
-          setModalState((prev) => ({ ...prev, quotation: true }));
-          break;
-        case 'i':
-        case 'I':
-          e.preventDefault();
-          setModalState((prev) => ({ ...prev, invoice: true }));
-          break;
-        case 'b':
-        case 'B':
-          e.preventDefault();
-          setModalState((prev) => ({ ...prev, payment: true }));
-          break;
-        case 'd':
-        case 'D':
-          e.preventDefault();
-          setModalState((prev) => ({ ...prev, dailyLog: true }));
-          break;
-      }
+      if (e.key !== 'Escape') return;
+      setInspectedLeadId(null);
+      setModalState({
+        lead: false,
+        project: false,
+        dailyLog: false,
+        quotation: false,
+        invoice: false,
+        payment: false,
+      });
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
@@ -861,136 +780,6 @@ export default function App() {
                 className="px-4 py-2 text-xs font-bold glass-btn-primary text-white rounded-xl shadow-xs"
               >
                 Save Reminder
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Floating Keyboard Shortcuts Trigger Button */}
-      <button
-        onClick={() => setShowShortcutsModal(true)}
-        className="hidden md:flex fixed bottom-4 right-4 z-40 px-3.5 py-2 glass-btn-secondary text-slate-900 rounded-full text-xs font-bold shadow-xl flex items-center gap-2 border border-white/90 transition-all cursor-pointer hover:scale-105"
-        title="Keyboard Shortcuts (?)"
-      >
-        <Keyboard className="w-3.5 h-3.5 text-[#3F5B4A]" />
-        <span className="hidden sm:inline font-bold">Active Keys</span>
-        <kbd className="px-1.5 py-0.5 bg-rose-50 border border-rose-200 rounded text-[10px] font-mono text-[#3F5B4A] font-bold">?</kbd>
-      </button>
-
-      {/* Keyboard Shortcuts Modal */}
-      {showShortcutsModal && (
-        <div className="fixed inset-0 z-60 bg-slate-950/40 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-xl glass-modal rounded-3xl p-6 shadow-2xl space-y-4 text-slate-900 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-3 border-b border-white/60">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-rose-50/80 border border-rose-200 flex items-center justify-center text-[#3F5B4A] shadow-xs">
-                  <Keyboard className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-base font-black text-slate-950">Active Keyboard Shortcuts</h3>
-                  <p className="text-xs text-slate-500 font-medium">Quick key navigation for Z S EVENTS Event Management CRM</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowShortcutsModal(false)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-900 glass-btn-secondary transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              {/* Navigation Keys */}
-              <div className="p-3.5 rounded-2xl glass-card space-y-2.5">
-                <span className="font-extrabold text-slate-900 block text-[11px] uppercase tracking-wider">
-                  Tab Navigation Keys
-                </span>
-                <div className="space-y-1.5 font-medium">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Dashboard</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">1</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Leads Pipeline</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">2</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Projects & Staging</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">3</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Customer Directory</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">4</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Finance & Invoices</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">5</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Calendar & Conflicts</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">6</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Website Simulator</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">7</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-700">Business Settings</span>
-                    <kbd className="px-2 py-0.5 bg-white/80 border border-white/90 rounded font-mono font-bold text-slate-900 shadow-xs">8</kbd>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Keys */}
-              <div className="p-3.5 rounded-2xl bg-rose-50/60 backdrop-blur-md border border-rose-200/80 shadow-xs space-y-2.5">
-                <span className="font-extrabold text-[#3F5B4A] block text-[11px] uppercase tracking-wider">
-                  Quick Action Keys
-                </span>
-                <div className="space-y-1.5 font-medium">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">New Client Lead</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">N</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">New Floral Project</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">P</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">Generate Quotation</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">Q</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">Create Tax Invoice</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">I</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">Record Payment</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">B</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">Post Daily Log</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">D</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">Close / Dismiss</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-slate-300 rounded font-mono font-bold text-slate-700 shadow-xs">Esc</kbd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-800">Shortcuts Help</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">?</kbd>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-white/60">
-              <span className="text-[11px] text-slate-500 font-medium">Shortcuts are active whenever text fields are not focused</span>
-              <button
-                onClick={() => setShowShortcutsModal(false)}
-                className="px-4 py-2 glass-btn-primary text-white text-xs font-bold rounded-xl shadow-xs cursor-pointer"
-              >
-                Got It
               </button>
             </div>
           </div>
