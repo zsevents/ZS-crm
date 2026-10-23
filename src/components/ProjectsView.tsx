@@ -294,7 +294,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Projects & Staging
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -334,7 +334,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search projects by name, venue, Bangalore area, or client..."
-            className="w-full px-4 py-2.5 text-xs rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full px-4 py-2.5 text-xs rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
       </div>
@@ -354,8 +354,8 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                 key={project.id}
                 className={`p-5 rounded-2xl transition-all relative glass-card ${
                   isSelected
-                    ? 'border-[#831843] ring-2 ring-[#831843]/20 shadow-xl'
-                    : 'hover:border-[#831843]/50 shadow-md hover:shadow-xl hover:-translate-y-0.5'
+                    ? 'border-[#3F5B4A] ring-2 ring-[#3F5B4A]/20 shadow-xl'
+                    : 'hover:border-[#3F5B4A]/50 shadow-md hover:shadow-xl hover:-translate-y-0.5'
                 }`}
               >
                 {/* Top badges & In-line Changeable Status Dropdown */}
@@ -364,7 +364,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
                       {project.id}
                     </span>
-                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-rose-100/90 text-[#831843] font-bold border border-rose-200/80 shadow-xs">
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-rose-100/90 text-[#3F5B4A] font-bold border border-rose-200/80 shadow-xs">
                       {project.eventType}
                     </span>
                   </div>
@@ -398,29 +398,29 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                 <div className="mt-3">
                   <h3
                     onClick={() => handleSelect(project.id)}
-                    className="font-extrabold text-slate-950 text-base hover:text-[#831843] transition-colors flex items-center justify-between cursor-pointer"
+                    className="font-extrabold text-slate-950 text-base hover:text-[#3F5B4A] transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <span>{project.name}</span>
-                    <span className="text-xs font-bold text-[#831843] flex items-center gap-1 group">
+                    <span className="text-xs font-bold text-[#3F5B4A] flex items-center gap-1 group">
                       <span>Inspect</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </h3>
                   <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-slate-700">
                     <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                      <Calendar className="w-3.5 h-3.5 text-[#831843]" />
+                      <Calendar className="w-3.5 h-3.5 text-[#3F5B4A]" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase">Event Date:</span>
                       <input
                         type="date"
                         value={project.eventDate || ''}
                         onChange={(e) => handleProjectDateChange(project.id, e.target.value)}
-                        className="text-xs font-semibold text-slate-900 glass-input rounded px-1.5 py-0.5 focus:outline-none focus:border-[#831843] cursor-pointer"
+                        className="text-xs font-semibold text-slate-900 glass-input rounded px-1.5 py-0.5 focus:outline-none focus:border-[#3F5B4A] cursor-pointer"
                         title="Click to edit event date"
                       />
                     </div>
                     <span>·</span>
                     <span className="flex items-center gap-1 truncate text-slate-700 font-medium max-w-[180px]">
-                      <MapPin className="w-3.5 h-3.5 text-[#831843] shrink-0" />
+                      <MapPin className="w-3.5 h-3.5 text-[#3F5B4A] shrink-0" />
                       {project.venue}
                     </span>
                   </div>
@@ -430,7 +430,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                 <div className="mt-4 pt-3 border-t border-white/60">
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-2">
                     <div className="flex items-center gap-1.5">
-                      <FileCheck className="w-3.5 h-3.5 text-[#831843]" />
+                      <FileCheck className="w-3.5 h-3.5 text-[#3F5B4A]" />
                       <span>
                         Stage: <strong className="text-slate-950">{project.milestones?.[project.currentMilestoneIndex]?.name || 'In Progress'}</strong>
                       </span>
@@ -445,7 +445,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                           e.stopPropagation();
                           setCardExpandedMilestoneId(isCardExpanded ? null : project.id);
                         }}
-                        className="text-[11px] font-bold text-[#831843] hover:underline flex items-center gap-0.5 cursor-pointer"
+                        className="text-[11px] font-bold text-[#3F5B4A] hover:underline flex items-center gap-0.5 cursor-pointer"
                       >
                         <span>{isCardExpanded ? 'Hide' : 'Change'}</span>
                         <ChevronDown className={`w-3 h-3 transition-transform ${isCardExpanded ? 'rotate-180' : ''}`} />
@@ -485,7 +485,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                             handleSelect(project.id);
                             setShowAddMilestoneModal(true);
                           }}
-                          className="text-[#831843] hover:underline flex items-center gap-1 text-[10px]"
+                          className="text-[#3F5B4A] hover:underline flex items-center gap-1 text-[10px]"
                         >
                           <Plus className="w-3 h-3" />
                           <span>Add Milestone</span>
@@ -636,7 +636,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h3 className="font-extrabold text-slate-950 text-base flex items-center gap-2">
-                      <FileCheck className="w-5 h-5 text-[#831843]" />
+                      <FileCheck className="w-5 h-5 text-[#3F5B4A]" />
                       <span>Project Milestones & Staging Progression</span>
                     </h3>
                     <p className="text-xs text-slate-600 font-medium mt-0.5">
@@ -681,7 +681,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                                 e.stopPropagation();
                                 handleOpenEditMilestoneModal(idx);
                               }}
-                              className="text-slate-400 hover:text-[#831843] cursor-pointer"
+                              className="text-slate-400 hover:text-[#3F5B4A] cursor-pointer"
                               title="Edit milestone name & notes"
                             >
                               <Edit2 className="w-3 h-3" />
@@ -724,7 +724,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Client Milestone Stage Checklist ({selectedProject.milestones?.filter((m) => m.status === 'COMPLETED').length || 0} of {selectedProject.milestones?.length || 0} Achieved)
                     </span>
-                    <span className="text-xs font-bold text-[#831843]">
+                    <span className="text-xs font-bold text-[#3F5B4A]">
                       Click checkbox to toggle achievement
                     </span>
                   </div>
@@ -746,7 +746,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                               className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all cursor-pointer shrink-0 mt-0.5 sm:mt-0 ${
                                 isAchieved
                                   ? 'bg-emerald-600 text-white shadow-xs'
-                                  : 'border-2 border-slate-300 bg-white/80 hover:border-[#831843]'
+                                  : 'border-2 border-slate-300 bg-white/80 hover:border-[#3F5B4A]'
                               }`}
                               title="Toggle Achieved"
                             >
@@ -791,7 +791,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                             <select
                               value={m.status}
                               onChange={(e) => handleDirectMilestoneStatusChange(selectedProject.id, idx, e.target.value)}
-                              className="text-xs font-bold rounded-xl px-2.5 py-1.5 glass-input text-slate-900 cursor-pointer focus:outline-none focus:border-[#831843]"
+                              className="text-xs font-bold rounded-xl px-2.5 py-1.5 glass-input text-slate-900 cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
                             >
                               <option value="NOT_STARTED">Not Started</option>
                               <option value="IN_PROGRESS">In Progress</option>
@@ -835,14 +835,14 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   <div className="p-5 rounded-3xl glass-card space-y-3 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <History className="w-4 h-4 text-[#831843]" />
+                        <History className="w-4 h-4 text-[#3F5B4A]" />
                         <h3 className="font-extrabold text-slate-950 text-sm">
                           Daily Project Logs & History
                         </h3>
                       </div>
                       <button
                         onClick={() => setShowDailyUpdateModal(true)}
-                        className="text-xs font-bold text-[#831843] hover:underline cursor-pointer"
+                        className="text-xs font-bold text-[#3F5B4A] hover:underline cursor-pointer"
                       >
                         + Post Log
                       </button>
@@ -891,7 +891,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   <div className="p-5 rounded-3xl glass-card space-y-3 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <ListTodo className="w-4 h-4 text-[#831843]" />
+                        <ListTodo className="w-4 h-4 text-[#3F5B4A]" />
                         <h3 className="font-extrabold text-slate-950 text-sm">
                           Tasks & Checklists
                         </h3>
@@ -905,7 +905,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                         value={newTaskTitle}
                         onChange={(e) => setNewTaskTitle(e.target.value)}
                         placeholder="Add quick task..."
-                        className="flex-1 px-3 py-1.5 text-xs rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+                        className="flex-1 px-3 py-1.5 text-xs rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
                       />
                       <button
                         type="submit"
@@ -931,7 +931,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                                     e.target.checked ? 'DONE' : 'TODO'
                                   )
                                 }
-                                className="w-4 h-4 rounded text-[#831843] focus:ring-[#831843] cursor-pointer"
+                                className="w-4 h-4 rounded text-[#3F5B4A] focus:ring-[#3F5B4A] cursor-pointer"
                               />
                               <span
                                 className={`font-medium ${
@@ -958,7 +958,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
               <div className="p-5 rounded-3xl glass-card space-y-3 shadow-sm">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-slate-950 text-sm flex items-center gap-2">
-                    <Receipt className="w-4 h-4 text-[#831843]" />
+                    <Receipt className="w-4 h-4 text-[#3F5B4A]" />
                     <span>Financial Overview</span>
                   </h3>
                   <div className="flex items-center gap-2">
@@ -1025,7 +1025,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   onChange={(e) => setDailyUpdateText(e.target.value)}
                   placeholder="e.g. Stage floral structure assembled. 1200 avalanche roses arrived in cold storage from Ooty..."
                   rows={3}
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1035,7 +1035,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   <select
                     value={dailyUpdateHealth}
                     onChange={(e) => setDailyUpdateHealth(e.target.value as DailyLogHealth)}
-                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   >
                     <option value="ON_TRACK">On Track (Green)</option>
                     <option value="ATTENTION_NEEDED">Attention Needed (Yellow)</option>
@@ -1049,7 +1049,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     type="text"
                     value={dailyAddedBy}
                     onChange={(e) => setDailyAddedBy(e.target.value)}
-                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#831843]"
+                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -1061,7 +1061,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   value={dailyNextAction}
                   onChange={(e) => setDailyNextAction(e.target.value)}
                   placeholder="e.g. Venue gate clearance pass and misting flowers at 6:00 AM..."
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1111,7 +1111,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   value={milestoneNameInput}
                   onChange={(e) => setMilestoneNameInput(e.target.value)}
                   placeholder="e.g. Advance is paid, Booking is done, Stage is finalized..."
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1126,7 +1126,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                       key={preset}
                       type="button"
                       onClick={() => setMilestoneNameInput(preset)}
-                      className="px-2 py-1 rounded-xl text-[10px] font-semibold glass-subtle hover:bg-rose-50 hover:text-[#831843] border border-white/60 cursor-pointer text-slate-700 transition-colors"
+                      className="px-2 py-1 rounded-xl text-[10px] font-semibold glass-subtle hover:bg-rose-50 hover:text-[#3F5B4A] border border-white/60 cursor-pointer text-slate-700 transition-colors"
                     >
                       {preset}
                     </button>
@@ -1140,7 +1140,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   <select
                     value={milestoneStatusInput}
                     onChange={(e) => setMilestoneStatusInput(e.target.value as MilestoneStatus)}
-                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   >
                     <option value="NOT_STARTED">Not Started</option>
                     <option value="IN_PROGRESS">In Progress</option>
@@ -1155,7 +1155,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     type="date"
                     value={milestoneDueDateInput}
                     onChange={(e) => setMilestoneDueDateInput(e.target.value)}
-                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -1167,7 +1167,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   onChange={(e) => setMilestoneNotesInput(e.target.value)}
                   placeholder="e.g. ₹50,000 received via IMPS, stage CAD drawing approved by bride..."
                   rows={3}
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
             </div>
@@ -1200,7 +1200,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-extrabold text-slate-950 text-base flex items-center gap-2">
-                  <Plus className="w-4 h-4 text-[#831843]" />
+                  <Plus className="w-4 h-4 text-[#3F5B4A]" />
                   <span>Add Client Milestone</span>
                 </h3>
                 <p className="text-xs text-slate-600 font-medium mt-0.5">{selectedProject.name}</p>
@@ -1217,7 +1217,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   value={newMilestoneName}
                   onChange={(e) => setNewMilestoneName(e.target.value)}
                   placeholder="e.g. Advance is paid, Reception is over, Stage finalized..."
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1232,7 +1232,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                       key={preset}
                       type="button"
                       onClick={() => setNewMilestoneName(preset)}
-                      className="px-2 py-1 rounded-xl text-[10px] font-semibold glass-subtle hover:bg-rose-50 hover:text-[#831843] border border-white/60 cursor-pointer text-slate-700 transition-colors"
+                      className="px-2 py-1 rounded-xl text-[10px] font-semibold glass-subtle hover:bg-rose-50 hover:text-[#3F5B4A] border border-white/60 cursor-pointer text-slate-700 transition-colors"
                     >
                       + {preset}
                     </button>
@@ -1246,7 +1246,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   <select
                     value={newMilestoneStatus}
                     onChange={(e) => setNewMilestoneStatus(e.target.value as MilestoneStatus)}
-                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   >
                     <option value="NOT_STARTED">Not Started</option>
                     <option value="IN_PROGRESS">In Progress</option>
@@ -1260,7 +1260,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     type="date"
                     value={newMilestoneDueDate}
                     onChange={(e) => setNewMilestoneDueDate(e.target.value)}
-                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -1272,7 +1272,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                   onChange={(e) => setNewMilestoneNotes(e.target.value)}
                   placeholder="Provide any additional details or requirements for this stage..."
                   rows={2}
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 

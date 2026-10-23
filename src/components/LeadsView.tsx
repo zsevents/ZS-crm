@@ -204,7 +204,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Leads & CRM
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -256,7 +256,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <span>{st.label}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                    isSelected ? 'bg-white text-[#831843]' : 'bg-slate-200/80 text-slate-800'
+                    isSelected ? 'bg-white text-[#3F5B4A]' : 'bg-slate-200/80 text-slate-800'
                   }`}
                 >
                   {count}
@@ -275,7 +275,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filter by customer name, phone, area (e.g. Whitefield, Indiranagar)..."
-              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl glass-input text-slate-950 placeholder:text-slate-400 focus:outline-none focus:border-[#831843] font-medium"
+              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl glass-input text-slate-950 placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A] font-medium"
             />
           </div>
 
@@ -284,7 +284,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             <select
               value={eventTypeFilter}
               onChange={(e) => setEventTypeFilter(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl text-xs glass-input text-slate-900 font-bold cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="px-3.5 py-2.5 rounded-xl text-xs glass-input text-slate-900 font-bold cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               <option value="ALL">All Event Types</option>
               <option value="Wedding">Wedding</option>
@@ -309,8 +309,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 onClick={() => onSelectLead(lead.id)}
                 className={`p-5 rounded-2xl transition-all cursor-pointer relative glass-card ${
                   isSelected
-                    ? 'border-[#831843] ring-2 ring-[#831843]/20 shadow-xl'
-                    : 'hover:border-[#831843]/50 shadow-md hover:shadow-xl hover:-translate-y-0.5'
+                    ? 'border-[#3F5B4A] ring-2 ring-[#3F5B4A]/20 shadow-xl'
+                    : 'hover:border-[#3F5B4A]/50 shadow-md hover:shadow-xl hover:-translate-y-0.5'
                 }`}
               >
                 {/* Top badges */}
@@ -346,7 +346,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     {lead.customerName}
                   </h3>
                   <div className="flex items-center gap-2 mt-1 text-xs text-slate-700">
-                    <span className="font-bold text-[#831843]">{lead.eventType}</span>
+                    <span className="font-bold text-[#3F5B4A]">{lead.eventType}</span>
                     <span>·</span>
                     <span className="flex items-center gap-1 text-slate-600 font-medium">
                       <MapPin className="w-3 h-3 text-slate-400" />
@@ -402,7 +402,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             {/* Drawer Top Header */}
             <div className="p-4 sm:p-5 border-b border-white/60 flex items-center justify-between glass-panel">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-rose-100/90 border border-rose-200 text-[#831843] flex items-center justify-center font-black text-sm shadow-xs">
+                <div className="w-10 h-10 rounded-2xl bg-rose-100/90 border border-rose-200 text-[#3F5B4A] flex items-center justify-center font-black text-sm shadow-xs">
                   {selectedLead.customerName.slice(0, 2).toUpperCase()}
                 </div>
                 <div>
@@ -474,7 +474,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   <div>
                     <span className="text-slate-500 font-bold block mb-1">Event Date & Venue</span>
                     <div className="font-bold text-slate-950 flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#831843]" />
+                      <Calendar className="w-3.5 h-3.5 text-[#3F5B4A]" />
                       {formatDate(selectedLead.eventDate)}
                     </div>
                     {selectedLead.venue && (
@@ -529,7 +529,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     <span className="font-bold text-amber-950">Next Follow-up</span>
                     <button
                       onClick={() => setShowFollowUpModal(true)}
-                      className="text-[#831843] font-bold hover:underline cursor-pointer"
+                      className="text-[#3F5B4A] font-bold hover:underline cursor-pointer"
                     >
                       Reschedule
                     </button>
@@ -581,7 +581,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                         selectedLead.activities.map((act: ActivityItem, idx: number) => (
                           <div key={act.id || idx} className="p-3.5 rounded-2xl glass-card text-xs">
                             <div className="flex items-center justify-between text-[10px] text-slate-500 mb-1">
-                              <span className="font-bold text-[#831843]">{act.createdBy}</span>
+                              <span className="font-bold text-[#3F5B4A]">{act.createdBy}</span>
                               <span className="font-medium">{formatDateTime(act.timestamp)}</span>
                             </div>
                             <p className="text-slate-900 font-medium">{act.description}</p>
@@ -600,7 +600,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     <select
                       value={noteType}
                       onChange={(e) => setNoteType(e.target.value)}
-                      className="text-[11px] px-2.5 py-1.5 rounded-xl glass-input text-slate-900 font-bold focus:outline-none focus:border-[#831843]"
+                      className="text-[11px] px-2.5 py-1.5 rounded-xl glass-input text-slate-900 font-bold focus:outline-none focus:border-[#3F5B4A]"
                     >
                       <option value="NOTE_ADDED">Note</option>
                       <option value="CALL">Call Log</option>
@@ -616,7 +616,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                       value={newNote}
                       onChange={(e) => setNewNote(e.target.value)}
                       placeholder="e.g. Customer approved pastel moodboard..."
-                      className="flex-1 px-3.5 py-2 text-xs rounded-xl glass-input text-slate-950 placeholder:text-slate-400 focus:outline-none focus:border-[#831843] font-medium"
+                      className="flex-1 px-3.5 py-2 text-xs rounded-xl glass-input text-slate-950 placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A] font-medium"
                     />
                     <button
                       type="submit"
@@ -640,7 +640,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   {/* 1. Direct Call */}
                   <a
                     href={`tel:${cleanPhoneNumber(selectedLead.phone)}`}
-                    className="w-full px-3.5 py-2.5 rounded-xl glass-card hover:border-[#831843]/50 text-xs font-bold text-slate-900 flex items-center justify-between transition-all"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-card hover:border-[#3F5B4A]/50 text-xs font-bold text-slate-900 flex items-center justify-between transition-all"
                   >
                     <span className="flex items-center gap-2">
                       <Phone className="w-4 h-4 text-emerald-600" />
@@ -655,7 +655,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                       href={`https://wa.me/${cleanPhoneNumber(selectedLead.phone)}?text=${encodeURIComponent(`Hi ${selectedLead.customerName}, regarding your ${selectedLead.eventType} floral decor inquiry with Z S EVENTS Bangalore...`)}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-3 py-2.5 rounded-xl glass-card hover:border-[#831843]/50 text-xs font-bold text-slate-900 flex items-center justify-center gap-1.5 transition-all"
+                      className="px-3 py-2.5 rounded-xl glass-card hover:border-[#3F5B4A]/50 text-xs font-bold text-slate-900 flex items-center justify-center gap-1.5 transition-all"
                     >
                       <MessageSquare className="w-4 h-4 text-green-600" />
                       WhatsApp
@@ -672,7 +672,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   {/* 3. Schedule Follow-up */}
                   <button
                     onClick={() => setShowFollowUpModal(true)}
-                    className="w-full px-3.5 py-2.5 rounded-xl glass-card hover:border-[#831843]/50 text-xs font-bold text-slate-900 flex items-center justify-between transition-all cursor-pointer"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-card hover:border-[#3F5B4A]/50 text-xs font-bold text-slate-900 flex items-center justify-between transition-all cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-amber-600" />
@@ -733,7 +733,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   type="date"
                   value={followUpDate}
                   onChange={(e) => setFollowUpDate(e.target.value)}
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -744,7 +744,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   value={followUpTime}
                   onChange={(e) => setFollowUpTime(e.target.value)}
                   placeholder="e.g. 11:00 AM"
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -753,7 +753,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <select
                   value={followUpType}
                   onChange={(e) => setFollowUpType(e.target.value)}
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold focus:outline-none focus:border-[#3F5B4A]"
                 >
                   <option value="CALL">Call Customer</option>
                   <option value="WHATSAPP">Send WhatsApp Message</option>
@@ -771,7 +771,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   onChange={(e) => setFollowUpNote(e.target.value)}
                   placeholder="e.g. Call to finalize mandap rose color and stage height..."
                   rows={2}
-                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
             </div>

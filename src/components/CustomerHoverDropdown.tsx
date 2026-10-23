@@ -93,7 +93,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="group inline-flex items-center gap-1.5 text-left font-bold text-slate-900 hover:text-[#831843] transition-colors cursor-pointer"
+        className="group inline-flex items-center gap-1.5 text-left font-bold text-slate-900 hover:text-[#3F5B4A] transition-colors cursor-pointer"
       >
         <span className="truncate max-w-[170px] sm:max-w-[220px]">
           {customer.name || 'Unnamed Client'}
@@ -105,7 +105,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
           />
         )}
         <ChevronDown
-          className={`w-3.5 h-3.5 text-slate-400 group-hover:text-[#831843] transition-transform duration-200 ${
+          className={`w-3.5 h-3.5 text-slate-400 group-hover:text-[#3F5B4A] transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
@@ -117,7 +117,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
           {/* Header Card */}
           <div className="flex items-start justify-between gap-3 pb-3 border-b border-white/60">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-[#7a1640] text-white flex items-center justify-center text-xs font-black shadow-xs shrink-0 border border-white/20">
+              <div className="w-9 h-9 rounded-xl bg-[#3F5B4A] text-white flex items-center justify-center text-xs font-black shadow-xs shrink-0 border border-white/20">
                 {(customer.name || 'C').charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
@@ -125,20 +125,20 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
                   {customer.name}
                 </h4>
                 {customer.companyName && (
-                  <p className="text-[11px] font-semibold text-[#831843] truncate">
+                  <p className="text-[11px] font-semibold text-[#3F5B4A] truncate">
                     {customer.companyName}
                   </p>
                 )}
                 {customer.location && (
                   <p className="text-[11px] text-slate-600 font-medium flex items-center gap-1 truncate">
-                    <MapPin className="w-3 h-3 text-[#831843] shrink-0" />
+                    <MapPin className="w-3 h-3 text-[#3F5B4A] shrink-0" />
                     <span className="truncate">{customer.location}</span>
                   </p>
                 )}
               </div>
             </div>
 
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/15 text-[#831843] border border-rose-500/20 shrink-0 backdrop-blur-xs">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/15 text-[#3F5B4A] border border-rose-500/20 shrink-0 backdrop-blur-xs">
               Client
             </span>
           </div>
@@ -147,7 +147,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
           <div className="py-2.5 space-y-2 text-xs border-b border-white/60">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-slate-700 truncate">
-                <Phone className="w-3.5 h-3.5 text-[#831843] shrink-0" />
+                <Phone className="w-3.5 h-3.5 text-[#3F5B4A] shrink-0" />
                 <span className="font-bold text-slate-900 truncate">
                   {formattedPhone || 'No phone recorded'}
                 </span>
@@ -168,7 +168,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
                   <a
                     href={`tel:${cleanPhone}`}
                     title="Call Client"
-                    className="p-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-[#831843] border border-rose-500/20 transition-colors backdrop-blur-xs"
+                    className="p-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-[#3F5B4A] border border-rose-500/20 transition-colors backdrop-blur-xs"
                   >
                     <Phone className="w-3.5 h-3.5" />
                   </a>
@@ -178,10 +178,10 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
 
             {customer.email && (
               <div className="flex items-center gap-2 text-slate-700 truncate">
-                <Mail className="w-3.5 h-3.5 text-[#831843] shrink-0" />
+                <Mail className="w-3.5 h-3.5 text-[#3F5B4A] shrink-0" />
                 <a
                   href={`mailto:${customer.email}`}
-                  className="font-medium text-slate-800 hover:text-[#831843] truncate underline"
+                  className="font-medium text-slate-800 hover:text-[#3F5B4A] truncate underline"
                 >
                   {customer.email}
                 </a>
@@ -198,7 +198,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">
                       Total Value
                     </span>
-                    <span className="font-extrabold text-[#831843]">
+                    <span className="font-extrabold text-[#3F5B4A]">
                       {formatINR(customer.totalSpend)}
                     </span>
                   </div>
@@ -293,7 +293,7 @@ export const CustomerHoverDropdown: React.FC<CustomerHoverDropdownProps> = ({
                 setIsOpen(false);
                 onViewCustomer(customer.id!);
               }}
-              className="mt-3 w-full py-2 px-3 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm border border-white/20 transition-all cursor-pointer"
+              className="mt-3 w-full py-2 px-3 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm border border-white/20 transition-all cursor-pointer"
             >
               <span>View Client Full Profile</span>
               <ExternalLink className="w-3 h-3" />

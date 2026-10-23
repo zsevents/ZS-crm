@@ -75,7 +75,7 @@ export const SetPasswordView: React.FC<{ email: string; onDone: () => void }> = 
         <button
           type="submit"
           disabled={saving}
-          className="w-full py-3 bg-[#7a1640] text-white font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+          className="w-full py-3 bg-[#3F5B4A] text-white font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
         >
           {saving ? 'Saving...' : 'Save password'}
           <ArrowRight className="w-4 h-4" />

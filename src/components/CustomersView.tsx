@@ -214,7 +214,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Client Directory
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -259,7 +259,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by customer name, notes, phone, Bangalore area, company..."
-              className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl glass-input border border-white/80 text-slate-950 placeholder:text-slate-400 focus:outline-none focus:border-[#831843] font-medium"
+              className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-xl glass-input border border-white/80 text-slate-950 placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A] font-medium"
             />
           </div>
 
@@ -269,7 +269,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                 type="button"
                 onClick={() => setViewLayout('table')}
                 className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  viewLayout === 'table' ? 'bg-white text-[#831843] shadow-xs font-bold' : 'text-slate-500 hover:text-slate-900'
+                  viewLayout === 'table' ? 'bg-white text-[#3F5B4A] shadow-xs font-bold' : 'text-slate-500 hover:text-slate-900'
                 }`}
                 title="Comprehensive Table View with Notes Column"
               >
@@ -279,7 +279,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                 type="button"
                 onClick={() => setViewLayout('grid')}
                 className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  viewLayout === 'grid' ? 'bg-white text-[#831843] shadow-xs font-bold' : 'text-slate-500 hover:text-slate-900'
+                  viewLayout === 'grid' ? 'bg-white text-[#3F5B4A] shadow-xs font-bold' : 'text-slate-500 hover:text-slate-900'
                 }`}
                 title="Card Grid View"
               >
@@ -364,7 +364,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                                 <a
                                   href={`tel:${cleanPhone}`}
                                   title="Call"
-                                  className="p-1 rounded-md bg-rose-500/15 text-[#831843] hover:bg-rose-500/25 border border-rose-500/20 backdrop-blur-xs"
+                                  className="p-1 rounded-md bg-rose-500/15 text-[#3F5B4A] hover:bg-rose-500/25 border border-rose-500/20 backdrop-blur-xs"
                                 >
                                   <Phone className="w-3 h-3" />
                                 </a>
@@ -389,7 +389,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                         {/* Events Count */}
                         <td className="py-3.5 px-4 text-center">
                           <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/70 text-slate-800 border border-white/90 font-bold text-[11px] backdrop-blur-xs shadow-2xs">
-                            <Briefcase className="w-3 h-3 text-[#831843]" />
+                            <Briefcase className="w-3 h-3 text-[#3F5B4A]" />
                             <span>{customer.totalProjects} Events</span>
                           </div>
                         </td>
@@ -484,7 +484,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                               type="button"
                               onClick={() => setSelectedCustomerId(customer.id)}
                               title="View Full Profile Drawer"
-                              className="px-2.5 py-1.5 rounded-xl bg-white/80 hover:bg-[#831843] text-slate-700 hover:text-white border border-white/90 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                              className="px-2.5 py-1.5 rounded-xl bg-white/80 hover:bg-[#3F5B4A] text-slate-700 hover:text-white border border-white/90 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
                             >
                               <span>Profile</span>
                               <ChevronRight className="w-3 h-3" />
@@ -534,13 +534,13 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                   key={customer.id}
                   className={`p-5 rounded-2xl transition-all relative glass-card border shadow-xs ${
                     isSelected
-                      ? 'border-[#831843] ring-2 ring-[#831843]/20 shadow-md'
+                      ? 'border-[#3F5B4A] ring-2 ring-[#3F5B4A]/20 shadow-md'
                       : 'border-white/70 hover:border-white/90 hover:shadow-md'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#7a1640] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-white/20">
+                      <div className="w-10 h-10 rounded-xl bg-[#3F5B4A] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-white/20">
                         {customer.name.slice(0, 2).toUpperCase()}
                       </div>
                       <div>
@@ -569,7 +569,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
 
                   <div className="mt-4 space-y-1.5 text-xs text-slate-700">
                     <p className="flex items-center gap-2 font-bold text-slate-950">
-                      <Phone className="w-3.5 h-3.5 text-[#831843]" />
+                      <Phone className="w-3.5 h-3.5 text-[#3F5B4A]" />
                       {formatPhoneNumber(customer.phone)}
                     </p>
                     <p className="flex items-center gap-2 text-slate-600 font-medium">
@@ -607,7 +607,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setSelectedCustomerId(customer.id)}
-                        className="px-3 py-1.5 bg-white/80 hover:bg-[#831843] text-slate-800 hover:text-white font-bold text-xs rounded-xl border border-white/90 transition-colors cursor-pointer shadow-2xs"
+                        className="px-3 py-1.5 bg-white/80 hover:bg-[#3F5B4A] text-slate-800 hover:text-white font-bold text-xs rounded-xl border border-white/90 transition-colors cursor-pointer shadow-2xs"
                       >
                         View Details
                       </button>
@@ -632,7 +632,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
             {/* Drawer Header */}
             <div className="p-5 border-b border-white/60 bg-white/40 backdrop-blur-md flex items-center justify-between">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-[#7a1640] text-white flex items-center justify-center font-bold text-lg shadow-sm border border-white/20">
+                <div className="w-12 h-12 rounded-2xl bg-[#3F5B4A] text-white flex items-center justify-center font-bold text-lg shadow-sm border border-white/20">
                   {selectedCustomer.name.slice(0, 2).toUpperCase()}
                 </div>
                 <div>
@@ -641,7 +641,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleOpenEditModal(selectedCustomer)}
-                      className="p-1 rounded text-slate-400 hover:text-[#831843]"
+                      className="p-1 rounded text-slate-400 hover:text-[#3F5B4A]"
                       title="Edit Customer"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
@@ -686,7 +686,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     href={`tel:${cleanPhoneNumber(selectedCustomer.phone)}`}
                     className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/80 text-slate-900 font-bold border border-white/90 hover:bg-white transition-all shadow-xs"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#831843]" />
+                    <Phone className="w-3.5 h-3.5 text-[#3F5B4A]" />
                     <span>Call {formatPhoneNumber(selectedCustomer.phone)}</span>
                   </a>
                   <a
@@ -784,7 +784,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
               {/* Linked Projects */}
               <div className="space-y-3">
                 <h3 className="font-extrabold text-slate-950 text-sm flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-[#831843]" />
+                  <Briefcase className="w-4 h-4 text-[#3F5B4A]" />
                   <span>Floral Projects ({customerProjects.length})</span>
                 </h3>
                 {customerProjects.length > 0 ? (
@@ -815,7 +815,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
               {/* Linked Inquiries / Leads */}
               <div className="space-y-3">
                 <h3 className="font-extrabold text-slate-950 text-sm flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#831843]" />
+                  <Users className="w-4 h-4 text-[#3F5B4A]" />
                   <span>Inquiry History ({customerLeads.length})</span>
                 </h3>
                 {customerLeads.map((l) => (
@@ -874,7 +874,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     value={custName}
                     onChange={(e) => setCustName(e.target.value)}
                     placeholder="e.g. Priya & Rohan Verma"
-                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
 
@@ -886,7 +886,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     value={custPhone}
                     onChange={(e) => setCustPhone(e.target.value)}
                     placeholder="e.g. +91 98860 12345"
-                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -899,7 +899,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     value={custEmail}
                     onChange={(e) => setCustEmail(e.target.value)}
                     placeholder="priya@example.com"
-                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
 
@@ -910,7 +910,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     value={custLocation}
                     onChange={(e) => setCustLocation(e.target.value)}
                     placeholder="e.g. Indiranagar, Bangalore"
-                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -923,7 +923,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     value={custCompany}
                     onChange={(e) => setCustCompany(e.target.value)}
                     placeholder="e.g. Embassy Group (Optional)"
-                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
 
@@ -934,7 +934,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                     value={custGst}
                     onChange={(e) => setCustGst(e.target.value)}
                     placeholder="e.g. 29ABCDE1234F1Z5"
-                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input border border-white/80 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -948,7 +948,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                   value={custNotes}
                   onChange={(e) => setCustNotes(e.target.value)}
                   placeholder="Record customer preferences (e.g. prefers pastel orchids, VIP wedding decor, preferred billing cycle)..."
-                  className="w-full p-2.5 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                  className="w-full p-2.5 glass-input border border-white/80 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -963,7 +963,7 @@ export const CustomersView: React.FC<CustomersViewProps> = ({
                 <button
                   type="submit"
                   disabled={isSavingCustomer}
-                  className="px-5 py-2 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold disabled:opacity-50 transition-all shadow-sm border border-white/20 cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold disabled:opacity-50 transition-all shadow-sm border border-white/20 cursor-pointer"
                 >
                   {isSavingCustomer ? 'Saving...' : editingCustomer ? 'Update Customer' : 'Create Customer'}
                 </button>

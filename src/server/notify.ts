@@ -66,7 +66,7 @@ export async function sendInquiryEmail(lead: Lead, message: string): Promise<'se
     replyTo: lead.email || undefined,
     subject: `New enquiry: ${lead.customerName} - ${lead.eventType}${lead.eventDate ? ` on ${lead.eventDate}` : ''}`,
     text: rows.map(([k, v]) => `${k}: ${v}`).join('\n') + `\n\nWhatsApp: https://wa.me/${waNumber}\nCRM: https://crm.zsevents.in`,
-    html: `<h2 style="font-family:sans-serif;color:#831843">New website enquiry</h2>
+    html: `<h2 style="font-family:sans-serif;color:#3F5B4A">New website enquiry</h2>
 <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
 ${rows.map(([k, v]) => `<tr><td style="padding:6px 12px;color:#666">${esc(k)}</td><td style="padding:6px 12px"><b>${esc(v)}</b></td></tr>`).join('\n')}
 </table>

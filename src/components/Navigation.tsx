@@ -31,12 +31,12 @@ const QUICK_ACTIONS: {
   cardTone: string;
   dividerBefore?: boolean;
 }[] = [
-  { action: 'NEW_LEAD', Icon: Users, menuLabel: 'New Lead Inquiry', menuTone: 'text-[#831843]', cardTitle: 'New Lead', cardSub: 'Inbound inquiry', cardTone: 'bg-rose-100/90 text-[#831843]' },
-  { action: 'CREATE_QUOTATION', Icon: FileText, menuLabel: 'New Quotation / Proposal', menuTone: 'text-[#831843]', cardTitle: 'New Proposal', cardSub: 'Quotation / PDF', cardTone: 'bg-purple-100/90 text-purple-900' },
-  { action: 'NEW_PROJECT', Icon: Briefcase, menuLabel: 'New Event Project & Staging', menuTone: 'text-slate-700', cardTitle: 'New Project', cardSub: 'Staging & venue', cardTone: 'bg-blue-100/90 text-blue-900' },
-  { action: 'POST_DAILY_UPDATE', Icon: Sparkles, menuLabel: 'Post Daily Site Staging Log', menuTone: 'text-amber-600', cardTitle: 'Daily Site Log', cardSub: 'On-site status', cardTone: 'bg-amber-100/90 text-amber-900', dividerBefore: true },
-  { action: 'CREATE_INVOICE', Icon: Receipt, menuLabel: 'Create Tax Invoice (GST)', menuTone: 'text-[#831843]', cardTitle: 'GST Invoice', cardSub: 'Tax bill & PDF', cardTone: 'bg-emerald-100/90 text-emerald-900' },
-  { action: 'RECORD_PAYMENT', Icon: null, menuLabel: 'Record Payment (UPI/NEFT)', menuTone: '', cardTitle: 'Record Payment', cardSub: 'UPI / NEFT receipt', cardTone: 'bg-rose-100/90 text-[#831843]' },
+  { action: 'NEW_LEAD', Icon: Users, menuLabel: 'New Lead Inquiry', menuTone: 'text-[#3F5B4A]', cardTitle: 'New Lead', cardSub: 'Inbound inquiry', cardTone: 'bg-[#EDE9DD] text-[#3F5B4A]' },
+  { action: 'CREATE_QUOTATION', Icon: FileText, menuLabel: 'New Quotation / Proposal', menuTone: 'text-[#3F5B4A]', cardTitle: 'New Proposal', cardSub: 'Quotation / PDF', cardTone: 'bg-[#EDE9DD] text-[#3F5B4A]' },
+  { action: 'NEW_PROJECT', Icon: Briefcase, menuLabel: 'New Event Project & Staging', menuTone: 'text-slate-700', cardTitle: 'New Project', cardSub: 'Staging & venue', cardTone: 'bg-[#EDE9DD] text-[#3F5B4A]' },
+  { action: 'POST_DAILY_UPDATE', Icon: Sparkles, menuLabel: 'Post Daily Site Staging Log', menuTone: 'text-amber-600', cardTitle: 'Daily Site Log', cardSub: 'On-site status', cardTone: 'bg-[#EDE9DD] text-[#3F5B4A]', dividerBefore: true },
+  { action: 'CREATE_INVOICE', Icon: Receipt, menuLabel: 'Create Tax Invoice (GST)', menuTone: 'text-[#3F5B4A]', cardTitle: 'GST Invoice', cardSub: 'Tax bill & PDF', cardTone: 'bg-[#EDE9DD] text-[#3F5B4A]' },
+  { action: 'RECORD_PAYMENT', Icon: null, menuLabel: 'Record Payment (UPI/NEFT)', menuTone: '', cardTitle: 'Record Payment', cardSub: 'UPI / NEFT receipt', cardTone: 'bg-[#EDE9DD] text-[#3F5B4A]' },
 ];
 
 interface NavigationProps {
@@ -290,7 +290,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               <span className="font-black tracking-tight text-slate-950 text-base leading-none">
                 Z S EVENTS
               </span>
-              <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-rose-100/80 text-[#961b45] border border-rose-200/70 shadow-xs">
+              <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-rose-100/80 text-[#3F5B4A] border border-rose-200/70 shadow-xs">
                 BLR
               </span>
             </div>
@@ -332,7 +332,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   {q.dividerBefore && <div className="my-1 border-t border-white/60" />}
                   <button
                     onClick={() => runQuickAction(q.action)}
-                    className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#831843] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
+                    className="w-full px-4 py-2 text-left hover:bg-rose-50/70 hover:text-[#3F5B4A] flex items-center gap-2.5 cursor-pointer font-semibold text-slate-800 transition-colors"
                   >
                     {q.Icon ? (
                       <q.Icon className={`w-4 h-4 ${q.menuTone}`} />
@@ -382,7 +382,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               <div className="px-3 py-1.5 flex items-center justify-between text-slate-500 font-semibold bg-white/40 text-[11px]">
                 <span>Results ({totalResults})</span>
                 {isSearching && (
-                  <span className="text-[10px] text-[#831843]">Searching...</span>
+                  <span className="text-[10px] text-[#3F5B4A]">Searching...</span>
                 )}
               </div>
 
@@ -394,7 +394,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <>
                   {searchResults.leads.length > 0 && (
                     <div className="p-1.5">
-                      <div className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#831843]">
+                      <div className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#3F5B4A]">
                         Leads ({searchResults.leads.length})
                       </div>
                       {searchResults.leads.slice(0, 3).map((lead) => (
@@ -412,7 +412,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                             <p className="font-bold text-slate-900 truncate">{lead.customerName}</p>
                             <p className="text-[10px] text-slate-500 truncate">{lead.eventType} • {lead.location}</p>
                           </div>
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100/80 text-[#831843] shrink-0 ml-1 border border-rose-200/60">
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-rose-100/80 text-[#3F5B4A] shrink-0 ml-1 border border-rose-200/60">
                             {lead.status}
                           </span>
                         </button>
@@ -560,8 +560,8 @@ export const Navigation: React.FC<NavigationProps> = ({
                   <span
                     className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
                       isActive
-                        ? 'bg-white text-[#961b45] font-black'
-                        : 'bg-rose-100/90 text-[#961b45] border border-rose-200/80'
+                        ? 'bg-white text-[#3F5B4A] font-black'
+                        : 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
                     }`}
                   >
                     {item.badge}
@@ -582,7 +582,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* 4. Bottom Footer: User Profile & Logout */}
       <div className="p-3.5 border-t border-white/60 bg-white/40 backdrop-blur-md flex items-center justify-between text-xs shrink-0">
         <div className="flex items-center gap-2.5 truncate min-w-0">
-          <div className="w-10 h-10 rounded-2xl bg-[#7a1640] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-[#3F5B4A] text-white flex items-center justify-center font-black text-sm shrink-0 shadow-sm">
             {currentUser?.name?.charAt(0) || 'S'}
           </div>
           <div className="truncate">
@@ -598,7 +598,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         {onLogout && (
           <button
             onClick={onLogout}
-            className="p-2 rounded-xl text-slate-500 hover:text-[#961b45] glass-btn-secondary transition-colors cursor-pointer shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center"
+            className="p-2 rounded-xl text-slate-500 hover:text-[#3F5B4A] glass-btn-secondary transition-colors cursor-pointer shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center"
             title="Sign Out"
           >
             <LogOut className="w-4 h-4" />
@@ -625,7 +625,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           <button
             type="button"
             onClick={() => setIsMobileOpen(true)}
-            className="p-2 rounded-xl glass-btn-secondary text-[#831843] cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+            className="p-2 rounded-xl glass-btn-secondary text-[#3F5B4A] cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
             title="Open Menu"
           >
             <Menu className="w-5 h-5" />
@@ -673,11 +673,11 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={() => handleSelectNav('DASHBOARD')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] transition-all cursor-pointer ${
             activeTab === 'DASHBOARD'
-              ? 'text-[#831843] font-black'
+              ? 'text-[#3F5B4A] font-black'
               : 'text-slate-600 hover:text-slate-900 font-semibold'
           }`}
         >
-          <div className={`p-1 rounded-lg ${activeTab === 'DASHBOARD' ? 'bg-rose-100/90 text-[#831843]' : ''}`}>
+          <div className={`p-1 rounded-lg ${activeTab === 'DASHBOARD' ? 'bg-rose-100/90 text-[#3F5B4A]' : ''}`}>
             <LayoutDashboard className="w-5 h-5" />
           </div>
           <span className="text-[9.5px] leading-tight mt-0.5">Overview</span>
@@ -689,14 +689,14 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={() => handleSelectNav('LEADS')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] relative transition-all cursor-pointer ${
             activeTab === 'LEADS'
-              ? 'text-[#831843] font-black'
+              ? 'text-[#3F5B4A] font-black'
               : 'text-slate-600 hover:text-slate-900 font-semibold'
           }`}
         >
-          <div className={`p-1 rounded-lg relative ${activeTab === 'LEADS' ? 'bg-rose-100/90 text-[#831843]' : ''}`}>
+          <div className={`p-1 rounded-lg relative ${activeTab === 'LEADS' ? 'bg-rose-100/90 text-[#3F5B4A]' : ''}`}>
             <Users className="w-5 h-5" />
             {newLeadsCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#831843] text-white text-[9px] font-black flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#C0674A] text-white text-[9px] font-black flex items-center justify-center">
                 {newLeadsCount}
               </span>
             )}
@@ -721,11 +721,11 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={() => handleSelectNav('PROJECTS')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] transition-all cursor-pointer ${
             activeTab === 'PROJECTS'
-              ? 'text-[#831843] font-black'
+              ? 'text-[#3F5B4A] font-black'
               : 'text-slate-600 hover:text-slate-900 font-semibold'
           }`}
         >
-          <div className={`p-1 rounded-lg ${activeTab === 'PROJECTS' ? 'bg-rose-100/90 text-[#831843]' : ''}`}>
+          <div className={`p-1 rounded-lg ${activeTab === 'PROJECTS' ? 'bg-rose-100/90 text-[#3F5B4A]' : ''}`}>
             <Briefcase className="w-5 h-5" />
           </div>
           <span className="text-[9.5px] leading-tight mt-0.5">Projects</span>
@@ -737,11 +737,11 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={() => handleSelectNav('CALENDAR')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] relative transition-all cursor-pointer ${
             activeTab === 'CALENDAR'
-              ? 'text-[#831843] font-black'
+              ? 'text-[#3F5B4A] font-black'
               : 'text-slate-600 hover:text-slate-900 font-semibold'
           }`}
         >
-          <div className={`p-1 rounded-lg relative ${activeTab === 'CALENDAR' ? 'bg-rose-100/90 text-[#831843]' : ''}`}>
+          <div className={`p-1 rounded-lg relative ${activeTab === 'CALENDAR' ? 'bg-rose-100/90 text-[#3F5B4A]' : ''}`}>
             <CalendarDays className="w-5 h-5" />
             {conflictsCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-white" />
@@ -791,7 +791,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <button
                   key={q.action}
                   onClick={() => runQuickAction(q.action)}
-                  className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#831843]/50 transition-all cursor-pointer shadow-xs active:scale-98"
+                  className="p-3.5 rounded-2xl glass-card text-left flex flex-col justify-between hover:border-[#3F5B4A]/50 transition-all cursor-pointer shadow-xs active:scale-98"
                 >
                   <div className={`w-9 h-9 rounded-xl ${q.cardTone} flex items-center justify-center mb-2 ${q.Icon ? '' : 'font-bold text-sm'}`}>
                     {q.Icon ? <q.Icon className="w-4 h-4" /> : '₹'}

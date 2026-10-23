@@ -1,6 +1,5 @@
 import React,{ useState,useEffect,useMemo } from 'react';
 import confetti from 'canvas-confetti';
-import floralBgImage from './assets/images/luxury_floral_bg_1788163266849.jpg';
 import {
 Briefcase,Phone,
 MessageSquare,Keyboard,X
@@ -424,7 +423,7 @@ export default function App() {
     return (
       <div className="min-h-screen relative flex items-center justify-center">
         <div className="penthouse-bg" aria-hidden="true" />
-        <span className="relative z-10 w-8 h-8 border-2 border-[#831843]/30 border-t-[#831843] rounded-full animate-spin" />
+        <span className="relative z-10 w-8 h-8 border-2 border-[#3F5B4A]/30 border-t-[#3F5B4A] rounded-full animate-spin" />
       </div>
     );
   }
@@ -438,21 +437,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden text-slate-900 font-sans antialiased flex flex-col selection:bg-rose-200 selection:text-[#831843]">
-      {/* Exact Penthouse Background Image & Frosted Glass Layer */}
-      <div 
-        className="penthouse-bg" 
-        style={{ backgroundImage: `url(${floralBgImage})` }} 
-      />
-      <div className="penthouse-overlay" />
-
-      {/* Ambient Glassmorphism Backlight Mesh Orbs */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-rose-300/25 rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute top-1/4 right-0 w-80 h-80 bg-amber-200/25 rounded-full blur-3xl animate-float-reverse" />
-        <div className="absolute bottom-10 left-1/4 w-[480px] h-[480px] bg-pink-200/20 rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute top-2/3 -right-20 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl animate-float-reverse" />
-      </div>
+    <div className="min-h-screen relative overflow-x-hidden text-slate-900 font-sans antialiased flex flex-col selection:bg-rose-200 selection:text-[#3F5B4A]">
+      <div className="penthouse-bg" aria-hidden="true" />
 
       {/* Fixed Left Sidebar & Mobile Navigation */}
       <Navigation
@@ -689,7 +675,7 @@ export default function App() {
               <div className="p-4 rounded-2xl glass-card space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-700">Project Value / Budget</span>
-                  <span className="text-base font-black text-[#831843]">{formatINR(inspectedLead.budget)}</span>
+                  <span className="text-base font-black text-[#3F5B4A]">{formatINR(inspectedLead.budget)}</span>
                 </div>
                 <div className="flex items-center justify-between text-xs text-slate-600">
                   <span>Venue: {inspectedLead.venue || inspectedLead.location || 'Bangalore'}</span>
@@ -737,7 +723,7 @@ export default function App() {
                       className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                         inspectedLead.status === st
                           ? 'glass-btn-primary text-white font-black'
-                          : 'glass-btn-secondary text-slate-700 hover:text-[#831843]'
+                          : 'glass-btn-secondary text-slate-700 hover:text-[#3F5B4A]'
                       }`}
                     >
                       {st}
@@ -887,9 +873,9 @@ export default function App() {
         className="hidden md:flex fixed bottom-4 right-4 z-40 px-3.5 py-2 glass-btn-secondary text-slate-900 rounded-full text-xs font-bold shadow-xl flex items-center gap-2 border border-white/90 transition-all cursor-pointer hover:scale-105"
         title="Keyboard Shortcuts (?)"
       >
-        <Keyboard className="w-3.5 h-3.5 text-[#831843]" />
+        <Keyboard className="w-3.5 h-3.5 text-[#3F5B4A]" />
         <span className="hidden sm:inline font-bold">Active Keys</span>
-        <kbd className="px-1.5 py-0.5 bg-rose-50 border border-rose-200 rounded text-[10px] font-mono text-[#831843] font-bold">?</kbd>
+        <kbd className="px-1.5 py-0.5 bg-rose-50 border border-rose-200 rounded text-[10px] font-mono text-[#3F5B4A] font-bold">?</kbd>
       </button>
 
       {/* Keyboard Shortcuts Modal */}
@@ -898,7 +884,7 @@ export default function App() {
           <div className="w-full max-w-xl glass-modal rounded-3xl p-6 shadow-2xl space-y-4 text-slate-900 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-3 border-b border-white/60">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-rose-50/80 border border-rose-200 flex items-center justify-center text-[#831843] shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-rose-50/80 border border-rose-200 flex items-center justify-center text-[#3F5B4A] shadow-xs">
                   <Keyboard className="w-4 h-4" />
                 </div>
                 <div>
@@ -958,33 +944,33 @@ export default function App() {
 
               {/* Action Keys */}
               <div className="p-3.5 rounded-2xl bg-rose-50/60 backdrop-blur-md border border-rose-200/80 shadow-xs space-y-2.5">
-                <span className="font-extrabold text-[#831843] block text-[11px] uppercase tracking-wider">
+                <span className="font-extrabold text-[#3F5B4A] block text-[11px] uppercase tracking-wider">
                   Quick Action Keys
                 </span>
                 <div className="space-y-1.5 font-medium">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">New Client Lead</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">N</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">N</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">New Floral Project</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">P</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">P</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">Generate Quotation</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">Q</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">Q</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">Create Tax Invoice</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">I</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">I</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">Record Payment</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">B</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">B</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">Post Daily Log</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">D</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">D</kbd>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">Close / Dismiss</span>
@@ -992,7 +978,7 @@ export default function App() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-800">Shortcuts Help</span>
-                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#831843] shadow-xs">?</kbd>
+                    <kbd className="px-2 py-0.5 bg-white/90 border border-rose-300 rounded font-mono font-bold text-[#3F5B4A] shadow-xs">?</kbd>
                   </div>
                 </div>
               </div>

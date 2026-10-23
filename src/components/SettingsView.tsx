@@ -250,7 +250,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   ];
 
   return (
-    <div className="space-y-8 pb-16 text-slate-900 selection:bg-rose-200 selection:text-[#831843]">
+    <div className="space-y-8 pb-16 text-slate-900 selection:bg-rose-200 selection:text-[#3F5B4A]">
       {/* 1. TOP SUSPENDED CAPSULE HEADER */}
       <div className="flex flex-col items-center justify-center pt-2">
         <div className="suspended-cable flex flex-col items-center">
@@ -258,11 +258,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Account & Security Settings
             </h1>
-            <span className="w-2.5 h-2.5 rounded-full bg-[#961b45] animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
         <div className="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full glass-subtle border border-rose-200/80 text-[11px] font-bold text-slate-600 shadow-xs">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#961b45]" />
+          <ShieldCheck className="w-3.5 h-3.5 text-[#3F5B4A]" />
           <span>256-bit AES Encrypted • Admin Credentials & Password Controls</span>
         </div>
       </div>
@@ -350,8 +350,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         )}
 
         {resetEmailSent && (
-          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-300 text-[#961b45] text-xs font-bold flex items-center gap-3 animate-in fade-in">
-            <Mail className="w-5 h-5 text-[#961b45] shrink-0" />
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-300 text-[#3F5B4A] text-xs font-bold flex items-center gap-3 animate-in fade-in">
+            <Mail className="w-5 h-5 text-[#3F5B4A] shrink-0" />
             <span>Password reset link sent to <strong>{email}</strong>. Please check your inbox and follow the secure link.</span>
           </div>
         )}
@@ -379,7 +379,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             {/* Quick Email Reset Capsule Banner */}
             <div className="glass-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-rose-200/60 bg-rose-50/70">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-[#961b45] shrink-0">
+                <div className="w-10 h-10 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-[#3F5B4A] shrink-0">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
@@ -405,7 +405,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <form onSubmit={handlePasswordSubmit} className="glass-card p-6 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
                 <div className="flex items-center gap-2.5">
-                  <KeyRound className="w-5 h-5 text-[#961b45]" />
+                  <KeyRound className="w-5 h-5 text-[#3F5B4A]" />
                   <h3 className="text-base font-black text-slate-900">Update Account Password</h3>
                 </div>
                 <span className="text-[11px] font-bold text-slate-500">
@@ -531,7 +531,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     type="checkbox"
                     checked={enforce90Days}
                     onChange={(e) => setEnforce90Days(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#961b45] accent-[#961b45]"
+                    className="w-4 h-4 rounded text-[#3F5B4A] accent-[#3F5B4A]"
                   />
                   <div>
                     <span className="text-xs font-bold text-slate-900">Enforce periodic password rotation (Every 90 days)</span>
@@ -544,7 +544,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     type="checkbox"
                     checked={logoutOtherSessions}
                     onChange={(e) => setLogoutOtherSessions(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#961b45] accent-[#961b45]"
+                    className="w-4 h-4 rounded text-[#3F5B4A] accent-[#3F5B4A]"
                   />
                   <div>
                     <span className="text-xs font-bold text-slate-900">Sign out of all other devices & tablets upon password update</span>
@@ -598,7 +598,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 <div className="flex flex-col sm:flex-row items-center gap-5">
                   <div className={`w-20 h-20 rounded-3xl flex items-center justify-center text-white text-2xl font-black shadow-xl shrink-0 ${
                     avatarTheme === 'plum'
-                      ? 'bg-[#7a1640] '
+                      ? 'bg-[#3F5B4A] '
                       : avatarTheme === 'emerald'
                       ? 'bg-emerald-800 '
                       : avatarTheme === 'rose'
@@ -618,7 +618,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setAvatarTheme('plum')}
-                        className={`w-6 h-6 rounded-full bg-[#961b45] border-2 cursor-pointer ${avatarTheme === 'plum' ? 'border-slate-900 scale-110' : 'border-white'}`}
+                        className={`w-6 h-6 rounded-full bg-[#3F5B4A] border-2 cursor-pointer ${avatarTheme === 'plum' ? 'border-slate-900 scale-110' : 'border-white'}`}
                         title="Plum Royale"
                       />
                       <button
@@ -652,7 +652,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     />
                   </div>
                   <div className="text-left">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#961b45] block">Official Brand Crest</span>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#3F5B4A] block">Official Brand Crest</span>
                     <span className="text-xs font-black text-slate-900 block">ZS Events Bangalore</span>
                     <span className="text-[10px] text-slate-500 italic">Where Every Celebration Blooms</span>
                   </div>
@@ -756,7 +756,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <div className="glass-card p-6 space-y-5">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-[#961b45]">
+                  <div className="w-11 h-11 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-[#3F5B4A]">
                     <Shield className="w-5 h-5" />
                   </div>
                   <div>
@@ -771,7 +771,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   type="button"
                   onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${
-                    twoFactorEnabled ? 'bg-[#961b45]' : 'bg-slate-300'
+                    twoFactorEnabled ? 'bg-[#3F5B4A]' : 'bg-slate-300'
                   }`}
                 >
                   <span
@@ -792,7 +792,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowQrModal(!showQrModal)}
-                      className="text-[11px] text-[#961b45] font-black hover:underline cursor-pointer"
+                      className="text-[11px] text-[#3F5B4A] font-black hover:underline cursor-pointer"
                     >
                       {showQrModal ? 'Hide Setup Key' : 'View Authenticator QR'}
                     </button>
@@ -808,7 +808,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       <div className="space-y-2 text-xs">
                         <h4 className="font-black text-slate-900">Scan with your authenticator app</h4>
                         <p className="text-slate-600 text-[11px]">
-                          Manual Setup Key: <code className="bg-slate-100 px-2 py-0.5 rounded font-mono text-[#961b45] font-bold">ZSEV-8842-KLR9-PLM1</code>
+                          Manual Setup Key: <code className="bg-slate-100 px-2 py-0.5 rounded font-mono text-[#3F5B4A] font-bold">ZSEV-8842-KLR9-PLM1</code>
                         </p>
                         <div className="flex items-center gap-2 pt-1">
                           <input
@@ -841,7 +841,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       <button
                         type="button"
                         onClick={handleCopyCodes}
-                        className="text-[11px] font-bold text-[#961b45] hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[11px] font-bold text-[#3F5B4A] hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         {copiedCodes ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{copiedCodes ? 'Copied to Clipboard!' : 'Copy Backup Codes'}</span>
@@ -869,7 +869,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <div className="glass-card p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
                 <div className="flex items-center gap-2.5">
-                  <Laptop className="w-5 h-5 text-[#961b45]" />
+                  <Laptop className="w-5 h-5 text-[#3F5B4A]" />
                   <div>
                     <h3 className="text-base font-black text-slate-900">Active Logged-In Sessions</h3>
                     <p className="text-xs text-slate-500">Devices currently authenticated to your ZS Events account.</p>
@@ -880,7 +880,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   <button
                     type="button"
                     onClick={handleRevokeAllOther}
-                    className="px-3.5 py-1.5 rounded-xl border border-rose-300 bg-rose-50 text-[#961b45] hover:bg-rose-100 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-xl border border-rose-300 bg-rose-50 text-[#3F5B4A] hover:bg-rose-100 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Sign Out Other Devices</span>
@@ -943,7 +943,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <div className="glass-card p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
               <div className="flex items-center gap-2.5">
-                <Bell className="w-5 h-5 text-[#961b45]" />
+                <Bell className="w-5 h-5 text-[#3F5B4A]" />
                 <h3 className="text-base font-black text-slate-900">Notification & Alert Channels</h3>
               </div>
               <span className="text-xs text-slate-500 font-medium">Synced with WhatsApp API</span>
@@ -973,7 +973,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       type="checkbox"
                       checked={notifWhatsAppLeads}
                       onChange={(e) => setNotifWhatsAppLeads(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#961b45] accent-[#961b45]"
+                      className="w-4 h-4 rounded text-[#3F5B4A] accent-[#3F5B4A]"
                     />
                   </label>
 
@@ -986,7 +986,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       type="checkbox"
                       checked={notifWhatsAppConflicts}
                       onChange={(e) => setNotifWhatsAppConflicts(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#961b45] accent-[#961b45]"
+                      className="w-4 h-4 rounded text-[#3F5B4A] accent-[#3F5B4A]"
                     />
                   </label>
                 </div>
@@ -995,7 +995,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               {/* Email Alerts */}
               <div className="p-4 rounded-2xl glass-subtle border border-slate-200 space-y-3">
                 <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#961b45]" /> Email Briefings ({email})
+                  <Mail className="w-4 h-4 text-[#3F5B4A]" /> Email Briefings ({email})
                 </span>
 
                 <div className="space-y-2.5 pt-1">
@@ -1008,7 +1008,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       type="checkbox"
                       checked={notifEmailDailyDigest}
                       onChange={(e) => setNotifEmailDailyDigest(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#961b45] accent-[#961b45]"
+                      className="w-4 h-4 rounded text-[#3F5B4A] accent-[#3F5B4A]"
                     />
                   </label>
 
@@ -1021,7 +1021,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       type="checkbox"
                       checked={notifEmailInvoices}
                       onChange={(e) => setNotifEmailInvoices(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#961b45] accent-[#961b45]"
+                      className="w-4 h-4 rounded text-[#3F5B4A] accent-[#3F5B4A]"
                     />
                   </label>
                 </div>
@@ -1054,7 +1054,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <div className="glass-card p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
                 <div className="flex items-center gap-2.5">
-                  <Clock className="w-5 h-5 text-[#961b45]" />
+                  <Clock className="w-5 h-5 text-[#3F5B4A]" />
                   <h3 className="text-base font-black text-slate-900">Security Audit Log</h3>
                 </div>
                 <span className="text-xs text-slate-500">Read-Only Immutable Log</span>
@@ -1093,7 +1093,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             {/* Studio Preferences */}
             <div className="glass-card p-6 space-y-5">
               <div className="flex items-center gap-2.5 border-b border-slate-200/60 pb-3">
-                <Sliders className="w-5 h-5 text-[#961b45]" />
+                <Sliders className="w-5 h-5 text-[#3F5B4A]" />
                 <h3 className="text-base font-black text-slate-900">Studio & System Preferences</h3>
               </div>
 

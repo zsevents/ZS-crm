@@ -411,7 +411,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Finance & GST
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -425,7 +425,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
               <h2 className="text-2xl font-black text-slate-950 tracking-tight">
                 Unified Finance & GST Hub
               </h2>
-              <span className="text-xs px-3 py-1 rounded-full glass-subtle text-[#831843] font-bold border border-rose-200 shadow-xs">
+              <span className="text-xs px-3 py-1 rounded-full glass-subtle text-[#3F5B4A] font-bold border border-rose-200 shadow-xs">
                 SAC 998599 • 18% GST Compliant
               </span>
             </div>
@@ -440,9 +440,9 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                 type="button"
                 id="btn-create-quote"
                 onClick={onOpenNewQuoteModal}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass-card hover:bg-rose-50/80 border border-rose-200 text-[#831843] text-xs font-bold shadow-md transition-all cursor-pointer hover:scale-102"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass-card hover:bg-rose-50/80 border border-rose-200 text-[#3F5B4A] text-xs font-bold shadow-md transition-all cursor-pointer hover:scale-102"
               >
-                <FileText className="w-4 h-4 text-[#831843]" />
+                <FileText className="w-4 h-4 text-[#3F5B4A]" />
                 <span>New Quotation</span>
               </button>
             )}
@@ -492,10 +492,10 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
         </div>
 
         <div className="p-5 rounded-2xl glass-card border-rose-200/80 shadow-md">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#831843]">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#3F5B4A]">
             Outstanding Balance
           </span>
-          <div className="text-2xl font-black text-[#831843] mt-1">
+          <div className="text-2xl font-black text-[#3F5B4A] mt-1">
             {formatINR(totalOutstanding)}
           </div>
           <p className="text-xs text-rose-800 font-medium mt-1">Pending payment collection</p>
@@ -580,7 +580,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search invoices, clients, proposals..."
-            className="w-full pl-10 pr-3 py-2 glass-input rounded-xl text-xs text-slate-950 font-medium placeholder-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full pl-10 pr-3 py-2 glass-input rounded-xl text-xs text-slate-950 font-medium placeholder-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
       </div>
@@ -612,7 +612,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                       return (
                         <tr key={inv.id} className="hover:bg-white/40 transition-colors">
                           {/* Invoice Number */}
-                          <td className="py-3.5 px-4 font-mono font-bold text-[#831843]">
+                          <td className="py-3.5 px-4 font-mono font-bold text-[#3F5B4A]">
                             {inv.invoiceNumber}
                           </td>
 
@@ -649,7 +649,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                                 type="date"
                                 value={inv.dueDate || ''}
                                 onChange={(e) => handleInvoiceDueDateChange(inv.id, e.target.value)}
-                                className="text-[11px] font-semibold text-slate-800 glass-input rounded px-1.5 py-0.5 focus:outline-none focus:border-[#831843] cursor-pointer"
+                                className="text-[11px] font-semibold text-slate-800 glass-input rounded px-1.5 py-0.5 focus:outline-none focus:border-[#3F5B4A] cursor-pointer"
                                 title="Click to change Due Date"
                               />
                             </div>
@@ -678,7 +678,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                                     handleInvoiceTotalChange(inv.id, val);
                                   }
                                 }}
-                                className="w-24 text-right font-black text-slate-950 glass-input rounded px-1 py-0.5 text-xs focus:outline-none focus:border-[#831843]"
+                                className="w-24 text-right font-black text-slate-950 glass-input rounded px-1 py-0.5 text-xs focus:outline-none focus:border-[#3F5B4A]"
                                 title="Click to edit Total Invoice Pricing (₹)"
                               />
                             </div>
@@ -754,7 +754,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                                 type="button"
                                 onClick={() => handleDownloadInvoicePDF(inv)}
                                 title="Download GST Tax Invoice PDF"
-                                className="p-1.5 rounded-lg glass-subtle hover:bg-rose-50 text-slate-700 hover:text-[#831843] border border-white/60 cursor-pointer transition-colors"
+                                className="p-1.5 rounded-lg glass-subtle hover:bg-rose-50 text-slate-700 hover:text-[#3F5B4A] border border-white/60 cursor-pointer transition-colors"
                               >
                                 <Download className="w-3.5 h-3.5" />
                               </button>
@@ -810,14 +810,14 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                       onClick={() => setSelectedQuote(quote)}
                       className={`p-4 rounded-2xl transition-all cursor-pointer glass-card ${
                         isSelected
-                          ? 'border-[#831843] ring-2 ring-[#831843]/20 shadow-xl'
-                          : 'hover:border-[#831843]/40 shadow-md hover:shadow-xl'
+                          ? 'border-[#3F5B4A] ring-2 ring-[#3F5B4A]/20 shadow-xl'
+                          : 'hover:border-[#3F5B4A]/40 shadow-md hover:shadow-xl'
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-mono font-bold text-[#831843] text-sm">
+                            <span className="font-mono font-bold text-[#3F5B4A] text-sm">
                               {quote.quotationNumber}
                             </span>
 
@@ -844,7 +844,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                             </select>
 
                             {quote.eventType && (
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50/90 text-[#831843] border border-rose-100">
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50/90 text-[#3F5B4A] border border-rose-100">
                                 {quote.eventType}
                               </span>
                             )}
@@ -879,7 +879,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                               type="date"
                               value={quote.eventDate ? quote.eventDate.split('T')[0] : ''}
                               onChange={(e) => handleQuoteDateChange(quote.id, e.target.value)}
-                              className="text-[11px] font-semibold text-slate-700 glass-input rounded-md px-1.5 py-0.5 cursor-pointer focus:outline-none focus:border-[#831843]"
+                              className="text-[11px] font-semibold text-slate-700 glass-input rounded-md px-1.5 py-0.5 cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
                             />
                           </div>
                           <div className="flex items-center gap-1 mt-1" onClick={(e) => e.stopPropagation()}>
@@ -887,7 +887,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                               type="button"
                               onClick={() => handleDownloadQuotePDF(quote)}
                               title="Download Quotation PDF"
-                              className="p-1 rounded-md glass-subtle hover:bg-rose-50 text-slate-700 hover:text-[#831843] transition-colors"
+                              className="p-1 rounded-md glass-subtle hover:bg-rose-50 text-slate-700 hover:text-[#3F5B4A] transition-colors"
                             >
                               <Download className="w-3.5 h-3.5" />
                             </button>
@@ -926,7 +926,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                         />
                       </div>
                       <div>
-                        <span className="font-mono text-xs font-bold text-[#831843]">
+                        <span className="font-mono text-xs font-bold text-[#3F5B4A]">
                           {selectedQuote.quotationNumber}
                         </span>
                         <h3 className="font-black text-slate-950 text-base mt-0.5">
@@ -937,7 +937,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => handleDownloadQuotePDF(selectedQuote)}
-                        className="p-2 rounded-xl bg-rose-50/90 text-[#831843] hover:bg-[#831843] hover:text-white transition-colors cursor-pointer shadow-xs"
+                        className="p-2 rounded-xl bg-rose-50/90 text-[#3F5B4A] hover:bg-[#3F5B4A] hover:text-white transition-colors cursor-pointer shadow-xs"
                         title="Download PDF Proposal"
                       >
                         <Download className="w-4 h-4" />
@@ -975,7 +975,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                     </div>
                     <div className="flex justify-between items-center py-1 border-b border-white/40">
                       <span className="text-slate-500 font-medium">Total Value:</span>
-                      <span className="font-black text-[#831843] text-sm">{formatINR(selectedQuote.total)}</span>
+                      <span className="font-black text-[#3F5B4A] text-sm">{formatINR(selectedQuote.total)}</span>
                     </div>
                   </div>
 
@@ -1060,7 +1060,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                       const matchedInv = invoices.find((i) => i.id === p.invoiceId);
                       return (
                         <tr key={p.id} className="hover:bg-white/40 transition-colors">
-                          <td className="py-3.5 px-4 font-mono font-bold text-[#831843]">
+                          <td className="py-3.5 px-4 font-mono font-bold text-[#3F5B4A]">
                             {p.id.slice(0, 12).toUpperCase()}
                           </td>
                           
@@ -1070,7 +1070,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                               type="date"
                               value={p.paymentDate ? p.paymentDate.split('T')[0] : ''}
                               onChange={(e) => handlePaymentDateChange(p.id, e.target.value)}
-                              className="text-xs text-slate-700 font-semibold glass-input rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-[#831843]"
+                              className="text-xs text-slate-700 font-semibold glass-input rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
                             />
                           </td>
 
@@ -1086,7 +1086,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                                     totalSpend: matchedInv.total,
                                   }}
                                 />
-                                <span className="font-mono text-[11px] text-[#831843]">({matchedInv.invoiceNumber})</span>
+                                <span className="font-mono text-[11px] text-[#3F5B4A]">({matchedInv.invoiceNumber})</span>
                               </div>
                             ) : (
                               <div>
@@ -1101,7 +1101,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                             <select
                               value={p.paymentMethod || 'UPI'}
                               onChange={(e) => handlePaymentMethodChange(p.id, e.target.value)}
-                              className="px-2 py-1 rounded-lg glass-input text-slate-900 font-bold cursor-pointer text-xs focus:outline-none focus:border-[#831843]"
+                              className="px-2 py-1 rounded-lg glass-input text-slate-900 font-bold cursor-pointer text-xs focus:outline-none focus:border-[#3F5B4A]"
                             >
                               <option value="UPI">📱 UPI / QR</option>
                               <option value="Bank Transfer">🏦 Bank Transfer / NEFT</option>
@@ -1189,7 +1189,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                 GST Identification Number (GSTIN)
               </span>
-              <div className="font-mono text-lg font-black text-[#831843]">
+              <div className="font-mono text-lg font-black text-[#3F5B4A]">
                 {settings.gstNumber || '29AABCZ1234F1Z5'}
               </div>
               <p className="text-xs text-slate-500">State: Karnataka (Code: 29)</p>
@@ -1245,7 +1245,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
               </div>
               <div className="p-3 glass-subtle rounded-xl border border-white/60">
                 <span className="text-slate-500 block mb-0.5">UPI ID</span>
-                <span className="font-mono font-bold text-[#831843]">{settings.bankUpiId || 'zsevents@hdfcbank'}</span>
+                <span className="font-mono font-bold text-[#3F5B4A]">{settings.bankUpiId || 'zsevents@hdfcbank'}</span>
               </div>
             </div>
           </div>
@@ -1287,7 +1287,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value)}
-                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   >
                     <option value="PAID">PAID</option>
                     <option value="PARTIALLY_PAID">PARTIALLY PAID</option>
@@ -1305,7 +1305,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                     type="date"
                     value={editDueDate}
                     onChange={(e) => setEditDueDate(e.target.value)}
-                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -1317,7 +1317,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                     type="number"
                     value={editTotal}
                     onChange={(e) => setEditTotal(e.target.value)}
-                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
 
@@ -1327,7 +1327,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                     type="number"
                     value={editPaidAmount}
                     onChange={(e) => setEditPaidAmount(e.target.value)}
-                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -1338,7 +1338,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   rows={2}
                   value={editNotes}
                   onChange={(e) => setEditNotes(e.target.value)}
-                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1387,7 +1387,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   <select
                     value={editPayMethod}
                     onChange={(e) => setEditPayMethod(e.target.value)}
-                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-bold focus:outline-none focus:border-[#3F5B4A]"
                   >
                     <option value="UPI">📱 UPI / QR</option>
                     <option value="Bank Transfer">🏦 Bank Transfer / NEFT</option>
@@ -1404,7 +1404,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                     type="date"
                     value={editPayDate}
                     onChange={(e) => setEditPayDate(e.target.value)}
-                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                    className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                   />
                 </div>
               </div>
@@ -1415,7 +1415,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   type="number"
                   value={editPayAmount}
                   onChange={(e) => setEditPayAmount(e.target.value)}
-                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-black text-sm focus:outline-none focus:border-[#831843]"
+                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-black text-sm focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1426,7 +1426,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   placeholder="e.g. UPI Ref / Bank UTR Number"
                   value={editPayRef}
                   onChange={(e) => setEditPayRef(e.target.value)}
-                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-mono focus:outline-none focus:border-[#831843]"
+                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-mono focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 
@@ -1436,7 +1436,7 @@ export const FinanceView: React.FC<FinanceViewProps> = ({
                   rows={2}
                   value={editPayNotes}
                   onChange={(e) => setEditPayNotes(e.target.value)}
-                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#831843]"
+                  className="w-full px-3 py-2 glass-input rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#3F5B4A]"
                 />
               </div>
 

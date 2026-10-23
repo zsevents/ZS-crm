@@ -127,7 +127,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Z S EVENTS
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
 
@@ -200,7 +200,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
           <button
             type="button"
             onClick={handleForgotPassword}
-            className="block ml-auto text-[11px] font-bold text-[#831843] hover:underline cursor-pointer"
+            className="block ml-auto text-[11px] font-bold text-[#3F5B4A] hover:underline cursor-pointer"
           >
             Forgot password?
           </button>
@@ -209,7 +209,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
             type="submit"
             id="auth-submit-btn"
             disabled={loading}
-            className="w-full py-3 bg-[#7a1640] hover:bg-[#641133] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-sm border border-white/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer mt-2"
+            className="w-full py-3 bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-sm border border-white/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer mt-2"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">
@@ -261,7 +261,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onLoginSuccess }) => {
         <span>•</span>
         <span>Bangalore, Karnataka</span>
         <span>•</span>
-        <span className="text-[#831843] font-bold">Floral & Event Production CRM</span>
+        <span className="text-[#3F5B4A] font-bold">Floral & Event Production CRM</span>
       </div>
     </div>
   );

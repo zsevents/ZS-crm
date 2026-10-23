@@ -80,7 +80,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Dashboard
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 </h4>
                 <button
                   onClick={() => onNavigateTab('CALENDAR')}
-                  className="text-xs font-bold text-[#831843] underline cursor-pointer hover:text-[#701a39]"
+                  className="text-xs font-bold text-[#3F5B4A] underline cursor-pointer hover:text-[#2F4A3A]"
                 >
                   Open Calendar →
                 </button>
@@ -136,7 +136,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="glass-dark-card p-6 flex flex-col justify-between relative overflow-hidden group hover:border-white/40 transition-all shadow-2xl">
             <div className="flex items-start justify-between z-10">
               <div>
-                <span className="text-[11px] font-extrabold tracking-widest uppercase text-[#fb7185]">
+                <span className="text-[11px] font-extrabold tracking-widest uppercase text-[#D98B6B]">
                   MANDAP & STAGING CONTROL
                 </span>
                 <h3 className="text-2xl font-black text-white mt-1 tracking-tight">
@@ -225,7 +225,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
             <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-600">
               <span className="font-semibold">Peak Day: Thursday (3 Mandaps, 2 Galas)</span>
-              <span className="font-bold text-[#831843]">South Zone</span>
+              <span className="font-bold text-[#3F5B4A]">South Zone</span>
             </div>
           </div>
 
@@ -239,7 +239,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div>
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] font-extrabold tracking-widest uppercase text-[#fb7185]">
+                  <span className="text-[11px] font-extrabold tracking-widest uppercase text-[#D98B6B]">
                     REVENUE & BOOKINGS
                   </span>
                   <h4 className="text-2xl font-black text-white mt-1 tracking-tight">
@@ -273,8 +273,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <svg className="w-full h-full overflow-visible" viewBox="0 0 300 100" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="splineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#961b45" stopOpacity="0.85" />
-                    <stop offset="60%" stopColor="#751437" stopOpacity="0.4" />
+                    <stop offset="0%" stopColor="#3F5B4A" stopOpacity="0.85" />
+                    <stop offset="60%" stopColor="#2F4A3A" stopOpacity="0.4" />
                     <stop offset="100%" stopColor="#1e293b" stopOpacity="0.0" />
                   </linearGradient>
                 </defs>
@@ -292,11 +292,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   strokeLinecap="round"
                 />
                 {/* Data Points */}
-                <circle cx="0" cy="85" r="4" fill="#fb7185" stroke="#fff" strokeWidth="2" />
-                <circle cx="85" cy="45" r="4" fill="#fb7185" stroke="#fff" strokeWidth="2" />
-                <circle cx="170" cy="38" r="4" fill="#fb7185" stroke="#fff" strokeWidth="2" />
-                <circle cx="250" cy="28" r="5" fill="#ffffff" stroke="#fb7185" strokeWidth="2.5" />
-                <circle cx="300" cy="50" r="4" fill="#fb7185" stroke="#fff" strokeWidth="2" />
+                <circle cx="0" cy="85" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
+                <circle cx="85" cy="45" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
+                <circle cx="170" cy="38" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
+                <circle cx="250" cy="28" r="5" fill="#ffffff" stroke="#D98B6B" strokeWidth="2.5" />
+                <circle cx="300" cy="50" r="4" fill="#D98B6B" stroke="#fff" strokeWidth="2" />
               </svg>
             </div>
 
@@ -312,7 +312,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {/* Calendar Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200/70">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Calendar className="w-4 h-4 text-[#831843] shrink-0" />
+                  <Calendar className="w-4 h-4 text-[#3F5B4A] shrink-0" />
                   <h4 className="text-sm sm:text-base font-black text-slate-950">
                     Venue Staging & Loading Schedule
                   </h4>
@@ -340,7 +340,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <span>Wed 21</span>
                   <span className="text-slate-950 font-black">Thu 22</span>
                   <span>Fri 23</span>
-                  <span className="text-[#831843] font-black">Sat 24</span>
+                  <span className="text-[#3F5B4A] font-black">Sat 24</span>
                   <span>Sun 25</span>
                 </div>
               </div>
@@ -409,7 +409,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="text-slate-600 font-medium">4 Critical Setup Milestones Scheduled Today</span>
               <button
                 onClick={() => onNavigateTab('CALENDAR')}
-                className="text-xs font-bold text-[#831843] hover:underline flex items-center gap-1"
+                className="text-xs font-bold text-[#3F5B4A] hover:underline flex items-center gap-1"
               >
                 <span>Full Calendar Run-sheet</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -506,7 +506,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   South India Luxury Venues
                 </h4>
               </div>
-              <span className="text-xs font-bold text-[#831843] bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+              <span className="text-xs font-bold text-[#3F5B4A] bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
                 54 Partner Venues
               </span>
             </div>
@@ -625,7 +625,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     : 'FINANCE'
                 )
               }
-              className="text-xs font-bold text-[#831843] hover:underline flex items-center gap-1 cursor-pointer self-start sm:self-auto"
+              className="text-xs font-bold text-[#3F5B4A] hover:underline flex items-center gap-1 cursor-pointer self-start sm:self-auto"
             >
               <span>Open Dedicated View</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -678,7 +678,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       className="p-4 hover:bg-white/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     >
                       <div className="flex items-start sm:items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-rose-50/90 border border-rose-200/80 text-[#831843] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                        <div className="w-9 h-9 rounded-xl bg-rose-50/90 border border-rose-200/80 text-[#3F5B4A] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                           {lead.customerName?.charAt(0) || 'L'}
                         </div>
                         <div>
@@ -696,7 +696,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                             <span
                               className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
                                 lead.status === 'NEW'
-                                  ? 'bg-rose-100/90 text-[#831843] border border-rose-200/80'
+                                  ? 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
                                   : lead.status === 'PROPOSAL_SENT'
                                   ? 'bg-blue-100/90 text-blue-800 border border-blue-200/80'
                                   : 'glass-subtle text-slate-700'
@@ -731,7 +731,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
                         <button
                           onClick={() => onSelectLead(lead.id)}
-                          className="px-3.5 py-1.5 rounded-xl glass-btn-secondary text-slate-700 text-xs font-bold hover:text-[#831843] transition-all cursor-pointer shadow-xs"
+                          className="px-3.5 py-1.5 rounded-xl glass-btn-secondary text-slate-700 text-xs font-bold hover:text-[#3F5B4A] transition-all cursor-pointer shadow-xs"
                         >
                           Inspect
                         </button>
@@ -766,7 +766,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           <span
                             className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
                               p.status === 'EVENT_DAY'
-                                ? 'bg-rose-100/90 text-[#831843] border border-rose-200/80'
+                                ? 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
                                 : 'bg-emerald-100/90 text-emerald-800 border border-emerald-200/80'
                             }`}
                           >
@@ -788,7 +788,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           />
                           <span>•</span>
                           <span className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-[#831843]" />
+                            <MapPin className="w-3 h-3 text-[#3F5B4A]" />
                             {p.venue || 'Bangalore'}
                           </span>
                           <span>•</span>
@@ -808,7 +808,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
                         <button
                           onClick={() => onSelectProject(p.id)}
-                          className="px-3.5 py-1.5 rounded-xl glass-btn-secondary text-slate-700 text-xs font-bold hover:text-[#831843] transition-all cursor-pointer shadow-xs"
+                          className="px-3.5 py-1.5 rounded-xl glass-btn-secondary text-slate-700 text-xs font-bold hover:text-[#3F5B4A] transition-all cursor-pointer shadow-xs"
                         >
                           Run-sheet & Milestones
                         </button>
@@ -831,10 +831,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div
                   key={proj.id}
                   onClick={() => onSelectProject(proj.id)}
-                  className="p-4 rounded-2xl glass-card hover:border-[#831843]/50 transition-all cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                  className="p-4 rounded-2xl glass-card hover:border-[#3F5B4A]/50 transition-all cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-0.5"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#831843]">
+                    <span className="text-xs font-bold text-[#3F5B4A]">
                       {formatDate(proj.eventDate)}
                     </span>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full glass-subtle text-slate-700">
@@ -869,7 +869,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     className="p-4 hover:bg-white/40 flex items-center justify-between text-xs transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="font-mono font-bold text-[#831843]">{inv.invoiceNumber}</div>
+                      <div className="font-mono font-bold text-[#3F5B4A]">{inv.invoiceNumber}</div>
                       <CustomerHoverDropdown
                         customer={{
                           name: inv.customerName,
@@ -887,7 +887,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         className={`px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${
                           inv.status === 'PAID'
                             ? 'bg-emerald-100/90 text-emerald-800 border border-emerald-200/80'
-                            : 'bg-rose-100/90 text-[#831843] border border-rose-200/80'
+                            : 'bg-rose-100/90 text-[#3F5B4A] border border-rose-200/80'
                         }`}
                       >
                         {inv.status}

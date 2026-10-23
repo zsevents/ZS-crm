@@ -152,7 +152,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Website Inquiries
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -166,7 +166,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
               <h2 className="text-2xl font-black text-slate-950 tracking-tight">
                 Website Inquiries & Intake
               </h2>
-              <span className="text-xs px-2.5 py-0.5 rounded-full glass-subtle text-[#831843] font-bold border border-rose-200 shadow-xs">
+              <span className="text-xs px-2.5 py-0.5 rounded-full glass-subtle text-[#3F5B4A] font-bold border border-rose-200 shadow-xs">
                 {websiteInquiries.length} Inquiries Received
               </span>
             </div>
@@ -223,14 +223,14 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                     onClick={() => setSelectedInquiry(inquiry)}
                     className={`p-5 rounded-3xl border transition-all cursor-pointer glass-card shadow-lg ${
                       isSelected
-                        ? 'border-[#831843] ring-2 ring-[#831843]/30 bg-rose-500/10'
-                        : 'border-white/80 hover:border-[#831843]/40'
+                        ? 'border-[#3F5B4A] ring-2 ring-[#3F5B4A]/30 bg-rose-500/10'
+                        : 'border-white/80 hover:border-[#3F5B4A]/40'
                     }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-[#831843] text-xs">
+                          <span className="font-mono font-bold text-[#3F5B4A] text-xs">
                             {inquiry.id}
                           </span>
                           <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-950 font-bold border border-emerald-500/30">
@@ -279,7 +279,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                             onViewLeads();
                           }
                         }}
-                        className="px-3.5 py-1.5 rounded-xl bg-white/80 hover:bg-white text-[#831843] font-bold text-xs transition-all flex items-center gap-1 cursor-pointer border border-rose-500/20 shadow-xs"
+                        className="px-3.5 py-1.5 rounded-xl bg-white/80 hover:bg-white text-[#3F5B4A] font-bold text-xs transition-all flex items-center gap-1 cursor-pointer border border-rose-500/20 shadow-xs"
                       >
                         <span>Open Lead in CRM</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -298,7 +298,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                 <button
                   type="button"
                   onClick={() => setActiveSubTab('SIMULATOR')}
-                  className="mt-4 px-5 py-2.5 bg-[#7a1640] hover:bg-[#641133] text-white text-xs font-bold rounded-xl shadow-sm border border-white/20 cursor-pointer transition-all"
+                  className="mt-4 px-5 py-2.5 bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white text-xs font-bold rounded-xl shadow-sm border border-white/20 cursor-pointer transition-all"
                 >
                   Open Simulator
                 </button>
@@ -309,7 +309,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
           {/* Details Sidebar preview */}
           <div className="glass-card border border-white/80 rounded-3xl p-5 shadow-xl h-fit space-y-4 text-slate-900">
             <h3 className="text-sm font-extrabold text-slate-950 pb-2 border-b border-white/60 flex items-center gap-2">
-              <Eye className="w-4 h-4 text-[#831843]" />
+              <Eye className="w-4 h-4 text-[#3F5B4A]" />
               <span>Inquiry Quick Viewer</span>
             </h3>
 
@@ -321,7 +321,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                 </div>
                 <div>
                   <span className="text-slate-500 font-bold text-[11px] block">Phone / WhatsApp</span>
-                  <a href={`tel:${selectedInquiry.phone}`} className="font-bold text-[#831843] hover:underline">
+                  <a href={`tel:${selectedInquiry.phone}`} className="font-bold text-[#3F5B4A] hover:underline">
                     {selectedInquiry.phone}
                   </a>
                 </div>
@@ -361,7 +361,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                       onViewLeads();
                     }
                   }}
-                  className="w-full mt-2 py-2.5 bg-[#7a1640] hover:bg-[#641133] text-white font-bold rounded-xl text-xs shadow-sm border border-white/20 cursor-pointer transition-all flex items-center justify-center gap-1.5"
+                  className="w-full mt-2 py-2.5 bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold rounded-xl text-xs shadow-sm border border-white/20 cursor-pointer transition-all flex items-center justify-center gap-1.5"
                 >
                   <span>Open Full Lead Record</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -394,7 +394,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                 <button
                   type="button"
                   onClick={() => handleQuickFill('WEDDING')}
-                  className="px-3 py-1.5 text-[11px] font-bold rounded-xl bg-rose-500/15 text-[#831843] hover:bg-rose-500/25 transition-all border border-rose-500/25 cursor-pointer shadow-xs"
+                  className="px-3 py-1.5 text-[11px] font-bold rounded-xl bg-rose-500/15 text-[#3F5B4A] hover:bg-rose-500/25 transition-all border border-rose-500/25 cursor-pointer shadow-xs"
                 >
                   Wedding
                 </button>
@@ -450,7 +450,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
                           onViewLeads();
                         }
                       }}
-                      className="mt-2 text-xs font-bold text-[#831843] underline cursor-pointer hover:text-[#701a39]"
+                      className="mt-2 text-xs font-bold text-[#3F5B4A] underline cursor-pointer hover:text-[#2F4A3A]"
                     >
                       View Lead #{result.leadId} in CRM →
                     </button>
@@ -593,7 +593,7 @@ export const WebsiteFormSimulator: React.FC<WebsiteFormSimulatorProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 bg-[#7a1640] hover:bg-[#641133] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-sm border border-white/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                className="w-full py-3.5 bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold rounded-2xl text-xs sm:text-sm shadow-sm border border-white/20 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <span>Submitting Inquiry to Z S EVENTS CRM...</span>

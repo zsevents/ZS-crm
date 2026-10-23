@@ -133,7 +133,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             <h1 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
               Schedule & Calendar
             </h1>
-            <span className="w-2 h-2 rounded-full bg-[#831843] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#3F5B4A] animate-pulse" />
           </div>
         </div>
       </div>
@@ -147,7 +147,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
               <h2 className="text-2xl font-black text-slate-950 tracking-tight">
                 Event Calendar & Schedule
               </h2>
-              <span className="text-xs px-3 py-1 rounded-full glass-subtle text-[#831843] border border-rose-200/80 font-bold shadow-xs">
+              <span className="text-xs px-3 py-1 rounded-full glass-subtle text-[#3F5B4A] border border-rose-200/80 font-bold shadow-xs">
                 {monthNames[month]} {year}
               </span>
             </div>
@@ -232,7 +232,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                   onClick={() => setSelectedDateStr(dateString)}
                   className={`p-2 transition-all flex flex-col justify-between min-h-[85px] cursor-pointer ${
                     isSelected
-                      ? 'bg-rose-500/20 ring-2 ring-inset ring-[#831843]'
+                      ? 'bg-rose-500/20 ring-2 ring-inset ring-[#3F5B4A]'
                       : hasConflict
                       ? 'bg-amber-500/15 hover:bg-amber-500/25'
                       : 'hover:bg-white/40'
@@ -242,7 +242,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                     <span
                       className={`text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ${
                         isSelected
-                          ? 'bg-[#831843] text-white shadow-xs'
+                          ? 'bg-[#3F5B4A] text-white shadow-xs'
                           : dayProjects.length > 0
                           ? 'bg-emerald-500/20 text-emerald-950 font-black border border-emerald-500/30'
                           : 'text-slate-800'
@@ -287,7 +287,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                           setSelectedDateStr(dateString);
                           onSelectLead(l.id);
                         }}
-                        className="p-1 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-[#831843] text-[10px] font-bold truncate transition-colors border border-rose-500/20 backdrop-blur-xs"
+                        className="p-1 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-[#3F5B4A] text-[10px] font-bold truncate transition-colors border border-rose-500/20 backdrop-blur-xs"
                         title={`Inquiry: ${l.customerName} (${l.eventType})`}
                       >
                         {l.customerName}
@@ -305,7 +305,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           <div className="glass-card border border-white/80 rounded-3xl p-5 shadow-xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-white/60">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#831843] block">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#3F5B4A] block">
                   Day Schedule & Sync
                 </span>
                 <h3 className="text-base font-black text-slate-950">
@@ -388,7 +388,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                       <div className="flex items-start justify-between">
                         <div>
                           <h4 className="font-bold text-slate-950">{l.customerName}</h4>
-                          <p className="text-[#831843] font-semibold">{l.eventType} ({l.phone})</p>
+                          <p className="text-[#3F5B4A] font-semibold">{l.eventType} ({l.phone})</p>
                           <p className="text-slate-600 text-[11px] font-medium">{l.location || 'Bangalore'}</p>
                         </div>
                         <span className="text-[10px] px-2 py-0.5 rounded-md bg-white/80 border border-white text-slate-800 font-bold shadow-xs">
@@ -435,7 +435,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                 onClick={handleExportAllToICS}
                 className="w-full py-2.5 px-3 rounded-xl bg-white/70 hover:bg-white text-slate-900 font-bold text-xs flex items-center justify-center gap-2 border border-white/90 transition-all shadow-xs backdrop-blur-xs cursor-pointer"
               >
-                <Download className="w-3.5 h-3.5 text-[#831843]" />
+                <Download className="w-3.5 h-3.5 text-[#3F5B4A]" />
                 <span>Export Entire Month (.ics)</span>
               </button>
             </div>
@@ -450,7 +450,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           <div className="w-full max-w-xl glass-modal border border-white/80 rounded-3xl shadow-2xl p-6 sm:p-7 space-y-5 text-slate-900 animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between pb-3 border-b border-white/60">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+                <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
                   <CalendarCheck className="w-5 h-5" />
                 </div>
                 <h3 className="font-extrabold text-slate-950 text-base">Sync with Google Calendar</h3>
@@ -469,7 +469,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
             {/* Option 1: 1-Click Sync of Upcoming Confirmed Projects */}
             <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#831843] block">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#3F5B4A] block">
                 Option 1: 1-Click Add Specific Event to Google Calendar
               </span>
               <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
@@ -485,7 +485,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleSyncProjectToGoogleCalendar(p)}
-                      className="px-3 py-1.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm border border-white/20 transition-all cursor-pointer whitespace-nowrap"
+                      className="px-3 py-1.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm border border-white/20 transition-all cursor-pointer whitespace-nowrap"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       <span>Add to G-Cal</span>

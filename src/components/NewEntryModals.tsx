@@ -260,7 +260,7 @@ const NewLeadModal: React.FC<{
     <div className="w-full max-w-xl rounded-3xl glass-modal border border-white/80 shadow-2xl p-6 sm:p-7 space-y-4 max-h-[90vh] overflow-y-auto text-slate-900 animate-in zoom-in-95 duration-200">
       <div className="flex items-center justify-between pb-3 border-b border-white/60">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
             <Users className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-slate-950 text-base">New Lead Inquiry</h3>
@@ -287,7 +287,7 @@ const NewLeadModal: React.FC<{
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="e.g. Priya Sharma"
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -302,7 +302,7 @@ const NewLeadModal: React.FC<{
                 checkDuplicate(e.target.value);
               }}
               placeholder="+91 98860 11223"
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -311,7 +311,7 @@ const NewLeadModal: React.FC<{
             <select
               value={eventType}
               onChange={(e) => setEventType(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               {eventTypes.map((t) => (
                 <option key={t} value={t} className="bg-white text-slate-950">{t}</option>
@@ -326,7 +326,7 @@ const NewLeadModal: React.FC<{
               type="date"
               value={eventDate}
               onChange={(e) => setEventDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -335,7 +335,7 @@ const NewLeadModal: React.FC<{
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               {bangaloreAreas.map((a) => (
                 <option key={a} value={a} className="bg-white text-slate-950">{a}</option>
@@ -350,7 +350,7 @@ const NewLeadModal: React.FC<{
               type="number"
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-black placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-black placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
         </div>
@@ -363,7 +363,7 @@ const NewLeadModal: React.FC<{
             value={serviceRequired}
             onChange={(e) => setServiceRequired(e.target.value)}
             placeholder="e.g. Stage backdrop, mandap, 12 walkway pillars"
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -374,7 +374,7 @@ const NewLeadModal: React.FC<{
             onChange={(e) => setMessage(e.target.value)}
             rows={2}
             placeholder="Customer flower preferences, special requests..."
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -389,7 +389,7 @@ const NewLeadModal: React.FC<{
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold cursor-pointer shadow-sm border border-white/20 transition-all disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold cursor-pointer shadow-sm border border-white/20 transition-all disabled:opacity-50"
           >
             {isSubmitting ? 'Saving...' : 'Create Lead'}
           </button>
@@ -446,7 +446,7 @@ const NewProjectModal: React.FC<{
     <div className="w-full max-w-lg rounded-3xl glass-modal border border-white/80 shadow-2xl p-6 space-y-4 text-slate-900 animate-in zoom-in-95 duration-200">
       <div className="flex items-center justify-between pb-3 border-b border-white/60">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
             <Briefcase className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-slate-950 text-base">Create New Project</h3>
@@ -465,7 +465,7 @@ const NewProjectModal: React.FC<{
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
             placeholder="e.g. Priya Sharma"
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -475,7 +475,7 @@ const NewProjectModal: React.FC<{
             <select
               value={eventType}
               onChange={(e) => setEventType(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               {eventTypes.map((t) => (
                 <option key={t} value={t} className="bg-white text-slate-950">{t}</option>
@@ -490,7 +490,7 @@ const NewProjectModal: React.FC<{
               type="date"
               value={eventDate}
               onChange={(e) => setEventDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
         </div>
@@ -503,7 +503,7 @@ const NewProjectModal: React.FC<{
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
             placeholder="e.g. Palace Grounds Sheesh Mahal, Bangalore"
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -515,7 +515,7 @@ const NewProjectModal: React.FC<{
               type="number"
               value={projectValue}
               onChange={(e) => setProjectValue(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-black placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-black placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -524,7 +524,7 @@ const NewProjectModal: React.FC<{
             <select
               value={assignedStaff}
               onChange={(e) => setAssignedStaff(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               {staffMembers.map((s) => (
                 <option key={s} value={s} className="bg-white text-slate-950">{s}</option>
@@ -537,7 +537,7 @@ const NewProjectModal: React.FC<{
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 font-bold cursor-pointer transition-colors border border-transparent hover:border-white/60">
             Cancel
           </button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold cursor-pointer shadow-sm border border-white/20 transition-all disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold cursor-pointer shadow-sm border border-white/20 transition-all disabled:opacity-50">
             {isSubmitting ? 'Creating...' : 'Launch Project'}
           </button>
         </div>
@@ -584,7 +584,7 @@ const NewCustomerModal: React.FC<{
     <div className="w-full max-w-md rounded-3xl glass-modal border border-white/80 shadow-2xl p-6 space-y-4 text-slate-900 animate-in zoom-in-95 duration-200">
       <div className="flex items-center justify-between pb-3 border-b border-white/60">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
             <Users className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-slate-950 text-base">New Customer Profile</h3>
@@ -597,29 +597,29 @@ const NewCustomerModal: React.FC<{
       <form onSubmit={handleSubmit} className="space-y-3 text-xs">
         <div>
           <label className="text-slate-900 font-bold block mb-1.5">Customer Full Name *</label>
-          <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]" />
+          <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]" />
         </div>
         <div>
           <label className="text-slate-900 font-bold block mb-1.5">Phone (WhatsApp) *</label>
-          <input required type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 98..." className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]" />
+          <input required type="text" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 98..." className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]" />
         </div>
         <div>
           <label className="text-slate-900 font-bold block mb-1.5">Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]" />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]" />
         </div>
         <div>
           <label className="text-slate-900 font-bold block mb-1.5">Location / Area</label>
-          <select value={location} onChange={(e) => setLocation(e.target.value)} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]">
+          <select value={location} onChange={(e) => setLocation(e.target.value)} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]">
             {bangaloreAreas.map((a) => (<option key={a} value={a} className="bg-white text-slate-950">{a}</option>))}
           </select>
         </div>
         <div>
           <label className="text-slate-900 font-bold block mb-1.5">Notes</label>
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]" />
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]" />
         </div>
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" className="px-5 py-2 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer">Save Customer</button>
+          <button type="submit" className="px-5 py-2 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer">Save Customer</button>
         </div>
       </form>
     </div>
@@ -687,7 +687,7 @@ const NewInvoiceModal: React.FC<{
     <div className="w-full max-w-2xl rounded-3xl glass-modal border border-white/80 shadow-2xl p-6 sm:p-7 space-y-4 max-h-[90vh] overflow-y-auto text-slate-900 animate-in zoom-in-95 duration-200">
       <div className="flex items-center justify-between pb-3 border-b border-white/60">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
             <Receipt className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-slate-950 text-base">Generate GST Invoice</h3>
@@ -704,7 +704,7 @@ const NewInvoiceModal: React.FC<{
             <select
               value={projectId}
               onChange={(e) => setProjectId(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id} className="bg-white text-slate-950">{p.name}</option>
@@ -719,7 +719,7 @@ const NewInvoiceModal: React.FC<{
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
         </div>
@@ -731,7 +731,7 @@ const NewInvoiceModal: React.FC<{
             <button
               type="button"
               onClick={addItem}
-              className="text-[#831843] font-bold hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-[#3F5B4A] font-bold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Item</span>
@@ -800,7 +800,7 @@ const NewInvoiceModal: React.FC<{
 
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
             {isSubmitting ? 'Creating...' : 'Issue Invoice'}
           </button>
         </div>
@@ -871,7 +871,7 @@ const RecordPaymentModal: React.FC<{
           <select
             value={invoiceId}
             onChange={(e) => setInvoiceId(e.target.value)}
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold cursor-pointer focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
           >
             {invoices.map((inv) => (
               <option key={inv.id} value={inv.id} className="bg-white text-slate-950">
@@ -888,7 +888,7 @@ const RecordPaymentModal: React.FC<{
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full p-2.5 rounded-xl glass-input text-base font-black text-emerald-800 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-base font-black text-emerald-800 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -898,7 +898,7 @@ const RecordPaymentModal: React.FC<{
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value as any)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               <option value="UPI" className="bg-white text-slate-950">UPI (GPay / PhonePe)</option>
               <option value="BANK_TRANSFER" className="bg-white text-slate-950">Bank Transfer (NEFT / IMPS)</option>
@@ -913,7 +913,7 @@ const RecordPaymentModal: React.FC<{
               type="date"
               value={paymentDate}
               onChange={(e) => setPaymentDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
         </div>
@@ -924,7 +924,7 @@ const RecordPaymentModal: React.FC<{
             type="text"
             value={referenceNumber}
             onChange={(e) => setReferenceNumber(e.target.value)}
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-mono font-bold focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-mono font-bold focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -934,13 +934,13 @@ const RecordPaymentModal: React.FC<{
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={2}
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
             {isSubmitting ? 'Recording...' : 'Save & Update Balance'}
           </button>
         </div>
@@ -986,7 +986,7 @@ const PostDailyUpdateModal: React.FC<{
     <div className="w-full max-w-lg rounded-3xl glass-modal border border-white/80 shadow-2xl p-6 space-y-4 text-slate-900 animate-in zoom-in-95 duration-200">
       <div className="flex items-center justify-between pb-3 border-b border-white/60">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
             <Sparkles className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-slate-950 text-base">Add Daily Project Update</h3>
@@ -1002,7 +1002,7 @@ const PostDailyUpdateModal: React.FC<{
           <select
             value={projectId}
             onChange={(e) => setProjectId(e.target.value)}
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold cursor-pointer focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
           >
             {projects.map((p) => (
               <option key={p.id} value={p.id} className="bg-white text-slate-950">{p.name}</option>
@@ -1018,7 +1018,7 @@ const PostDailyUpdateModal: React.FC<{
             onChange={(e) => setUpdateText(e.target.value)}
             placeholder="e.g. Stage design finalized. White roses confirmed. Vendor confirmed for flower delivery..."
             rows={3}
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
@@ -1028,7 +1028,7 @@ const PostDailyUpdateModal: React.FC<{
             <select
               value={projectStatus}
               onChange={(e) => setProjectStatus(e.target.value as any)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold cursor-pointer focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-bold cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
             >
               <option value="ON_TRACK" className="bg-white text-slate-950">On Track</option>
               <option value="ATTENTION_NEEDED" className="bg-white text-slate-950">Attention Needed</option>
@@ -1042,7 +1042,7 @@ const PostDailyUpdateModal: React.FC<{
               type="text"
               value={addedBy}
               onChange={(e) => setAddedBy(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-semibold focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
         </div>
@@ -1054,13 +1054,13 @@ const PostDailyUpdateModal: React.FC<{
             value={nextAction}
             onChange={(e) => setNextAction(e.target.value)}
             placeholder="e.g. Confirm final flower quantity"
-            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#831843]"
+            className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#3F5B4A]"
           />
         </div>
 
         <div className="flex justify-end gap-2 pt-3 border-t border-white/60">
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-white/60 transition-colors font-bold cursor-pointer border border-transparent hover:border-white/60">Cancel</button>
-          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
+          <button type="submit" disabled={isSubmitting} className="px-5 py-2.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50">
             {isSubmitting ? 'Posting...' : 'Save Log'}
           </button>
         </div>
@@ -1236,7 +1236,7 @@ const NewQuotationModal: React.FC<{
     <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-modal border border-white/80 rounded-3xl p-6 sm:p-7 shadow-2xl text-slate-900 space-y-4 animate-in zoom-in-95 duration-200">
       <div className="flex items-center justify-between pb-3 border-b border-white/60">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#831843]">
+          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[#3F5B4A]">
             <Receipt className="w-5 h-5" />
           </div>
           <h3 className="font-extrabold text-slate-950 text-base">Generate Z S EVENTS Floral Proposal</h3>
@@ -1251,7 +1251,7 @@ const NewQuotationModal: React.FC<{
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex flex-col justify-between gap-2 backdrop-blur-xs">
             <div>
-              <span className="font-bold text-[#831843] block">Apply Design Catalog Theme</span>
+              <span className="font-bold text-[#3F5B4A] block">Apply Design Catalog Theme</span>
               <span className="text-slate-600 text-[11px] font-medium">Auto-populates items from catalog</span>
             </div>
             <select
@@ -1305,7 +1305,7 @@ const NewQuotationModal: React.FC<{
               <select
                 value={selectedLeadId}
                 onChange={(e) => setSelectedLeadId(e.target.value)}
-                className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#831843]"
+                className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium cursor-pointer focus:outline-none focus:border-[#3F5B4A]"
               >
                 <option value="">-- Manual Client Entry --</option>
                 {leads.map((l) => (
@@ -1325,7 +1325,7 @@ const NewQuotationModal: React.FC<{
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="e.g. Ananya & Arjun"
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -1336,7 +1336,7 @@ const NewQuotationModal: React.FC<{
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
               placeholder="+91 98450 12345"
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -1348,7 +1348,7 @@ const NewQuotationModal: React.FC<{
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
               placeholder="Grand Wedding Reception Staging"
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -1359,7 +1359,7 @@ const NewQuotationModal: React.FC<{
               value={venue}
               onChange={(e) => setVenue(e.target.value)}
               placeholder="Taj West End, Bangalore"
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -1369,7 +1369,7 @@ const NewQuotationModal: React.FC<{
               type="date"
               value={eventDate}
               onChange={(e) => setEventDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
 
@@ -1379,7 +1379,7 @@ const NewQuotationModal: React.FC<{
               type="date"
               value={validUntil}
               onChange={(e) => setValidUntil(e.target.value)}
-              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#831843]"
+              className="w-full p-2.5 rounded-xl glass-input text-slate-950 font-medium focus:outline-none focus:border-[#3F5B4A]"
             />
           </div>
         </div>
@@ -1489,7 +1489,7 @@ const NewQuotationModal: React.FC<{
             </div>
             <div className="flex justify-between font-black text-sm text-slate-950 pt-2 border-t border-white/60">
               <span>Total Proposal Cost:</span>
-              <span className="text-[#831843]">{formatINR(total)}</span>
+              <span className="text-[#3F5B4A]">{formatINR(total)}</span>
             </div>
           </div>
         </div>
@@ -1513,7 +1513,7 @@ const NewQuotationModal: React.FC<{
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2.5 rounded-xl bg-[#7a1640] hover:bg-[#641133] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-[#3F5B4A] hover:bg-[#2F4A3A] text-white font-bold shadow-sm border border-white/20 transition-all cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? 'Generating Proposal...' : 'Create & Save Quotation'}
           </button>
