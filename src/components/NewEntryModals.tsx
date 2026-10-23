@@ -76,6 +76,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
   onDailyUpdatePosted,
 }) => {
   const safeSettings = settings || DEFAULT_BUSINESS_SETTINGS;
+  const [closing, setClosing] = useState(false);
 
   const isQuotationOpen = modalType === 'QUOTATION' || Boolean(modalState?.quotation);
   const isLeadOpen = modalType === 'LEAD' || Boolean(modalState?.lead);
@@ -97,9 +98,15 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
     return null;
   }
 
+  // Animate out first, then tell the parent to unmount the form
   const handleClose = (key: string) => {
-    if (onCloseModal) onCloseModal(key);
-    if (onClose) onClose();
+    if (closing) return;
+    setClosing(true);
+    window.setTimeout(() => {
+      if (onCloseModal) onCloseModal(key);
+      if (onClose) onClose();
+      setClosing(false);
+    }, 200);
   };
 
   // Close the form as soon as the save succeeds (otherwise it just sits open and
@@ -116,7 +123,7 @@ export const NewEntryModals: React.FC<NewEntryModalsProps> = ({
   const activeQuotationTemplate = preselectedTemplate || modalState?.quotationTemplate;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+    <div data-closing={closing || undefined} className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md flex items-center justify-center p-4">
       {isQuotationOpen && (
         <NewQuotationModal
           onClose={() => handleClose('quotation')}

@@ -415,6 +415,72 @@ button:not(:disabled):active {
   transform: scale(0.96);
 }
 
+/* Active tab highlight slides between items */
+.nav-pill.glass-btn-primary {
+  position: absolute;
+  top: 0;
+  left: 0.875rem;
+  right: 0.875rem;
+  z-index: 0;
+  border-radius: 1rem;
+  pointer-events: none;
+  transition: transform 0.55s var(--ease-spring), height 0.3s var(--ease-out);
+}
+
+/* Marker above the active tab in the phone bottom bar */
+.nav-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: #7a1640;
+  transition: transform 0.5s var(--ease-spring);
+  pointer-events: none;
+}
+
+/* Pop-ups animate out as well as in */
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes pop-out {
+  to { opacity: 0; transform: translateY(14px) scale(0.97); }
+}
+
+.fixed.inset-0.z-50[data-closing] {
+  animation: fade-out 0.2s ease forwards;
+  pointer-events: none;
+}
+
+[data-closing] .glass-modal {
+  animation: pop-out 0.2s var(--ease-out) forwards;
+}
+
+/* Click ripple (spans are added by src/lib/ripple.ts) */
+@keyframes ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+.ripple-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.22;
+  transform: scale(0);
+  animation: ripple 0.6s var(--ease-out) forwards;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

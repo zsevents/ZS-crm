@@ -116,6 +116,14 @@ export default function App() {
 
 
   const [inspectedLeadId, setInspectedLeadId] = useState<string | null>(null);
+  const [inspectorClosing, setInspectorClosing] = useState(false);
+  const closeInspector = () => {
+    setInspectorClosing(true);
+    window.setTimeout(() => {
+      setInspectedLeadId(null);
+      setInspectorClosing(false);
+    }, 200);
+  };
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
   // Modals state
@@ -651,12 +659,13 @@ export default function App() {
       {/* LEAD DETAIL INSPECTOR SLIDE-OVER */}
       {inspectedLead && (
         <div
-          onClick={() => setInspectedLeadId(null)}
-          className="fixed inset-0 z-50 bg-slate-950/40 flex items-end sm:items-center justify-center sm:p-4 animate-in fade-in duration-150"
+          data-closing={inspectorClosing || undefined}
+          onClick={closeInspector}
+          className="fixed inset-0 z-50 bg-slate-950/40 flex items-end sm:items-center justify-center sm:p-4"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full sm:max-w-lg max-h-[92vh] sm:max-h-[88vh] rounded-t-3xl sm:rounded-3xl glass-modal shadow-2xl flex flex-col overflow-hidden text-slate-900 border border-white/80 animate-in slide-in-from-bottom-6 sm:zoom-in-95 duration-200"
+            className="w-full sm:max-w-lg max-h-[92vh] sm:max-h-[88vh] rounded-t-3xl sm:rounded-3xl glass-modal shadow-2xl flex flex-col overflow-hidden text-slate-900 border border-white/80"
           >
             {/* Header */}
             <div className="p-5 border-b border-rose-200/50 bg-white/40 backdrop-blur-md flex items-center justify-between">
@@ -667,7 +676,7 @@ export default function App() {
               </div>
 
               <button
-                onClick={() => setInspectedLeadId(null)}
+                onClick={closeInspector}
                 className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-rose-100/60 glass-btn-secondary cursor-pointer"
               >
                 ✕

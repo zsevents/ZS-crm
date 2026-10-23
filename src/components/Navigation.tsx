@@ -1,4 +1,4 @@
-import React,{ Fragment,useState,useEffect,useRef } from 'react';
+import React,{ Fragment,useState,useEffect,useLayoutEffect,useRef } from 'react';
 import {
 Menu,
 LayoutDashboard,
@@ -61,6 +61,35 @@ interface NavigationProps {
   ) => void;
 }
 
+/** Nav list whose active highlight slides to the clicked item instead of jumping. */
+function SlidingList({ activeTab, className, children }: { activeTab: string; className: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [pill, setPill] = useState<{ y: number; h: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = ref.current?.querySelector<HTMLElement>('[data-nav-active="true"]');
+      setPill(el ? { y: el.offsetTop, h: el.offsetHeight } : null);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [activeTab]);
+
+  return (
+    <div ref={ref} className={`relative ${className}`}>
+      {pill && (
+        <div
+          aria-hidden
+          className="nav-pill glass-btn-primary"
+          style={{ transform: `translateY(${pill.y}px)`, height: pill.h }}
+        />
+      )}
+      {children}
+    </div>
+  );
+}
+
 export const Navigation: React.FC<NavigationProps> = ({
   activeTab,
   onSelectTab,
@@ -77,6 +106,29 @@ export const Navigation: React.FC<NavigationProps> = ({
   // Quick Action Dropdown state
   const [showNewDropdown, setShowNewDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Sliding marker above the active tab in the phone bottom bar
+  const mobileBarRef = useRef<HTMLElement>(null);
+  const [dotX, setDotX] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = mobileBarRef.current?.querySelector<HTMLElement>('[data-nav-active="true"]');
+      setDotX(el ? el.offsetLeft + el.offsetWidth / 2 - 14 : null);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [activeTab]);
+
+  // Quick-action sheet animates out before it unmounts
+  const [quickClosing, setQuickClosing] = useState(false);
+  const closeQuick = () => {
+    setQuickClosing(true);
+    window.setTimeout(() => {
+      setShowNewDropdown(false);
+      setQuickClosing(false);
+    }, 200);
+  };
 
   const runQuickAction = (action: QuickActionKey) => {
     setShowNewDropdown(false);
@@ -459,7 +511,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       </div>
 
       {/* 3. Primary Vertical Navigation Links */}
-      <div className="flex-1 overflow-y-auto px-3.5 py-3 space-y-1.5">
+      <SlidingList activeTab={activeTab} className="flex-1 overflow-y-auto px-3.5 py-3 space-y-1.5">
         <div className="px-3 pt-2 pb-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-500/80">
           MAIN MENU
         </div>
@@ -471,10 +523,11 @@ export const Navigation: React.FC<NavigationProps> = ({
             <button
               key={item.id}
               id={`sidebar-nav-${item.id.toLowerCase()}`}
+              data-nav-active={isActive}
               onClick={() => handleSelectNav(item.id)}
-              className={`w-full px-3.5 py-3 rounded-2xl flex items-center justify-between transition-all cursor-pointer text-left group ${
+              className={`relative z-10 w-full px-3.5 py-3 rounded-2xl flex items-center justify-between transition-all cursor-pointer text-left group ${
                 isActive
-                  ? 'glass-btn-primary text-white font-bold shadow-sm border border-white/30'
+                  ? 'text-white font-bold border border-transparent'
                   : 'text-slate-800 hover:bg-white/60 hover:text-slate-950 font-bold border border-transparent hover:border-white/70'
               }`}
             >
@@ -524,7 +577,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             </button>
           );
         })}
-      </div>
+      </SlidingList>
 
       {/* 4. Bottom Footer: User Profile & Logout */}
       <div className="p-3.5 border-t border-white/60 bg-white/40 backdrop-blur-md flex items-center justify-between text-xs shrink-0">
@@ -610,9 +663,13 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* ------------------------------------------------------------- */}
       {/* 3. MOBILE BOTTOM NAVIGATION BAR (< md)                        */}
       {/* ------------------------------------------------------------- */}
-      <nav aria-label="Mobile Navigation" className="md:hidden fixed bottom-0 inset-x-0 z-40 glass-nav border-t border-white/70 shadow-2xl backdrop-blur-xl px-2 py-1.5 flex items-center justify-around safe-area-pb">
+      <nav ref={mobileBarRef} aria-label="Mobile Navigation" className="md:hidden fixed bottom-0 inset-x-0 z-40 glass-nav border-t border-white/70 shadow-2xl backdrop-blur-xl px-2 py-1.5 flex items-center justify-around safe-area-pb">
+        {dotX !== null && (
+          <span aria-hidden className="nav-dot" style={{ transform: `translateX(${dotX}px)` }} />
+        )}
         {/* Dashboard */}
         <button
+          data-nav-active={activeTab === 'DASHBOARD'}
           onClick={() => handleSelectNav('DASHBOARD')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] transition-all cursor-pointer ${
             activeTab === 'DASHBOARD'
@@ -628,6 +685,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         {/* Leads CRM */}
         <button
+          data-nav-active={activeTab === 'LEADS'}
           onClick={() => handleSelectNav('LEADS')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] relative transition-all cursor-pointer ${
             activeTab === 'LEADS'
@@ -659,6 +717,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         {/* Projects & Staging */}
         <button
+          data-nav-active={activeTab === 'PROJECTS'}
           onClick={() => handleSelectNav('PROJECTS')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] transition-all cursor-pointer ${
             activeTab === 'PROJECTS'
@@ -674,6 +733,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         {/* Schedule & Calendar */}
         <button
+          data-nav-active={activeTab === 'CALENDAR'}
           onClick={() => handleSelectNav('CALENDAR')}
           className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl min-w-[56px] min-h-[48px] relative transition-all cursor-pointer ${
             activeTab === 'CALENDAR'
@@ -706,9 +766,9 @@ export const Navigation: React.FC<NavigationProps> = ({
       {/* 4. MOBILE QUICK ACTION BOTTOM SHEET OVERLAY (< md)            */}
       {/* ------------------------------------------------------------- */}
       {showNewDropdown && (
-        <div data-mobile-quick className="md:hidden fixed inset-0 z-50 flex flex-col justify-end animate-in fade-in duration-200">
+        <div data-mobile-quick data-closing={quickClosing || undefined} className="md:hidden fixed inset-0 z-50 flex flex-col justify-end">
           <div
-            onClick={() => setShowNewDropdown(false)}
+            onClick={closeQuick}
             className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm transition-opacity"
           />
           <div className="relative w-full max-w-lg mx-auto glass-modal rounded-t-3xl border-t border-white/80 p-5 shadow-2xl z-10 animate-in slide-in-from-bottom duration-250 pb-8">
@@ -719,7 +779,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <p className="text-[11px] text-slate-500 font-medium">Create new records and log event operations</p>
               </div>
               <button
-                onClick={() => setShowNewDropdown(false)}
+                onClick={closeQuick}
                 className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 glass-btn-secondary"
               >
                 <X className="w-5 h-5" />
