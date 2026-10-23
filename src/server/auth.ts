@@ -21,6 +21,7 @@ const PUBLIC_ROUTES = new Set([
   'POST /website-inquiry',
   'GET /inquiry',
   'POST /inquiry',
+  'GET /cron/expo-finder', // protected by CRON_SECRET inside the route
 ]);
 
 // Verified tokens are cached briefly so a page load that fires ten API calls

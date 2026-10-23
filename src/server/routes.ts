@@ -3,6 +3,8 @@ import { db } from './db.js';
 import { Milestone } from '../types.js';
 import { generateQuotationSuggestions,generateWhatsAppPitch } from './assistant.js';
 import { sendInquiryEmail } from './notify.js';
+import { MONTHLY_SEARCH_LIMIT, finderConfigured, finderState, runExpoFinder } from './expoFinder.js';
+import { flush } from './store.js';
 
 export const apiRouter = Router();
 
@@ -740,6 +742,61 @@ apiRouter.post('/expos', (req: Request, res: Response) => {
     res.status(201).json({ success: true, data: db.createExpo(req.body ?? {}) });
   } catch (err: any) {
     res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+// Automatic expo finder (Google via SerpApi, details pulled out by Claude)
+apiRouter.get('/expos/finder', (_req: Request, res: Response) => {
+  const st = finderState();
+  res.json({
+    success: true,
+    data: {
+      configured: finderConfigured(),
+      queries: st.queries,
+      searchesUsed: st.searchesUsed,
+      limit: MONTHLY_SEARCH_LIMIT,
+      lastRunAt: st.lastRunAt ?? null,
+      lastResult: st.lastResult ?? null,
+    },
+  });
+});
+
+apiRouter.put('/expos/finder', (req: Request, res: Response) => {
+  const raw: unknown = req.body?.queries;
+  if (!Array.isArray(raw)) return res.status(400).json({ success: false, error: 'queries must be a list' });
+  const queries = raw
+    .map((q) => String(q ?? '').trim().slice(0, 120))
+    .filter(Boolean)
+    .slice(0, 10);
+  if (queries.length === 0) return res.status(400).json({ success: false, error: 'Add at least one search phrase' });
+  const st = finderState();
+  (db.settings as any).expoFinder = { ...st, queries };
+  res.json({ success: true, data: { queries } });
+});
+
+apiRouter.post('/expos/discover', async (_req: Request, res: Response) => {
+  try {
+    res.json({ success: true, data: await runExpoFinder('manual') });
+  } catch (err: any) {
+    // Failed responses skip the automatic save, so keep the usage counter and last-run note
+    await flush().catch(() => undefined);
+    res.json({ success: false, error: err?.message || 'Expo search failed' });
+  }
+});
+
+// Weekly run, called by Vercel Cron with the CRON_SECRET bearer token
+apiRouter.get('/cron/expo-finder', async (req: Request, res: Response) => {
+  const secret = process.env.CRON_SECRET;
+  if (!secret || req.headers.authorization !== `Bearer ${secret}`) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
+  }
+  try {
+    const result = await runExpoFinder('schedule');
+    await flush(); // GET requests are not saved automatically
+    res.json({ success: true, data: result });
+  } catch (err: any) {
+    await flush().catch(() => undefined);
+    res.status(500).json({ success: false, error: err?.message || 'Expo search failed' });
   }
 });
 
