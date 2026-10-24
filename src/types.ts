@@ -592,27 +592,3 @@ export interface DashboardStats {
   upcomingEventsCount: number;
   conflictingDates: DateConflict[];
 }
-
-// Event-management expos and fairs the studio tracks (found on Google, Instagram and elsewhere)
-export type ExpoSource = 'GOOGLE' | 'INSTAGRAM' | 'FACEBOOK' | 'WEBSITE' | 'WHATSAPP' | 'REFERRAL' | 'OTHER';
-export type ExpoStatus = 'DISCOVERED' | 'INTERESTED' | 'REGISTERED' | 'ATTENDED' | 'SKIPPED';
-
-export interface Expo {
-  id: string;
-  name: string;
-  organiser?: string;
-  startDate?: string;
-  endDate?: string;
-  city?: string;
-  venue?: string;
-  source: ExpoSource;
-  sourceUrl?: string;
-  contactName?: string;
-  contactPhone?: string;
-  contactEmail?: string;
-  boothCost?: number;
-  status: ExpoStatus;
-  leadsCollected?: number;
-  notes?: string;
-  createdAt: string;
-}

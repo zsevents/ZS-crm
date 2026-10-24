@@ -1,4 +1,4 @@
-import { Lead, Customer, Project, Invoice, Payment, BusinessSettings, DashboardStats, DailyLog, ProjectTask, DateConflict, FloralTemplate, Quotation, Expo } from '../types';
+import { Lead, Customer, Project, Invoice, Payment, BusinessSettings, DashboardStats, DailyLog, ProjectTask, DateConflict, FloralTemplate, Quotation } from '../types';
 import { getSupabase,isSupabaseConfigured } from './supabaseClient';
 
 // Every /api call carries the signed-in user's Supabase access token; the
@@ -329,38 +329,6 @@ export const api = {
     });
     if (!json.success) throw new Error(json.error || 'Failed to add project task');
     return json.data;
-  },
-
-  async getExpos(): Promise<Expo[]> {
-    const json = await safeFetchJson<{ success: boolean; data: Expo[]; error?: string }>('/api/expos');
-    if (!json.success) throw new Error(json.error || 'Failed to load expos');
-    return json.data;
-  },
-
-  async createExpo(data: Partial<Expo>): Promise<Expo> {
-    const json = await safeFetchJson<{ success: boolean; data: Expo; error?: string }>('/api/expos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!json.success) throw new Error(json.error || 'Failed to add expo');
-    return json.data;
-  },
-
-  async updateExpo(id: string, updates: Partial<Expo>): Promise<Expo> {
-    const json = await safeFetchJson<{ success: boolean; data: Expo; error?: string }>(`/api/expos/${encodeURIComponent(id)}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
-    });
-    if (!json.success) throw new Error(json.error || 'Failed to save expo');
-    return json.data;
-  },
-
-  async deleteExpo(id: string): Promise<boolean> {
-    const json = await safeFetchJson<{ success: boolean; error?: string }>(`/api/expos/${encodeURIComponent(id)}`, { method: 'DELETE' });
-    if (!json.success) throw new Error(json.error || 'Failed to delete expo');
-    return true;
   },
 
   // Edit or delete an item inside a lead or project. `kind` picks the list.

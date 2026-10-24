@@ -729,33 +729,6 @@ apiRouter.delete('/projects/:id/procurement/:itemId', (req: Request, res: Respon
   }
 });
 
-// --- Expos & fairs ---
-apiRouter.get('/expos', (_req: Request, res: Response) => {
-  const sorted = [...db.expos].sort((a, b) => (a.startDate || '9999').localeCompare(b.startDate || '9999'));
-  res.json({ success: true, data: sorted });
-});
-
-apiRouter.post('/expos', (req: Request, res: Response) => {
-  try {
-    res.status(201).json({ success: true, data: db.createExpo(req.body ?? {}) });
-  } catch (err: any) {
-    res.status(400).json({ success: false, error: err.message });
-  }
-});
-
-apiRouter.patch('/expos/:id', (req: Request, res: Response) => {
-  try {
-    res.json({ success: true, data: db.updateExpo(req.params.id, req.body ?? {}) });
-  } catch (err: any) {
-    res.status(404).json({ success: false, error: err.message });
-  }
-});
-
-apiRouter.delete('/expos/:id', (req: Request, res: Response) => {
-  if (!db.deleteExpo(req.params.id)) return res.status(404).json({ success: false, error: 'Expo not found' });
-  res.json({ success: true, message: 'Expo deleted' });
-});
-
 // --- Edit and delete items inside a lead or project (notes, tasks, daily logs, checklist, notes) ---
 const NESTED_ROUTES: { path: string; collection: 'leads' | 'projects'; listKey: string; label: string }[] = [
   { path: '/leads/:id/activity/:itemId', collection: 'leads', listKey: 'activities', label: 'Note' },

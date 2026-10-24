@@ -12,8 +12,7 @@ FloralTemplate,
 ProcurementItem,
 EventChecklistItem,
 ProjectNote,
-LeadHealth,
-Expo
+LeadHealth
 } from '../types.js';
 import { FLORAL_TEMPLATES } from './templatesData.js';
 
@@ -114,7 +113,6 @@ class FloristDatabase {
   public projects: Project[] = [];
   public invoices: Invoice[] = [];
   public payments: Payment[] = [];
-  public expos: Expo[] = [];
   public settings: BusinessSettings = {
     companyName: 'Z S EVENTS',
     tagline: 'Luxury Floristry & Grand Event Decor, Bangalore',
@@ -1644,36 +1642,6 @@ class FloristDatabase {
     const idx = project.procurementItems.findIndex((i) => i.id === itemId);
     if (idx === -1) return false;
     project.procurementItems.splice(idx, 1);
-    return true;
-  }
-
-  // --- Expos & fairs ---
-  public createExpo(data: Partial<Expo>): Expo {
-    if (!data.name || !String(data.name).trim()) throw new Error('Expo name is required');
-    const expo: Expo = {
-      ...data,
-      id: `EXP-${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).slice(2, 5).toUpperCase()}`,
-      name: String(data.name).trim(),
-      source: data.source || 'GOOGLE',
-      status: data.status || 'DISCOVERED',
-      createdAt: new Date().toISOString(),
-    } as Expo;
-    this.expos.push(expo);
-    return expo;
-  }
-
-  public updateExpo(id: string, updates: Partial<Expo>): Expo {
-    const expo = this.expos.find((e) => e.id === id);
-    if (!expo) throw new Error(`Expo ${id} not found`);
-    const { id: _id, createdAt: _createdAt, ...safe } = updates;
-    Object.assign(expo, safe);
-    return expo;
-  }
-
-  public deleteExpo(id: string): boolean {
-    const idx = this.expos.findIndex((e) => e.id === id);
-    if (idx === -1) return false;
-    this.expos.splice(idx, 1);
     return true;
   }
 
