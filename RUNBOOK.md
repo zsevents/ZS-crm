@@ -21,7 +21,7 @@ Never deploy from the old `D:\ZSEventsCRM` folder: it has no database connection
 npm run health
 ```
 
-Checks both sites, certificates, the CRM API, the sign-in wall and the enquiry endpoint. GitHub also runs a version of this automatically and emails you if it fails.
+Checks both sites, certificates, the CRM API, the database connection, the sign-in wall and the enquiry endpoint. GitHub also runs a version of this automatically and emails you if it fails.
 
 ## Ship a change
 
@@ -76,9 +76,20 @@ The free Supabase plan has no automatic backups. At least monthly: Supabase dash
 | Name | What it does |
 |---|---|
 | `SMTP_PASS` | Gmail App Password. Without it, website enquiries are saved but no email is sent |
+| `CRM_ALLOWED_EMAILS` (optional) | Extra emails allowed into the CRM, comma separated |
 | `SENTRY_DSN` | Where server errors are reported |
 | `SUPABASE_*`, `POSTGRES_*` | Database connection |
 | `ALLOWED_ORIGINS` (optional) | Extra websites allowed to call the API, comma separated |
+
+## Security, at a glance
+
+- **Secrets live only in Vercel.** `.env*` files are gitignored; `.env.example` lists every setting with no values. Git history has been checked and holds no keys.
+- **The browser never gets the secret key.** It only uses the publishable key to sign in and read profiles. All business data goes through the CRM API.
+- **Database rules:** business tables (customers, leads, projects, quotations, invoices, payments, settings, expos) have Row Level Security on and no browser access; only the CRM server can read or write them.
+- **API:** every route needs a signed-in, approved user (`crm_access` or `CRM_ALLOWED_EMAILS`); viewers are read-only. Public routes: health and the website enquiry form (rate limited).
+- **Headers and limits:** content-security policy, HSTS, no framing, 240 requests a minute per address, 20 failed sign-ins per 10 minutes.
+- **Dependencies:** `npm audit --omit=dev` should report 0 vulnerabilities. Check monthly.
+- **To do yourself:** use strong passwords for every CRM login, and rotate the Supabase secret key if it was ever shared outside Vercel (Supabase dashboard → Project Settings → API keys, then update `SUPABASE_SECRET_KEY` in Vercel and redeploy).
 
 ## Free-plan limits to watch
 

@@ -39,8 +39,10 @@ for (const site of SITES) {
 }
 
 try {
-  const { res } = await timed('https://crm.zsevents.in/api/health');
-  check('CRM API health', res.ok, String(res.status));
+  const { res, ms } = await timed('https://crm.zsevents.in/api/health');
+  const body = await res.clone().json().catch(() => ({}));
+  check('CRM API health', res.ok, `${res.status} in ${ms} ms`);
+  check('CRM database reachable', body.database === 'ok', body.database || 'no answer');
   const leads = await timed('https://crm.zsevents.in/api/leads');
   check('CRM sign-in wall (expect 401)', leads.res.status === 401, String(leads.res.status));
   const headers = res.headers;

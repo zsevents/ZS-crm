@@ -16,6 +16,8 @@ const READ_ONLY = new Set(['GET', 'HEAD', 'OPTIONS']);
 
 export const withPersistence: RequestHandler = async (req, res, next) => {
   if (!isSupabaseConfigured()) return next();
+  // Health checks use their own one-row ping instead of loading every table
+  if (req.method === 'GET' && req.path === '/health') return next();
 
   try {
     await hydrate();

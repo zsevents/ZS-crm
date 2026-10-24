@@ -249,3 +249,10 @@ export async function flush(): Promise<void> {
     .upsert({ id: 1, settings: db.settings, updated_at: new Date().toISOString() });
   if (error) throw error;
 }
+
+/** Cheapest possible database check for the uptime monitor: no rows are returned. */
+export async function pingDatabase(): Promise<boolean> {
+  if (!isSupabaseConfigured()) return true;
+  const { error } = await getSupabase().from('business_settings').select('id', { head: true, count: 'exact' }).limit(1);
+  return !error;
+}

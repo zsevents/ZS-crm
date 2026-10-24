@@ -1,6 +1,7 @@
 import express from 'express';
 import { requireAuth } from './auth.js';
 import { withPersistence } from './persistence.js';
+import { pingDatabase } from './store.js';
 import { apiRouter } from './routes.js';
 import { apiRateLimit, corsPolicy, errorHandler, requestLogger, securityHeaders } from './security.js';
 
@@ -25,8 +26,13 @@ export function createApp() {
 
   app.use('/api', apiRouter);
 
-  app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', time: new Date().toISOString() });
+  app.get('/api/health', async (_req, res) => {
+    const database = await pingDatabase().catch(() => false);
+    res.status(database ? 200 : 503).json({
+      status: database ? 'ok' : 'degraded',
+      database: database ? 'ok' : 'unreachable',
+      time: new Date().toISOString(),
+    });
   });
 
   // API 404 handler to prevent HTML fallthrough

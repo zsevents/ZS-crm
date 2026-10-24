@@ -301,20 +301,23 @@ alter table public.invoices          enable row level security;
 alter table public.payments          enable row level security;
 alter table public.business_settings enable row level security;
 
-do $rls$
+-- Business data (customers, leads, projects, quotations, invoices, payments, settings)
+-- is only ever read and written by the CRM server, which uses the secret key and so
+-- bypasses Row Level Security. Signed-in browser sessions get no direct table access:
+-- before this, any signed-in account could read or change every record through the
+-- public Supabase API, skipping the CRM's approval and role checks.
+-- Profiles keep their own policies (read the team, update yourself).
+do $$
 declare t text;
 begin
   foreach t in array array['customers','leads','projects','quotations',
                            'invoices','payments','business_settings']
   loop
-    execute format(
-      'drop policy if exists "authenticated full access" on public.%I', t);
-    execute format(
-      'create policy "authenticated full access" on public.%I
-         for all to authenticated using (true) with check (true)', t);
+    execute format('drop policy if exists "authenticated full access" on public.%I', t);
+    execute format('alter table public.%I enable row level security', t);
   end loop;
 end
-$rls$;
+$$;
 
 -- Profiles: everyone signed in can read the team; you may edit only yourself.
 drop policy if exists "read team"   on public.profiles;
