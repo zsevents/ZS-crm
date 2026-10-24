@@ -89,7 +89,7 @@ export const corsPolicy: RequestHandler = (req, res, next) => {
 // Logging + error tracking
 // ---------------------------------------------------------------------------
 
-export function logEvent(level: 'info' | 'warn' | 'error', msg: string, extra: Record<string, unknown> = {}) {
+function logEvent(level: 'info' | 'warn' | 'error', msg: string, extra: Record<string, unknown> = {}) {
   const line = JSON.stringify({ level, msg, time: new Date().toISOString(), ...extra });
   (level === 'error' ? console.error : console.log)(line);
 }

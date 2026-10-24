@@ -57,15 +57,6 @@ function nestedUrl(kind: NestedKind, parentId: string, itemId: string): string {
   return `/api/${parent}/${encodeURIComponent(parentId)}/${list}/${encodeURIComponent(itemId)}`;
 }
 
-interface ExpoFinderInfo {
-  configured: { search: boolean };
-  queries: string[];
-  searchesUsed: number;
-  limit: number;
-  lastRunAt: string | null;
-  lastResult: { added: number; found: number; searches: number; error?: string } | null;
-}
-
 export const api = {
   // Dashboard
   async getDashboardStats(): Promise<DashboardStats> {
@@ -337,27 +328,6 @@ export const api = {
       body: JSON.stringify(payload),
     });
     if (!json.success) throw new Error(json.error || 'Failed to add project task');
-    return json.data;
-  },
-
-  async getExpoFinder(): Promise<ExpoFinderInfo> {
-    const json = await safeFetchJson<{ success: boolean; data: ExpoFinderInfo; error?: string }>('/api/expos/finder');
-    if (!json.success) throw new Error(json.error || 'Failed to load the expo finder');
-    return json.data;
-  },
-
-  async saveExpoQueries(queries: string[]): Promise<void> {
-    const json = await safeFetchJson<{ success: boolean; error?: string }>('/api/expos/finder', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ queries }),
-    });
-    if (!json.success) throw new Error(json.error || 'Failed to save search phrases');
-  },
-
-  async discoverExpos(): Promise<{ added: number; found: number; searches: number; searchesUsed: number; limit: number }> {
-    const json = await safeFetchJson<{ success: boolean; data: any; error?: string }>('/api/expos/discover', { method: 'POST' });
-    if (!json.success) throw new Error(json.error || 'Expo search failed');
     return json.data;
   },
 

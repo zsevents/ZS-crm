@@ -55,11 +55,5 @@
   ],
   "regions": [
     "hnd1"
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/expo-finder",
-      "schedule": "30 2 * * 1"
-    }
   ]
 }

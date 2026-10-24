@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { CalendarDays, ExternalLink, MapPin, Pencil, Phone, Plus, Search, Sparkles, Trash2, Users } from 'lucide-react';
+import { CalendarDays, ExternalLink, MapPin, Pencil, Phone, Plus, Search, Trash2, Users } from 'lucide-react';
 import { Expo, ExpoStatus } from '../types';
 import { api } from '../lib/api';
 import { formatDate, formatINR } from '../lib/formatters';
@@ -46,51 +46,6 @@ export const ExposView: React.FC = () => {
   const [editing, setEditing] = useState<{ expo: Partial<Expo> | null } | null>(null);
   const [deleting, setDeleting] = useState<Expo | null>(null);
 
-  // Automatic finder
-  type FinderInfo = Awaited<ReturnType<typeof api.getExpoFinder>>;
-  const [finder, setFinder] = useState<FinderInfo | null>(null);
-  const [finding, setFinding] = useState(false);
-  const [finderMsg, setFinderMsg] = useState<{ ok: boolean; text: string } | null>(null);
-  const [editingQueries, setEditingQueries] = useState(false);
-  const [queryText, setQueryText] = useState('');
-
-  const loadFinder = async () => {
-    try {
-      setFinder(await api.getExpoFinder());
-    } catch {
-      setFinder(null);
-    }
-  };
-
-  const findNow = async () => {
-    setFinding(true);
-    setFinderMsg(null);
-    try {
-      const r = await api.discoverExpos();
-      setFinderMsg({
-        ok: true,
-        text: r.added > 0 ? `Added ${r.added} new expo${r.added > 1 ? 's' : ''} to review.` : 'No new expos found this time.',
-      });
-      await load();
-    } catch (err: any) {
-      setFinderMsg({ ok: false, text: err?.message || 'Search failed.' });
-    } finally {
-      setFinding(false);
-      loadFinder();
-    }
-  };
-
-  const saveQueries = async () => {
-    const list = queryText.split('\n').map((q) => q.trim()).filter(Boolean);
-    try {
-      await api.saveExpoQueries(list);
-      setEditingQueries(false);
-      loadFinder();
-    } catch (err: any) {
-      setFinderMsg({ ok: false, text: err?.message || 'Could not save search phrases.' });
-    }
-  };
-
   const setStatus = async (expo: Expo, status: ExpoStatus) => {
     await api.updateExpo(expo.id, { status });
     await load();
@@ -109,7 +64,6 @@ export const ExposView: React.FC = () => {
 
   useEffect(() => {
     load();
-    loadFinder();
   }, []);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -144,13 +98,6 @@ export const ExposView: React.FC = () => {
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={findNow}
-            disabled={finding}
-            className="px-4 py-2.5 rounded-xl glass-btn-secondary text-xs font-bold text-slate-800 flex items-center gap-1.5 cursor-pointer disabled:opacity-60"
-          >
-            <Sparkles className="w-4 h-4 text-[#3F5B4A]" /> {finding ? 'Searching…' : 'Find expos'}
-          </button>
-          <button
             onClick={() => setEditing({ expo: { source: 'GOOGLE', status: 'DISCOVERED' } })}
             className="px-4 py-2.5 rounded-xl glass-btn-primary text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer w-fit"
           >
@@ -172,60 +119,6 @@ export const ExposView: React.FC = () => {
           </div>
         ))}
       </div>
-
-      {/* Automatic finder status */}
-      <section className="glass-subcard p-4 sm:p-5 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
-          <div>
-            <h2 className="text-sm font-bold text-slate-950">Automatic expo finder</h2>
-            <p className="text-xs text-slate-600 mt-0.5">
-              {!finder
-                ? 'Loading…'
-                : !finder.configured.search
-                ? 'Not set up yet: add a SERPAPI_KEY in Vercel to turn it on.'
-                : `Searches Google every Monday and when you tap Find expos · ${finder.searchesUsed} of ${finder.limit} searches used this month`}
-            </p>
-            {finder?.lastRunAt && (
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                Last run {new Date(finder.lastRunAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}
-                {finder.lastResult?.error
-                  ? ` · ${finder.lastResult.error}`
-                  : finder.lastResult
-                  ? ` · added ${finder.lastResult.added}`
-                  : ''}
-              </p>
-            )}
-          </div>
-          {finder && (
-            <button
-              onClick={() => {
-                setQueryText(finder.queries.join('\n'));
-                setEditingQueries((v) => !v);
-              }}
-              className="text-xs font-semibold text-[#3F5B4A] hover:text-[#2F4A3A] cursor-pointer w-fit"
-            >
-              {editingQueries ? 'Close' : 'Search phrases'}
-            </button>
-          )}
-        </div>
-        {finderMsg && (
-          <p className={`text-xs font-semibold ${finderMsg.ok ? 'text-[#2F4A3A]' : 'text-red-700'}`}>{finderMsg.text}</p>
-        )}
-        {editingQueries && (
-          <div className="space-y-2">
-            <p className="text-[11px] text-slate-500">One search per line, up to 10. {'{year}'} becomes the current year.</p>
-            <textarea
-              rows={6}
-              value={queryText}
-              onChange={(e) => setQueryText(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl glass-input text-xs text-slate-900 outline-none resize-y"
-            />
-            <button onClick={saveQueries} className="px-4 py-2 rounded-xl glass-btn-primary text-white text-xs font-bold cursor-pointer">
-              Save phrases
-            </button>
-          </div>
-        )}
-      </section>
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
