@@ -13,3 +13,12 @@ jobs:
         run: |
           code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 https://crm.zsevents.in/api/leads)
           [ "$code" = "401" ] || { echo "Expected 401, got $code"; exit 1; }
+      # The website enquiry form posts here. A GET loads the database the same
+      # way a real enquiry does, without creating a lead.
+      - name: Website enquiry endpoint can reach the database
+        run: curl --fail --silent --show-error --max-time 20 -o /dev/null https://crm.zsevents.in/api/website-inquiry
+      - name: Website is allowed to post enquiries (CORS)
+        run: |
+          hdr=$(curl -s -D - -o /dev/null --max-time 20 -X OPTIONS https://crm.zsevents.in/api/website-inquiry \
+            -H 'Origin: https://www.zsevents.in' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type')
+          echo "$hdr" | grep -qi '^access-control-allow-origin: \(\*\|https://www.zsevents.in\)' || { echo "CORS blocks zsevents.in:"; echo "$hdr"; exit 1; }
