@@ -32,8 +32,9 @@ export const withPersistence: RequestHandler = async (req, res, next) => {
   const sendJson = res.json.bind(res);
 
   res.json = ((body: any) => {
-    // Only persist when the handler reports success.
-    if (res.statusCode >= 400 || body?.success === false) {
+    // Only persist when the handler reports success. A route that already saved
+    // its own records (res.locals.persisted) skips the whole-table write.
+    if (res.statusCode >= 400 || body?.success === false || res.locals.persisted) {
       return sendJson(body);
     }
 

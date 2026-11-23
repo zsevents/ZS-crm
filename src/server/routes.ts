@@ -3,6 +3,7 @@ import { db } from './db.js';
 import { Milestone } from '../types.js';
 import { generateQuotationSuggestions,generateWhatsAppPitch } from './assistant.js';
 import { sendInquiryEmail } from './notify.js';
+import { saveRecords } from './store.js';
 
 export const apiRouter = Router();
 
@@ -240,7 +241,7 @@ apiRouter.post(['/website-inquiry', '/inquiry'], async (req: Request, res: Respo
     // Check duplicate
     const dupCheck = db.checkDuplicateLead(phone.toString().trim(), name.toString().trim());
 
-    const { lead } = db.createLead({
+    const { lead, customer } = db.createLead({
       customerName: name.toString().trim(),
       phone: phone.toString().trim(),
       email: email.toString().trim(),
@@ -253,6 +254,11 @@ apiRouter.post(['/website-inquiry', '/inquiry'], async (req: Request, res: Respo
       message: message.toString().trim(),
       priority: 'HIGH',
     });
+
+    // Save just this customer and lead right away (before the email, which can
+    // take seconds) instead of rewriting every table when the response is sent.
+    await saveRecords({ customers: [customer], leads: [lead] });
+    res.locals.persisted = true;
 
     // Email alert to the studio. Awaited (a serverless function is frozen once
     // it responds) but capped, and a mail failure never loses the lead.

@@ -161,10 +161,30 @@ async function seedIfEmpty(): Promise<void> {
 // of each doing their own.
 let hydrating: Promise<void> | null = null;
 
+// IDs each table held at the last load. flush() deletes only rows that were
+// loaded and then removed in memory. It used to delete every database row the
+// instance had not loaded, which wiped leads saved meanwhile by other requests
+// (website enquiries arriving while staff were using the CRM).
+const loadedIds = new Map<Collection, Set<string>>();
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Retry a transient Supabase failure twice before giving up. */
+async function withRetry<T>(fn: () => Promise<T>): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt >= 2) throw err;
+      await sleep(250 * (attempt + 1));
+    }
+  }
+}
+
 /** Load Postgres into the in-memory arrays. */
 export function hydrate(): Promise<void> {
   if (!hydrating) {
-    hydrating = hydrateNow().finally(() => {
+    hydrating = withRetry(hydrateNow).finally(() => {
       hydrating = null;
     });
   }
@@ -198,7 +218,10 @@ async function hydrateNow(): Promise<void> {
     ),
     supabase.from('business_settings').select('settings').eq('id', 1).maybeSingle(),
   ]);
-  for (const [name, rows] of tables) (db as any)[name] = rows;
+  for (const [name, rows] of tables) {
+    (db as any)[name] = rows;
+    loadedIds.set(name, new Set(rows.map((r: any) => r.id as string)));
+  }
 
   // Never re-issue an ID that is already stored (would overwrite that row).
   db.syncCountersFromData();
@@ -215,15 +238,6 @@ export async function flush(): Promise<void> {
 
   const supabase = getSupabase();
 
-  // Which rows exist in each table, fetched together up front.
-  const existing = await Promise.all(
-    COLLECTIONS.map(async (name) => {
-      const { data, error } = await supabase.from(name).select('id');
-      if (error) throw error;
-      return (data ?? []).map((r: any) => r.id as string);
-    })
-  );
-
   // Upserts keep dependency order (customers first, then rows that reference them).
   for (const name of COLLECTIONS) {
     const items = (db as any)[name] as any[];
@@ -233,17 +247,37 @@ export async function flush(): Promise<void> {
   // Remove rows that no longer exist in memory (handles DELETE routes), children first.
   for (let i = COLLECTIONS.length - 1; i >= 0; i--) {
     const keep = new Set(((db as any)[COLLECTIONS[i]] as any[]).map((item) => item.id));
-    const stale = existing[i].filter((id) => !keep.has(id));
+    const stale = [...(loadedIds.get(COLLECTIONS[i]) ?? [])].filter((id) => !keep.has(id));
     if (stale.length) {
       const { error } = await supabase.from(COLLECTIONS[i]).delete().in('id', stale);
       if (error) throw error;
     }
+    // What is stored now is what this instance has in memory.
+    loadedIds.set(COLLECTIONS[i], keep);
   }
 
   const { error } = await supabase
     .from('business_settings')
     .upsert({ id: 1, settings: db.settings, updated_at: new Date().toISOString() });
   if (error) throw error;
+}
+
+/**
+ * Save only the given records (upsert), without rewriting whole tables or
+ * deleting anything. Used by the public website enquiry, so a new lead is
+ * never lost to, or overwritten by, a staff save running at the same time.
+ */
+export async function saveRecords(
+  records: Partial<Record<Collection, Record<string, any>[]>>
+): Promise<void> {
+  if (!isSupabaseConfigured()) return;
+  const supabase = getSupabase();
+  for (const name of COLLECTIONS) {
+    const rows = records[name];
+    if (!rows?.length) continue;
+    await withRetry(() => upsertRows(supabase, name, rows.map(toRow)));
+    for (const row of rows) loadedIds.get(name)?.add(row.id);
+  }
 }
 
 /** Cheapest possible database check for the uptime monitor: no rows are returned. */
